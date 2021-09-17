@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="homeBG">#FF032051</color>
+    <color name="statusbar">#FF000000</color>
+    <color name="BVblack">#65000000</color>
+    <color name="homePreviewMore">#FFFFFFFF</color>
+
+</resources>
