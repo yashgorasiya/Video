@@ -205,12 +205,9 @@ class delete{
         handler.postDelayed(() -> {
             // Do something after 5s = 5000ms
             if (deletecheck) {
-//                    boolean isdeleted = activity.deleteFile(String.valueOf(bin.getUri()));
 
-                File file = new File(bin.getUri().getPath());
-                Toast.makeText(activity, ""+bin.getUri().getPath(), Toast.LENGTH_SHORT).show();
-                boolean isdeleted = file.delete();
-                if (isdeleted) {
+                int isdeleted = activity.getContentResolver().delete(bin.getUri(),null,null);
+                if (isdeleted>0) {
                     Toast.makeText(activity, "Deleted", Toast.LENGTH_SHORT).show();
                 }else {
                     Toast.makeText(activity,"Failed To Delete",Toast.LENGTH_SHORT).show();
