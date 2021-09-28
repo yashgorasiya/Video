@@ -6,10 +6,11 @@ public class Video {
 
     private final Uri uri;
     private final String name;
-    private final int duration;
-    private final int size;
 
-    public Video(Uri uri, String name, int duration, int size) {
+    private final int duration;
+    private final long size;
+
+    public Video(Uri uri, String name, int duration, long size) {
         this.uri = uri;
         this.name = name;
         this.duration = duration;
@@ -28,7 +29,8 @@ public class Video {
         return duration;
     }
 
-    public int getSize() {
+    public long getSize() {
         return size;
     }
+
 }

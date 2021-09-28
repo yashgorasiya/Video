@@ -4,25 +4,37 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1" />
+        <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable/bottom_sheet_dailog_bg.xml" value="0.2598958333333333" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable/controller_brightness_volume_bg.xml" value="0.156140350877193" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable/controllerbg.xml" value="0.21157407407407408" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable/controllertopbg.xml" value="0.21157407407407408" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable/duration_size_bg.xml" value="0.4" />
+        <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable/home_preview_seekbar_process.xml" value="0.2598958333333333" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable/ic_baseline_arrow_back_24.xml" value="0.21157407407407408" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable/ic_baseline_arrow_back_ios_24.xml" value="0.21157407407407408" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable/ic_baseline_crop_5_4_24.xml" value="0.20175438596491227" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable/ic_baseline_crop_7_5_24.xml" value="0.20175438596491227" />
+        <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable/ic_baseline_delete_24.xml" value="0.2598958333333333" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable/ic_baseline_hd_24.xml" value="0.20175438596491227" />
+        <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable/ic_baseline_info.xml" value="0.2598958333333333" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable/ic_baseline_more_vert_24.xml" value="0.20175438596491227" />
+        <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable/ic_baseline_share_24.xml" value="0.2598958333333333" />
+        <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable/ic_baseline_speed.xml" value="0.2598958333333333" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.20175438596491227" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable/ic_logo.xml" value="0.19715271786022434" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable/preview_thumbnail_bg.xml" value="0.21157407407407408" />
+        <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable/subtitles.xml" value="0.2598958333333333" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/layout/activity_fullscreen.xml" value="0.1766304347826087" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/layout/activity_main.xml" value="0.264" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/layout/activity_player.xml" value="0.28122912491649965" />
-        <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/layout/layout_exoplayer_control_view.xml" value="0.3988439306358382" />
-        <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/layout/preview.xml" value="0.44684129429892144" />
+        <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/layout/activity_vlc_player.xml" value="0.2076923076923077" />
+        <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/layout/bottom_sheet_dialog.xml" value="0.24375" />
+        <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/layout/bottom_sheet_video_information.xml" value="0.4853168469860896" />
+        <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/layout/fragment_fullscreen.xml" value="0.22864583333333333" />
+        <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/layout/layout_exoplayer_control_view.xml" value="0.4" />
+        <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/layout/player_more_control_bottom_sheet.xml" value="0.24375" />
+        <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/layout/preview.xml" value="0.8" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/layout/preview_frame_layout.xml" value="0.13903508771929823" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1" />

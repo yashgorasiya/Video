@@ -6,14 +6,14 @@ public class sizeConversion {
 
 
     @SuppressLint("DefaultLocale")
-    public static String sizeConversion (int sizel){
+    public static String sizeConversion (long sizel){
 
-        float KB = sizel/1024;
-        float MB = KB/1024;
-        float GB = MB/1024;
+        double KB = sizel/1024;
+        double MB = KB/1024;
+        double GB = MB/1024;
 
         if (GB>1){
-            return String.format("%.1f",GB)+" "+"GB";
+            return String.format("%.2f",GB)+" "+"GB";
         }else if (MB>1){
             return  String.format("%.0f",MB)+" "+"MB";
         }else if (KB>1){

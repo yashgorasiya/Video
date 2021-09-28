@@ -3,6 +3,7 @@ package com.yjisolutions.video;
 import static android.view.WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -15,6 +16,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -33,8 +35,9 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    RecyclerView rv;
-    MaterialToolbar toolbar;
+    private RecyclerView rv;
+    private MaterialToolbar toolbar;
+    private VAdapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,8 +100,17 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1){
+
+            adapter.update();
+        }
+    }
+
     private void doStuff() {
-        VAdapter adapter = new VAdapter(VideoRead.getVideo(this),this);
+        adapter = new VAdapter(VideoRead.getVideo(this),MainActivity.this);
         rv = findViewById(R.id.recView);
         rv.setLayoutManager(new LinearLayoutManager(this));
         rv.setAdapter(adapter);

@@ -10,13 +10,10 @@
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent">
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_header_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="16dp"
-        android:paddingTop="28dp"
         android:background="@drawable/controllertopbg"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -27,27 +24,43 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="56dp"
-            android:layout_marginStart="56dp"
+            android:layout_marginTop="42dp"
+            android:layout_marginBottom="28dp"
+            android:layout_marginEnd="70dp"
+            android:layout_marginStart="70dp"
             android:text="title Of Song Shown Here"
             android:textColor="@color/white"
-            android:textSize="18sp"
+            android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/controllerbackarrow"
             app:layout_constraintTop_toTopOf="parent"
             tool:ignore="RtlSymmetry" />
 
+
+            <ImageView
+                android:id="@+id/moreControls"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:src="@drawable/ic_baseline_more_vert_24"
+                app:tint="@color/white" />
+
         <ImageView
             android:id="@+id/controllerbackarrow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="8dp"
+            android:padding="10dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="28dp"
             android:src="@drawable/ic_baseline_arrow_back_24"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.742" />
+            app:layout_constraintTop_toTopOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -73,27 +86,27 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <FrameLayout
-                android:id="@+id/previewFrameLayout"
-                android:layout_width="160dp"
-                android:background="@drawable/preview_thumbnail_bg"
-                android:layout_height="90dp">
+<!--            <FrameLayout-->
+<!--                android:id="@+id/previewFrameLayout"-->
+<!--                android:layout_width="160dp"-->
+<!--                android:background="@drawable/preview_thumbnail_bg"-->
+<!--                android:layout_height="90dp">-->
 
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:cardCornerRadius="8dp"
-                    app:cardBackgroundColor="@color/black"
-                    >
+<!--                <androidx.cardview.widget.CardView-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    app:cardCornerRadius="8dp"-->
+<!--                    app:cardBackgroundColor="@color/black"-->
+<!--                    >-->
 
-                    <ImageView
-                            android:id="@+id/previewVideoFrame"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"/>
+<!--                    <ImageView-->
+<!--                            android:id="@+id/previewVideoFrame"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="match_parent"/>-->
 
-                </androidx.cardview.widget.CardView>
+<!--                </androidx.cardview.widget.CardView>-->
 
-            </FrameLayout>
+<!--            </FrameLayout>-->
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/videoTimeContainer"
@@ -119,7 +132,6 @@
                     app:layout_constraintTop_toTopOf="parent"
                     tool:text="dssdd" />
 
-
 <!--                <com.google.android.exoplayer2.ui.DefaultTimeBar-->
 <!--                    android:id="@+id/exo_progress"-->
 <!--                    android:layout_width="0dp"-->
@@ -133,7 +145,6 @@
 <!--                    app:buffered_color="@color/white"-->
 <!--                    app:played_color="@color/purple_500"-->
 <!--                    app:scrubber_color="@color/purple_500" />-->
-
 
                 <TextView
                     android:id="@id/exo_duration"
@@ -150,31 +161,25 @@
                     tool:ignore="RtlHardcoded"
                     tool:text="dssdd" />
 
-
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-                <com.github.rubensousa.previewseekbar.exoplayer.PreviewTimeBar
+                <com.google.android.exoplayer2.ui.DefaultTimeBar
                     android:id="@+id/exo_progress"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:previewAnimationEnabled="true"
-                    app:previewFrameLayout="@id/previewFrameLayout" />
-
-
+                    android:hapticFeedbackEnabled="true"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center">
 
-                <ImageView
-                    android:padding="16dp"
-                    android:src="@drawable/ic_baseline_hd_24"
-                    android:layout_width="56dp"
-                    android:layout_height="56dp"/>
+                <ImageButton
+                    android:id="@+id/exo_minimal_fullscreen"
+                    style="@style/ExoStyledControls.Button.Bottom.FullScreen"/>
+
                 <ImageButton
                     android:id="@+id/exo_rew"
                     style="@style/ExoMediaButton.Rewind"
