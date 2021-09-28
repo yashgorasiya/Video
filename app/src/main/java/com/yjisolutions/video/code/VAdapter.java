@@ -205,7 +205,6 @@ class delete{
         handler.postDelayed(() -> {
             // Do something after 5s = 5000ms
             if (deletecheck) {
-
                 int isdeleted = activity.getContentResolver().delete(bin.getUri(),null,null);
                 if (isdeleted>0) {
                     Toast.makeText(activity, "Deleted", Toast.LENGTH_SHORT).show();
