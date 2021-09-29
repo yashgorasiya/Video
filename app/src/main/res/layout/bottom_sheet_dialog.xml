@@ -30,6 +30,7 @@
             android:layout_gravity="center_vertical"
             android:fontFamily="@font/noto_sans"
             android:textSize="16sp"
+            android:textColor="@color/homePreviewMore"
             android:padding="8dp"/>
 
     </LinearLayout>
@@ -57,6 +58,7 @@
             android:layout_gravity="center_vertical"
             android:fontFamily="@font/noto_sans"
             android:textSize="16sp"
+            android:textColor="@color/homePreviewMore"
             android:padding="8dp"/>
     </LinearLayout>
 
@@ -81,6 +83,7 @@
             android:text="Video information"
             android:fontFamily="@font/noto_sans"
             android:textSize="16sp"
+            android:textColor="@color/homePreviewMore"
             android:layout_gravity="center_vertical"
             android:padding="8dp"/>
     </LinearLayout>
