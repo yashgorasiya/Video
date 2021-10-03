@@ -16,9 +16,12 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -112,11 +115,12 @@ public class MainActivity extends AppCompatActivity {
     private void doStuff() {
         adapter = new VAdapter(VideoRead.getVideo(this),MainActivity.this);
         rv = findViewById(R.id.recView);
-        rv.setLayoutManager(new LinearLayoutManager(this));
+        rv.setLayoutManager(new GridLayoutManager(this,1));
         rv.setAdapter(adapter);
 
         toolbar = findViewById(R.id.materialToolbar);
 
+        rv.setHasFixedSize(true);
         rv.setOnFlingListener(new RecyclerView.OnFlingListener() {
             @Override
             public boolean onFling(int velocityX, int velocityY) {
@@ -128,6 +132,17 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            rv.setLayoutManager(new GridLayoutManager(this,2));
+        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            rv.setLayoutManager(new GridLayoutManager(this,1));
+        }
     }
 
 

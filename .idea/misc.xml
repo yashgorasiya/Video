@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/goras/.gradle/caches/transforms-3/4dd2ca5db3464c94c38d7c44b18ab6c8/transformed/jetified-exoplayer-ui-2.15.1/res/layout/exo_track_selection_dialog.xml" value="0.24479166666666666" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable/bottom_sheet_dailog_bg.xml" value="0.2598958333333333" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable/controller_brightness_volume_bg.xml" value="0.156140350877193" />

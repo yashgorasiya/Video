@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:backgroundTint="@color/statusbar"
     android:layout_width="match_parent"
-    android:layout_height="90dp">
+    android:layout_height="90dp"
+    android:layout_margin="2dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:padding="3dp"
@@ -36,7 +37,7 @@
             <SeekBar
                 android:id="@+id/home_preview_seekbar"
                 android:layout_width="match_parent"
-                android:layout_height="2dp"
+                android:layout_height="3dp"
                 android:padding="0dp"
                 android:layout_gravity="bottom"
                 android:progressDrawable="@drawable/home_preview_seekbar_process"

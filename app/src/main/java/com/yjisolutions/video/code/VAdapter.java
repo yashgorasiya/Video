@@ -132,7 +132,7 @@ public class VAdapter extends RecyclerView.Adapter<viewHolder> {
             deleteTille.setText(video.getName());
 
             deleteDialogView.findViewById(R.id.DailogDeleteBtn).setOnClickListener(v13 -> {
-                //your business logic
+                //your delete logic
                 com.yjisolutions.video.code.delete delete1 = new delete(activity);
                 delete1.moveToBin(videos.get(position));
                 videos.remove(videos.get(position));

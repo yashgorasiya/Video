@@ -3,6 +3,7 @@ package com.yjisolutions.video;
 /*
 https://github.com/google/ExoPlayer/blob/r2.11.7/demos/main/src/main/java/com/google/android/exoplayer2/demo/TrackSelectionDialog.java#L115
  */
+
 import static android.view.WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS;
 import static android.view.WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN;
 import static android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN;
@@ -49,6 +50,7 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.util.Util;
+import com.google.android.material.snackbar.Snackbar;
 import com.yjisolutions.video.code.TrackSelectionDialog;
 import com.yjisolutions.video.code.sizeConversion;
 
@@ -208,9 +210,6 @@ public class player extends AppCompatActivity {
     }
 
 
-
-
-
     @SuppressLint("UseCompatLoadingForDrawables")
     void videoFitToScreen(ImageView fitToScreen) {
         if (simpleExoPlayer.getVideoScalingMode() == VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING) {
@@ -248,23 +247,20 @@ public class player extends AppCompatActivity {
         simpleExoPlayer.setMediaItem(mediaItem);
         simpleExoPlayer.prepare();
 
-        long lastPlayed = sp.getLong(videoTitle, 0) - 3000;
+        long lastPlayed = sp.getLong(videoTitle, 0) ;
         if (lastPlayed > 0) {
-            simpleExoPlayer.seekTo(lastPlayed);
+            if (lastPlayed>=simpleExoPlayer.getDuration()){
+                Snackbar.make(this.findViewById(android.R.id.content), "Play From Start", Snackbar.LENGTH_LONG)
+                        .setAction("START", v1 -> simpleExoPlayer.seekTo(0))
+                        .setActionTextColor(Color.RED)
+                        .show();
+            }
+            simpleExoPlayer.seekTo(lastPlayed- 3000);
         }
 
         simpleExoPlayer.play();
 
         playerView.setControllerShowTimeoutMs(2000);
-
-        simpleExoPlayer.addListener(new Player.Listener() {
-            @Override
-            public void onIsPlayingChanged(boolean isPlaying) {
-                if (!isPlaying) {
-                    saveLastPosition();
-                }
-            }
-        });
 
         playerView.setControllerVisibilityListener(visibility -> {
             if (visibility == 8) {
@@ -273,6 +269,7 @@ public class player extends AppCompatActivity {
                 showSystemUi();
             }
         });
+
         playerView.setOnTouchListener((v, event) -> {
 
             gestureDetectorCompat.onTouchEvent(event);
@@ -286,7 +283,15 @@ public class player extends AppCompatActivity {
             }
             return playerView.getUseController();
         });
+
         simpleExoPlayer.addListener(new Player.Listener() {
+            @Override
+            public void onIsPlayingChanged(boolean isPlaying) {
+                if (!isPlaying) {
+                    saveLastPosition();
+                }
+            }
+
             @Override
             public void onPlaybackStateChanged(int playbackState) {
                 if (playbackState == ExoPlayer.STATE_ENDED) {
@@ -303,7 +308,6 @@ public class player extends AppCompatActivity {
         spe.putLong(videoTitle, simpleExoPlayer.getCurrentPosition());
         final boolean commit = spe.commit();
     }
-
 
     public void hideSystemUi() {
         getWindow().clearFlags(FLAG_FORCE_NOT_FULLSCREEN);
@@ -377,8 +381,6 @@ public class player extends AppCompatActivity {
 
 
     @SuppressLint("UseCompatLoadingForDrawables")
-
-
     private void adjustVolume(float yPercent) {
         AudioManager audioManager = (AudioManager) getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
         int cVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
