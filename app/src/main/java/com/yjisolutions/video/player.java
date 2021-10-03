@@ -1,6 +1,8 @@
 package com.yjisolutions.video;
 
-import static android.view.View.GONE;
+/*
+https://github.com/google/ExoPlayer/blob/r2.11.7/demos/main/src/main/java/com/google/android/exoplayer2/demo/TrackSelectionDialog.java#L115
+ */
 import static android.view.WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS;
 import static android.view.WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN;
 import static android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN;
@@ -9,7 +11,9 @@ import static com.google.android.exoplayer2.C.VIDEO_SCALING_MODE_SCALE_TO_FIT_WI
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -23,6 +27,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -30,23 +35,31 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GestureDetectorCompat;
 
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.MediaItem;
+import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 import com.google.android.exoplayer2.ui.PlayerView;
-import com.google.android.exoplayer2.ui.SubtitleView;
 import com.google.android.exoplayer2.util.Util;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.yjisolutions.video.code.TrackSelectionDialog;
 import com.yjisolutions.video.code.sizeConversion;
+
+import java.util.ArrayList;
 
 public class player extends AppCompatActivity {
 
+    // Experimental
+    private boolean isShowingTrackSelectionDialog;
+    private DefaultTrackSelector trackSelector;
+    String[] speed = {"0.25x", "0.5x", "Normal", "1.5x", "2x"};
 
     private PlayerView playerView;
     private SimpleExoPlayer simpleExoPlayer;
@@ -55,13 +68,16 @@ public class player extends AppCompatActivity {
     private int INDICATOR_WIDTH = 600;
     private LinearLayout BVIndicator;
     LinearLayout SeekGesturePreviewLayout;
-    private int getWidth,getHeight;
-    private int cpotion;
-    private Uri videoURL;
+    private int getWidth, getHeight;
+    private int cPotion;
     private String videoTitle;
+//    private DefaultTrackSelector trackSelector;
 
+    ArrayList<String> audios = new ArrayList<>();
+    ArrayList<String> subTitle = new ArrayList<>();
     SharedPreferences sp;
-    @SuppressLint({"ClickableViewAccessibility", "UseCompatLoadingForDrawables"})
+
+    @SuppressLint({"ClickableViewAccessibility", "UseCompatLoadingForDrawables", "SourceLockedOrientationActivity", "SetTextI18n"})
     @RequiresApi(api = Build.VERSION_CODES.R)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,14 +85,18 @@ public class player extends AppCompatActivity {
         setContentView(R.layout.activity_player);
 
 
-        videoURL = Uri.parse(getIntent().getStringExtra("url"));
+        Uri videoURL = Uri.parse(getIntent().getStringExtra("url"));
         videoTitle = getIntent().getStringExtra("title");
         MediaItem mediaItem = MediaItem.fromUri(videoURL);
         ImageView fitToScreen = findViewById(R.id.fitToScreen);
         TextView playerTitle = findViewById(R.id.titlePlayer);
         ImageView backArrow = findViewById(R.id.controllerbackarrow);
-//        ImageView subtitleCC = findViewById(R.id.subtitle);
         ImageView moreControls = findViewById(R.id.moreControls);
+
+        ImageButton speedControl = findViewById(R.id.exo_playback_speed);
+        ImageButton oriantation = findViewById(R.id.exo_fullscreen);
+        ImageButton trackSelection = findViewById(R.id.exo_track_selection_view);
+        TextView speedTxt = findViewById(R.id.speedTEXT);
 
 
         // Full Screen For Notch Devices
@@ -86,10 +106,99 @@ public class player extends AppCompatActivity {
 
         playerTitle.setText(videoTitle);
         backArrow.setOnClickListener(v -> finish());
-//        subtitleCC.setOnClickListener(v -> { subTitleToggle(subtitleCC); });
-        moreControls.setOnClickListener(v -> moreControlls());
+        moreControls.setOnClickListener(v -> {
+            // Do something in three dot Click
+        });
 
-        fitToScreen.setOnClickListener(v -> { videoFitToScreen(fitToScreen); });
+        speedControl.setOnClickListener(v -> {
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(player.this);
+            builder.setTitle("Set Speed");
+            builder.setItems(speed, (dialog, which) -> {
+                // the user clicked on colors[which]
+
+                if (which == 0) {
+
+                    speedTxt.setVisibility(View.VISIBLE);
+                    speedTxt.setText("0.25X");
+                    PlaybackParameters param = new PlaybackParameters(0.5f);
+                    simpleExoPlayer.setPlaybackParameters(param);
+
+
+                }
+                if (which == 1) {
+
+                    speedTxt.setVisibility(View.VISIBLE);
+                    speedTxt.setText("0.5X");
+                    PlaybackParameters param = new PlaybackParameters(0.5f);
+                    simpleExoPlayer.setPlaybackParameters(param);
+
+
+                }
+                if (which == 2) {
+
+                    speedTxt.setVisibility(View.GONE);
+                    PlaybackParameters param = new PlaybackParameters(1f);
+                    simpleExoPlayer.setPlaybackParameters(param);
+
+
+                }
+                if (which == 3) {
+                    speedTxt.setVisibility(View.VISIBLE);
+                    speedTxt.setText("1.5X");
+                    PlaybackParameters param = new PlaybackParameters(1.5f);
+                    simpleExoPlayer.setPlaybackParameters(param);
+
+                }
+                if (which == 4) {
+
+
+                    speedTxt.setVisibility(View.VISIBLE);
+                    speedTxt.setText("2X");
+
+                    PlaybackParameters param = new PlaybackParameters(2f);
+                    simpleExoPlayer.setPlaybackParameters(param);
+
+
+                }
+
+
+            });
+            builder.show();
+
+
+        });
+        oriantation.setOnClickListener(v -> {
+            int orientation = player.this.getResources().getConfiguration().orientation;
+            if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+                // code for portrait mode
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+
+            } else {
+                // code for landscape mode
+                Toast.makeText(player.this, "Land", Toast.LENGTH_SHORT).show();
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+            }
+
+        });
+        trackSelection.setOnClickListener(v -> {
+            if (!isShowingTrackSelectionDialog
+                    && TrackSelectionDialog.willHaveContent(trackSelector)) {
+                isShowingTrackSelectionDialog = true;
+                TrackSelectionDialog trackSelectionDialog =
+                        TrackSelectionDialog.createForTrackSelector(
+                                trackSelector,
+                                /* onDismissListener= */ dismissedDialog -> isShowingTrackSelectionDialog = false);
+                trackSelectionDialog.show(getSupportFragmentManager(), /* tag= */ null);
+
+            }
+        });
+
+        fitToScreen.setOnClickListener(v -> videoFitToScreen(fitToScreen));
+
+
+        trackSelector = new DefaultTrackSelector(this);
 
         // Init Player
         init(mediaItem);
@@ -98,23 +207,12 @@ public class player extends AppCompatActivity {
 
     }
 
-    private void moreControlls() {
 
-        final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
-        bottomSheetDialog.setContentView(R.layout.player_more_control_bottom_sheet);
 
-        LinearLayout share = bottomSheetDialog.findViewById(R.id.playbackSpeed);
-        LinearLayout audioTrack = bottomSheetDialog.findViewById(R.id.audioTrack);
-        LinearLayout subtitle = bottomSheetDialog.findViewById(R.id.subTitle);
-        subtitle.setOnClickListener(v -> subTitleToggle());
-
-        bottomSheetDialog.show();
-
-    }
 
 
     @SuppressLint("UseCompatLoadingForDrawables")
-    void videoFitToScreen(ImageView fitToScreen){
+    void videoFitToScreen(ImageView fitToScreen) {
         if (simpleExoPlayer.getVideoScalingMode() == VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING) {
             fitToScreen.setImageDrawable(getDrawable(R.drawable.ic_baseline_crop_7_5_24));
             simpleExoPlayer.setVideoScalingMode(C.VIDEO_SCALING_MODE_SCALE_TO_FIT);
@@ -126,25 +224,18 @@ public class player extends AppCompatActivity {
         }
     }
 
-    @SuppressLint("UseCompatLoadingForDrawables")
-    void subTitleToggle(){
-        SubtitleView subtitleView = playerView.getSubtitleView();
-        if (subtitleView != null) {
-            if (subtitleView.getVisibility()==GONE){
-                subtitleView.setVisibility(View.VISIBLE);
-            }else {
-                subtitleView.setVisibility(GONE);
-            }
-        }
-    }
     @SuppressLint({"ClickableViewAccessibility"})
     public void init(MediaItem mediaItem) {
 
-        sp = getSharedPreferences("UserData",Context.MODE_PRIVATE);
+        sp = getSharedPreferences("UserData", Context.MODE_PRIVATE);
+
         gestureDetectorCompat = new GestureDetectorCompat(getApplicationContext(), new MyGestureDetector());
         playerView = findViewById(R.id.idExoPlayerVIew);
 
-        simpleExoPlayer = new SimpleExoPlayer.Builder(this).build();
+        simpleExoPlayer = new SimpleExoPlayer.Builder(this)
+                .setTrackSelector(trackSelector)
+                .build();
+
 
         BVIndicator = findViewById(R.id.BrightnessVolumeCard);
         SeekGesturePreviewLayout = findViewById(R.id.SeekGesturePreviewLayout);
@@ -157,8 +248,10 @@ public class player extends AppCompatActivity {
         simpleExoPlayer.setMediaItem(mediaItem);
         simpleExoPlayer.prepare();
 
-        long lastPlayed = sp.getLong(videoTitle,0)-3000;
-        if (lastPlayed>0){ simpleExoPlayer.seekTo(lastPlayed); }
+        long lastPlayed = sp.getLong(videoTitle, 0) - 3000;
+        if (lastPlayed > 0) {
+            simpleExoPlayer.seekTo(lastPlayed);
+        }
 
         simpleExoPlayer.play();
 
@@ -167,16 +260,16 @@ public class player extends AppCompatActivity {
         simpleExoPlayer.addListener(new Player.Listener() {
             @Override
             public void onIsPlayingChanged(boolean isPlaying) {
-                if (!isPlaying){
-                   saveLastPosition();
+                if (!isPlaying) {
+                    saveLastPosition();
                 }
             }
         });
 
         playerView.setControllerVisibilityListener(visibility -> {
-            if (visibility==8){
+            if (visibility == 8) {
                 hideSystemUi();
-            }else{
+            } else {
                 showSystemUi();
             }
         });
@@ -186,6 +279,9 @@ public class player extends AppCompatActivity {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_UP:
                     endScroll();
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    // Do something here
                     break;
             }
             return playerView.getUseController();
@@ -202,11 +298,12 @@ public class player extends AppCompatActivity {
 
     }
 
-    void saveLastPosition(){
+    void saveLastPosition() {
         SharedPreferences.Editor spe = sp.edit();
-        spe.putLong(videoTitle,simpleExoPlayer.getCurrentPosition());
+        spe.putLong(videoTitle, simpleExoPlayer.getCurrentPosition());
         final boolean commit = spe.commit();
     }
+
 
     public void hideSystemUi() {
         getWindow().clearFlags(FLAG_FORCE_NOT_FULLSCREEN);
@@ -228,14 +325,14 @@ public class player extends AppCompatActivity {
         super.onConfigurationChanged(newConfig);
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             swapHeightWidth();
-            INDICATOR_WIDTH = getWidth/2;
+            INDICATOR_WIDTH = getWidth / 2;
         } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
             swapHeightWidth();
-            INDICATOR_WIDTH = getWidth/2;
+            INDICATOR_WIDTH = getWidth / 2;
         }
     }
 
-    void swapHeightWidth(){
+    void swapHeightWidth() {
         int temp = getWidth;
         getWidth = getHeight;
         getHeight = temp;
@@ -282,16 +379,15 @@ public class player extends AppCompatActivity {
     @SuppressLint("UseCompatLoadingForDrawables")
 
 
-
     private void adjustVolume(float yPercent) {
         AudioManager audioManager = (AudioManager) getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
         int cVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
         int maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
 
-        int volume= (int) (yPercent * maxVolume);
+        int volume = (int) (yPercent * maxVolume);
         audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, volume, 0);
 
-        BVIndicator(yPercent,getDrawable(R.drawable.ic_baseline_volume_up_24));
+        BVIndicator(yPercent, getDrawable(R.drawable.ic_baseline_volume_up_24));
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
@@ -300,23 +396,24 @@ public class player extends AppCompatActivity {
         WindowManager.LayoutParams lp = window.getAttributes();
         lp.screenBrightness = yPercent;
         window.setAttributes(lp);
-        BVIndicator(yPercent,getDrawable(R.drawable.ic_baseline_brightness_5_24));
+        BVIndicator(yPercent, getDrawable(R.drawable.ic_baseline_brightness_5_24));
     }
 
     // Brightness And Volume Indicator Canter of Screen While using Gesture
-    private void BVIndicator(float persent, Drawable res){
-        float temp = 100*persent;
-        int val = (int)temp;
+    @SuppressLint({"SetTextI18n", "DefaultLocale"})
+    private void BVIndicator(float persent, Drawable res) {
+        float temp = 100 * persent;
+        int val = (int) temp;
         BVIndicator.setVisibility(View.VISIBLE);
         ImageView BV = findViewById(R.id.BrightnessVolumeRes);
         TextView BVText = findViewById(R.id.BrightnessVolumeText);
         BV.setImageDrawable(res);
-        BVText.setText(String.format("%02d",val)+"%");
+        BVText.setText(String.format("%02d", val) + "%");
 //        BVText.setText(persent+"");
     }
 
     // Seek bar Indicator Canter of Screen While using Gesture
-    private void SeekPreviewIndicator(String text){
+    private void SeekPreviewIndicator(String text) {
         SeekGesturePreviewLayout.setVisibility(View.VISIBLE);
         TextView SeekGesPreview = findViewById(R.id.SeekGesPreview);
         SeekGesPreview.setText(text);
@@ -344,7 +441,6 @@ public class player extends AppCompatActivity {
     }
 
 
-
     private class MyGestureDetector extends GestureDetector.SimpleOnGestureListener {
         private boolean canUseWipeControls = true;
         private float maxVerticalMovement;
@@ -359,18 +455,18 @@ public class player extends AppCompatActivity {
             boolean enoughHorizontalMovement = maxHorizontalMovement > 100;
 
             if (enoughHorizontalMovement) {
-                String ctime = sizeConversion.timerConversion(cpotion);
+                String ctime = sizeConversion.timerConversion(cPotion);
 
                 // right to left
-                if (xPercent>0) {
-                    simpleExoPlayer.seekTo((long) (cpotion-10*xPercent));
-                    SeekPreviewIndicator(sizeConversion.timerConversion((long) (cpotion-10*xPercent))+"/"+ctime);
+                if (xPercent > 0) {
+                    simpleExoPlayer.seekTo((long) (cPotion - 10 * xPercent));
+                    SeekPreviewIndicator(sizeConversion.timerConversion((long) (cPotion - 10 * xPercent)) + "/" + ctime);
                     return true;
                 }
                 // left to right swipe
-                else if (xPercent<=0) {
-                    simpleExoPlayer.seekTo((long) (-10*xPercent+cpotion));
-                    SeekPreviewIndicator(sizeConversion.timerConversion((long) (-10*xPercent+cpotion))+"/"+ctime);
+                else if (xPercent <= 0) {
+                    simpleExoPlayer.seekTo((long) (-10 * xPercent + cPotion));
+                    SeekPreviewIndicator(sizeConversion.timerConversion((long) (-10 * xPercent + cPotion)) + "/" + ctime);
                     return true;
                 }
             }
@@ -385,7 +481,9 @@ public class player extends AppCompatActivity {
             maxVerticalMovement = Math.max(maxVerticalMovement, Math.abs(distanceYSinceTouchbegin));
             boolean enoughVerticalMovement = maxVerticalMovement > 100;
 
-            if (!enoughVerticalMovement) { return super.onScroll(e1, e2, distanceX, distanceY); }
+            if (!enoughVerticalMovement) {
+                return super.onScroll(e1, e2, distanceX, distanceY);
+            }
 
             float yPercent = 1 - (e2.getY() / getHeight);
 
@@ -400,6 +498,7 @@ public class player extends AppCompatActivity {
                 return super.onScroll(e1, e2, distanceX, distanceY);
             }
         }
+
         @Override
         public boolean onSingleTapUp(MotionEvent e) {
             performClick();
@@ -408,7 +507,7 @@ public class player extends AppCompatActivity {
 
         @Override
         public boolean onDown(MotionEvent e) {
-            cpotion = (int) simpleExoPlayer.getCurrentPosition();
+            cPotion = (int) simpleExoPlayer.getCurrentPosition();
             maxVerticalMovement = 0;
             maxHorizontalMovement = 0;
             canUseWipeControls = !playerView.isControllerVisible();
@@ -416,31 +515,30 @@ public class player extends AppCompatActivity {
         }
 
 
-
         @Override
         public boolean onDoubleTap(MotionEvent e) {
             // devided double tap gestures to three part of screen
 
-                // Forward
-                if (e.getX() > getWidth * 2 / 3) {
-                    SeekPreviewIndicator("+10 Seconds");
-                    simpleExoPlayer.seekTo(simpleExoPlayer.getCurrentPosition() + 10000);
-                    return true;
+            // Forward
+            if (e.getX() > getWidth * 2 / 3) {
+                SeekPreviewIndicator("+10 Seconds");
+                simpleExoPlayer.seekTo(simpleExoPlayer.getCurrentPosition() + 10000);
+                return true;
+            }
+            // Backward
+            if (e.getX() < getWidth / 3) {
+                SeekPreviewIndicator("-10 Seconds");
+                simpleExoPlayer.seekTo(simpleExoPlayer.getCurrentPosition() - 10000);
+                return true;
+            }
+            // Play Pause
+            if (getWidth / 3 < e.getX() && e.getX() < getWidth * 2 / 3) {
+                if (simpleExoPlayer.isPlaying()) {
+                    simpleExoPlayer.pause();
+                } else {
+                    simpleExoPlayer.play();
                 }
-                // Backward
-                if (e.getX() < getWidth / 3) {
-                    SeekPreviewIndicator("-10 Seconds");
-                    simpleExoPlayer.seekTo(simpleExoPlayer.getCurrentPosition() - 10000);
-                    return true;
-                }
-                // Play Pause
-                if (getWidth / 3 < e.getX() && e.getX() < getWidth * 2 / 3) {
-                    if (simpleExoPlayer.isPlaying()) {
-                        simpleExoPlayer.pause();
-                    } else {
-                        simpleExoPlayer.play();
-                    }
-                    return true;
+                return true;
 
             }
             return super.onDoubleTap(e);

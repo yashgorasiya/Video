@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/trackPOP"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/black">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tack1"
+        android:textColor="@color/white"
+        android:layout_gravity="center"
+        android:text="TTRACK 1"
+        android:padding="16dp"
+        android:textSize="20sp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tack2"
+        android:layout_gravity="center"
+        android:textColor="@color/white"
+        android:padding="16dp"
+        android:text="TTRACK 2"
+        android:textSize="20sp"/>
+</LinearLayout>

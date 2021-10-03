@@ -7,21 +7,18 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:context=".player">
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fitsSystemWindows="true">
+
     <com.google.android.exoplayer2.ui.PlayerView
         android:id="@+id/idExoPlayerVIew"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:keepScreenOn="true"
         app:auto_show="true"
+        app:resize_mode="fit"
+        app:show_buffering="when_playing"
         app:controller_layout_id="@layout/layout_exoplayer_control_view"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        />
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -30,17 +27,20 @@
             android:id="@+id/SeekGesturePreviewLayout"
             android:background="@drawable/controller_brightness_volume_bg"
             android:orientation="vertical">
-        <TextView
-            android:id="@+id/SeekGesPreview"
-            android:layout_gravity="center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="24sp"
-            android:text="10:20/10:50"
-            android:textColor="@color/white"
-            android:padding="10dp"
-            />
+
+            <TextView
+                android:id="@+id/SeekGesPreview"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="24sp"
+                android:text="10:20/10:50"
+                android:textColor="@color/white"
+                android:padding="10dp"
+                />
+
         </LinearLayout>
+
        <LinearLayout
            android:id="@+id/BrightnessVolumeCard"
             android:layout_width="86dp"
@@ -67,8 +67,6 @@
                 android:layout_gravity="center_horizontal"
                 android:textColor="@color/white"
                 android:textSize="18sp"/>
-</LinearLayout>
+        </LinearLayout>
 
-
-    </FrameLayout>
 </FrameLayout>

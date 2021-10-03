@@ -62,13 +62,11 @@ public class VAdapter extends RecyclerView.Adapter<viewHolder> {
                 .load(video.getUri())
                 .into(holder.thumb);
 
-        holder.previewTile.setOnClickListener(v -> {
-            activity.startActivityForResult(
-                    new Intent(activity.getBaseContext(), player.class)
-                            .putExtra("url", video.getUri().toString())
-                            .putExtra("title", video.getName())
-                    , 1);
-        });
+        holder.previewTile.setOnClickListener(v -> activity.startActivityForResult(
+                new Intent(activity.getBaseContext(), player.class)
+                        .putExtra("url", video.getUri().toString())
+                        .putExtra("title", video.getName())
+                , 1));
 
         holder.more.setOnClickListener(v -> showBottomSheetMore(video.getUri(), position));
 
@@ -120,10 +118,12 @@ public class VAdapter extends RecyclerView.Adapter<viewHolder> {
             deleteDialog.setView(deleteDialogView);
 
             Video video = videos.get(position);
+
             Glide.with(activity)
                     .load(video.getUri())
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .into((ImageView) deleteDialogView.findViewById(R.id.thumbnailDelete));
+
 
             TextView deleteSize = deleteDialogView.findViewById(R.id.sizeDelete);
             TextView deleteTille = deleteDialogView.findViewById(R.id.DeleteDialogTitle);
@@ -197,7 +197,6 @@ public class VAdapter extends RecyclerView.Adapter<viewHolder> {
         Glide.with(activity)
                 .load(video.getUri())
                 .into(Objects.requireNonNull(Preview));
-
 
         bottomSheetDialog.show();
 

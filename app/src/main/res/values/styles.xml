@@ -16,4 +16,10 @@
         <item name="android:layout_marginStart">4dp</item>
         <item name="android:layout_marginEnd">6dp</item>
     </style>
+
+    <style parent="ThemeOverlay.AppCompat.Dialog.Alert" name="TrackSelectionDialogThemeOverlay">
+
+        <item name="windowNoTitle">false</item>
+
+    </style>
 </resources>
