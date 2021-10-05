@@ -3,7 +3,6 @@ package com.yjisolutions.video;
 import static android.view.WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -12,8 +11,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -22,7 +19,6 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.appbar.MaterialToolbar;
@@ -41,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView rv;
     private MaterialToolbar toolbar;
     private VAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
             public void onPermissionsChecked(MultiplePermissionsReport multiplePermissionsReport) {
 
                 if (multiplePermissionsReport.areAllPermissionsGranted()) {
-                            doStuff();
+                    doStuff();
                 } else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                     builder.setTitle("Alert");
@@ -100,22 +97,27 @@ public class MainActivity extends AppCompatActivity {
                 .check();
 
 
-
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1){
-
+        if (requestCode == 1) {
             adapter.update();
+        }
+        // API 30+
+        // Requesting for delete file
+        if (requestCode == 7) {
+            if (resultCode != MainActivity.RESULT_OK) {
+                Toast.makeText(getApplicationContext(), "Permission Denied", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
     private void doStuff() {
-        adapter = new VAdapter(VideoRead.getVideo(this),MainActivity.this);
+        adapter = new VAdapter(VideoRead.getVideo(this), MainActivity.this);
         rv = findViewById(R.id.recView);
-        rv.setLayoutManager(new GridLayoutManager(this,1));
+        rv.setLayoutManager(new GridLayoutManager(this, 1));
         rv.setAdapter(adapter);
 
         toolbar = findViewById(R.id.materialToolbar);
@@ -124,11 +126,11 @@ public class MainActivity extends AppCompatActivity {
         rv.setOnFlingListener(new RecyclerView.OnFlingListener() {
             @Override
             public boolean onFling(int velocityX, int velocityY) {
-                if (velocityY<0){
+                if (velocityY < 0) {
                     toolbar.setVisibility(View.VISIBLE);
-                }else if (velocityY>0){
+                } else if (velocityY > 0) {
                     toolbar.setVisibility(View.GONE);
-            }
+                }
                 return false;
             }
         });
@@ -139,9 +141,9 @@ public class MainActivity extends AppCompatActivity {
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            rv.setLayoutManager(new GridLayoutManager(this,2));
+            rv.setLayoutManager(new GridLayoutManager(this, 2));
         } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            rv.setLayoutManager(new GridLayoutManager(this,1));
+            rv.setLayoutManager(new GridLayoutManager(this, 1));
         }
     }
 

@@ -2,12 +2,15 @@ package com.yjisolutions.video.code;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +32,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.yjisolutions.video.R;
 import com.yjisolutions.video.player;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -146,6 +150,7 @@ public class VAdapter extends RecyclerView.Adapter<viewHolder> {
                         .setActionTextColor(Color.RED)
                         .show();
 
+
                 deleteDialog.dismiss();
             });
 
@@ -206,6 +211,7 @@ public class VAdapter extends RecyclerView.Adapter<viewHolder> {
 
 // Handling File Deleting Task
 class delete {
+    private static final int DELETE_REQUEST_CODE = 7;
     private Video bin;
     private final Activity activity;
     private boolean deletecheck = true;
@@ -220,16 +226,24 @@ class delete {
         handler.postDelayed(() -> {
             // Do something after 5s = 5000ms
             if (deletecheck) {
-                int isdeleted;
                 try {
-                    isdeleted = activity.getBaseContext().getContentResolver().delete(bin.getUri(), null, null);
-                }catch(SecurityException securityException){
-                    isdeleted=-1;
-                }
-                if (isdeleted > 0) {
-                    Toast.makeText(activity, "Deleted", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(activity, "Failed To Delete", Toast.LENGTH_SHORT).show();
+                    activity.getBaseContext().getContentResolver().delete(bin.getUri(), null, null);
+                } catch (SecurityException securityException) {
+
+                    List<Uri> urisToModify = Collections.singletonList(bin.getUri());
+
+                    PendingIntent editPendingIntent = null;
+
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+                        editPendingIntent = MediaStore.createDeleteRequest(activity.getContentResolver(),
+                                urisToModify);
+                    }
+                    try {
+                        activity.startIntentSenderForResult(Objects.requireNonNull(editPendingIntent).getIntentSender(),
+                                DELETE_REQUEST_CODE, null, 0, 0, 0);
+                    } catch (IntentSender.SendIntentException e) {
+                        e.printStackTrace();
+                    }
                 }
             } else {
                 Toast.makeText(activity, "Restored", Toast.LENGTH_SHORT).show();
