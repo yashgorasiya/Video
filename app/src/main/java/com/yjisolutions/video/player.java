@@ -12,7 +12,7 @@ import static com.google.android.exoplayer2.C.VIDEO_SCALING_MODE_SCALE_TO_FIT_WI
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
@@ -41,20 +41,26 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GestureDetectorCompat;
 
 import com.google.android.exoplayer2.C;
+import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
+import com.google.android.exoplayer2.RenderersFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.ext.ffmpeg.FfmpegLibrary;
+import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
+import com.google.android.exoplayer2.extractor.ts.DefaultTsPayloadReaderFactory;
+import com.google.android.exoplayer2.source.DefaultMediaSourceFactory;
+import com.google.android.exoplayer2.source.MediaSourceFactory;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 import com.google.android.exoplayer2.ui.PlayerView;
+import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.util.Util;
 import com.google.android.material.snackbar.Snackbar;
 import com.yjisolutions.video.code.TrackSelectionDialog;
 import com.yjisolutions.video.code.sizeConversion;
-
-import java.util.ArrayList;
 
 public class player extends AppCompatActivity {
 
@@ -73,10 +79,6 @@ public class player extends AppCompatActivity {
     private int getWidth, getHeight;
     private int cPotion;
     private String videoTitle;
-//    private DefaultTrackSelector trackSelector;
-
-    ArrayList<String> audios = new ArrayList<>();
-    ArrayList<String> subTitle = new ArrayList<>();
     SharedPreferences sp;
 
     @SuppressLint({"ClickableViewAccessibility", "UseCompatLoadingForDrawables", "SourceLockedOrientationActivity", "SetTextI18n"})
@@ -226,13 +228,22 @@ public class player extends AppCompatActivity {
     @SuppressLint({"ClickableViewAccessibility"})
     public void init(MediaItem mediaItem) {
 
+        boolean ffmpeg = FfmpegLibrary.isAvailable();
+        Toast.makeText(getApplicationContext(), ""+ffmpeg, Toast.LENGTH_SHORT).show();
         sp = getSharedPreferences("UserData", Context.MODE_PRIVATE);
 
         gestureDetectorCompat = new GestureDetectorCompat(getApplicationContext(), new MyGestureDetector());
         playerView = findViewById(R.id.idExoPlayerVIew);
 
-        simpleExoPlayer = new SimpleExoPlayer.Builder(this)
+        final DefaultExtractorsFactory extractorsFactory = new DefaultExtractorsFactory()
+                .setTsExtractorFlags(DefaultTsPayloadReaderFactory.FLAG_ENABLE_HDMV_DTS_AUDIO_STREAMS);
+
+        RenderersFactory renderersFactory = new DefaultRenderersFactory(this)
+                .setExtensionRendererMode(DefaultRenderersFactory.EXTENSION_RENDERER_MODE_ON);
+
+        simpleExoPlayer = new SimpleExoPlayer.Builder(this,renderersFactory)
                 .setTrackSelector(trackSelector)
+                .setMediaSourceFactory(new DefaultMediaSourceFactory(this,extractorsFactory))
                 .build();
 
 

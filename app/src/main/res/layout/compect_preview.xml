@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:backgroundTint="@color/statusbar"
+    android:id="@+id/recViewItem"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="6dp"
+    android:layout_marginEnd="6dp">
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="6dp"
+        app:cardCornerRadius="6dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_bias="0.44">
+
+        <ImageView
+            android:id="@+id/thumbnail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/preview_thumbnail_bg"
+            android:scaleType="centerCrop"
+            tools:ignore="MissingConstraints" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_margin="3dp"
+            android:background="@drawable/duration_size_bg">
+
+            <TextView
+                android:id="@+id/sizePreview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/noto_sans"
+                android:paddingStart="5dp"
+                android:paddingTop="1dp"
+                android:paddingEnd="4dp"
+                android:text="50MB"
+                android:textColor="@color/white"
+                android:textSize="11sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="3dp"
+            android:background="@drawable/duration_size_bg">
+
+            <TextView
+                android:id="@+id/durationV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/noto_sans"
+                android:gravity="center"
+                android:paddingStart="4dp"
+                android:paddingTop="1dp"
+                android:paddingEnd="5dp"
+                android:text="duration"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="bottom"
+            android:background="@drawable/controllerbg">
+
+            <TextView
+                android:id="@+id/titleV"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginEnd="28dp"
+                android:layout_marginStart="3dp"
+                android:layout_marginBottom="4dp"
+                android:layout_gravity="bottom"
+                android:fontFamily="@font/noto_sans"
+                android:gravity="left"
+                android:paddingStart="4dp"
+                android:text="Title of the Video me apka swagat hey"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                tools:ignore="RtlSymmetry" />
+
+
+        </LinearLayout>
+
+        <SeekBar
+            android:id="@+id/home_preview_seekbar"
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:layout_gravity="bottom"
+            android:padding="0dp"
+            android:progressDrawable="@drawable/home_preview_seekbar_process"
+            android:thumb="@color/black" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_gravity="bottom"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/previewHomeMore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:foregroundGravity="top"
+                android:layout_marginBottom="10dp"
+                android:layout_marginEnd="4dp"
+                android:src="@drawable/ic_baseline_more_vert_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:tint="@color/white"
+                tools:ignore="MissingConstraints,RtlHardcoded" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.cardview.widget.CardView>
+
+
+</com.google.android.material.card.MaterialCardView>

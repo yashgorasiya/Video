@@ -3,14 +3,20 @@ package com.yjisolutions.video;
 import static android.view.WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -18,6 +24,8 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.ActionMenuView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -35,9 +43,12 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private RecyclerView rv;
-    private MaterialToolbar toolbar;
+    private Toolbar toolbar;
     private VAdapter adapter;
+    SharedPreferences sp;
+    boolean viewStyle;
 
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,8 +108,32 @@ public class MainActivity extends AppCompatActivity {
                 .check();
 
 
+        // temp code
+        ImageView imageView = findViewById(R.id.homeScreenMore);
+        imageView.setOnClickListener(v -> {
+            @SuppressLint("CommitPrefEdits") SharedPreferences.Editor spe = sp.edit();
+
+            boolean commit;
+            if (viewStyle) {
+                spe.putBoolean("homeScreenLayoutType", false);
+                commit = spe.commit();
+                viewStyle = sp.getBoolean("homeScreenLayoutType",true);
+                applySetting();
+            } else {
+                spe.putBoolean("homeScreenLayoutType", true);
+                commit = spe.commit();
+                viewStyle = sp.getBoolean("homeScreenLayoutType",true);
+                applySetting();
+            }
+        });
+
+
     }
 
+    void applySetting(){
+        startActivity(new Intent(this,MainActivity.class));
+        finish();
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -115,9 +150,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void doStuff() {
-        adapter = new VAdapter(VideoRead.getVideo(this), MainActivity.this);
+        sp = getSharedPreferences("UserData", Context.MODE_PRIVATE);
+        viewStyle = sp.getBoolean("homeScreenLayoutType",true);
+
+        adapter = new VAdapter(VideoRead.getVideo(this), MainActivity.this,viewStyle);
         rv = findViewById(R.id.recView);
-        rv.setLayoutManager(new GridLayoutManager(this, 1));
+
+        if (viewStyle) setRVGrid(1);
+        else setRVGrid(2);
+
         rv.setAdapter(adapter);
 
         toolbar = findViewById(R.id.materialToolbar);
@@ -136,16 +177,23 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+
+
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            rv.setLayoutManager(new GridLayoutManager(this, 2));
+            if (viewStyle) setRVGrid(2);
+            else setRVGrid(4);
         } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            rv.setLayoutManager(new GridLayoutManager(this, 1));
+            if (viewStyle) setRVGrid(1);
+            else setRVGrid(2);
         }
     }
 
 
+    void setRVGrid(int grid){
+        rv.setLayoutManager(new GridLayoutManager(this, grid));
+    }
 }

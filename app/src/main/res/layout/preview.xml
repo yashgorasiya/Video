@@ -3,9 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:backgroundTint="@color/statusbar"
+    android:id="@+id/recViewItem"
     android:layout_width="match_parent"
     android:layout_height="90dp"
-    android:layout_margin="2dp">
+    android:padding="3dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:padding="3dp"
@@ -19,7 +20,7 @@
             android:layout_marginStart="10dp"
             android:layout_width="128dp"
             android:layout_height="74dp"
-            app:cardCornerRadius="8dp"
+            app:cardCornerRadius="6dp"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
             app:layout_constraintBottom_toBottomOf="parent"

@@ -14,12 +14,15 @@ import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.AnimRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -28,6 +31,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.snackbar.Snackbar;
 import com.yjisolutions.video.R;
 import com.yjisolutions.video.player;
@@ -40,18 +44,22 @@ public class VAdapter extends RecyclerView.Adapter<viewHolder> {
 
     List<Video> videos;
     Activity activity;
+    boolean viewStyle;
 
-    public VAdapter(List<Video> videos, Activity activity) {
+    public VAdapter(List<Video> videos, Activity activity,boolean viewStyle) {
         this.videos = videos;
         this.activity = activity;
+        this.viewStyle = viewStyle;
     }
 
     @NonNull
     @Override
     public viewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new viewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.preview, parent, false));
+        int layout; if (viewStyle) layout = R.layout.preview; else layout = R.layout.compect_preview;
+        return new viewHolder(LayoutInflater.from(parent.getContext()).inflate(layout, parent, false));
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onBindViewHolder(@NonNull viewHolder holder, int position) {
         Video video = videos.get(position);
@@ -64,13 +72,19 @@ public class VAdapter extends RecyclerView.Adapter<viewHolder> {
 
         Glide.with(activity.getBaseContext())
                 .load(video.getUri())
+                .override(200,160)
                 .into(holder.thumb);
 
-        holder.previewTile.setOnClickListener(v -> activity.startActivityForResult(
+        // Playing videos in player Activity
+        View view;
+        if (viewStyle) view = holder.previewTile;
+        else view = holder.thumb;
+        view.setOnClickListener(v -> activity.startActivityForResult(
                 new Intent(activity.getBaseContext(), player.class)
                         .putExtra("url", video.getUri().toString())
                         .putExtra("title", video.getName())
                 , 1));
+
 
         holder.more.setOnClickListener(v -> showBottomSheetMore(video.getUri(), position));
 
@@ -265,6 +279,7 @@ class viewHolder extends RecyclerView.ViewHolder {
     TextView title, duration, size;
     ConstraintLayout previewTile;
     SeekBar seekBar;
+//    MaterialCardView recViewItem;
 
     public viewHolder(@NonNull View itemView) {
         super(itemView);
@@ -275,6 +290,7 @@ class viewHolder extends RecyclerView.ViewHolder {
         size = itemView.findViewById(R.id.sizePreview);
         previewTile = itemView.findViewById(R.id.previewTileLayout);
         seekBar = itemView.findViewById(R.id.home_preview_seekbar);
+//        recViewItem = itemView.findViewById(R.id.recViewItem);
 
     }
 }
