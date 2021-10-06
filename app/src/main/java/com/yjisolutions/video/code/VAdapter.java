@@ -202,6 +202,14 @@ public class VAdapter extends RecyclerView.Adapter<viewHolder> {
 
         Video video = videos.get(position);
 
+//        FFmpegMediaMetadataRetriever mmr = new FFmpegMediaMetadataRetriever();
+//        mmr.setDataSource(mUri);
+//        mmr.extractMetadata(FFmpegMediaMetadataRetriever.METADATA_KEY_ALBUM);
+//        mmr.extractMetadata(FFmpegMediaMetadataRetriever.METADATA_KEY_ARTIST);
+//
+//        mmr.release();
+
+
         ImageView Preview = bottomSheetDialog.findViewById(R.id.VIPreview);
         TextView size = bottomSheetDialog.findViewById(R.id.VISize);
         TextView title = bottomSheetDialog.findViewById(R.id.VITitle);

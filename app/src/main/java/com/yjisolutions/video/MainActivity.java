@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
+
         getWindow().addFlags(FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
 
         switch (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) {
@@ -68,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
                 getWindow().setStatusBarColor(Color.TRANSPARENT);
                 break;
         }
+
 
 
         Dexter.withContext(getApplicationContext())
