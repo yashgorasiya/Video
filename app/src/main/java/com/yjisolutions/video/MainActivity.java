@@ -8,13 +8,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -24,12 +24,15 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.ActionMenuView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.loader.content.Loader;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.appbar.MaterialToolbar;
+import com.jiajunhui.xapp.medialoader.MediaLoader;
+import com.jiajunhui.xapp.medialoader.bean.VideoFolder;
+import com.jiajunhui.xapp.medialoader.bean.VideoResult;
+import com.jiajunhui.xapp.medialoader.callback.OnVideoLoaderCallBack;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
@@ -53,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
 
         getWindow().addFlags(FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -115,18 +117,12 @@ public class MainActivity extends AppCompatActivity {
         imageView.setOnClickListener(v -> {
             @SuppressLint("CommitPrefEdits") SharedPreferences.Editor spe = sp.edit();
 
-            boolean commit;
-            if (viewStyle) {
-                spe.putBoolean("homeScreenLayoutType", false);
-                commit = spe.commit();
-                viewStyle = sp.getBoolean("homeScreenLayoutType",true);
-                applySetting();
-            } else {
-                spe.putBoolean("homeScreenLayoutType", true);
-                commit = spe.commit();
-                viewStyle = sp.getBoolean("homeScreenLayoutType",true);
-                applySetting();
-            }
+
+            spe.putBoolean("homeScreenLayoutType", !viewStyle);
+            if (!spe.commit())
+                Toast.makeText(getApplicationContext(), "Failed to Save", Toast.LENGTH_SHORT).show();
+            viewStyle = sp.getBoolean("homeScreenLayoutType",true);
+            applySetting();
         });
 
 
