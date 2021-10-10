@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/my_navigation"
+    app:startDestination="@id/folderFragment">
+
+    <fragment
+        android:id="@+id/folderFragment"
+        android:name="com.yjisolutions.video.FolderFragment"
+        android:label="fragment_folder"
+        tools:layout="@layout/fragment_folder">
+        <action
+            android:id="@+id/folder_to_videos"
+            app:destination="@id/videosFragment">
+            <argument
+                android:name="folderName"
+                android:defaultValue="Video"
+                app:argType="string" />
+        </action>
+    </fragment>
+    <fragment
+        android:id="@+id/videosFragment"
+        android:name="com.yjisolutions.video.VideosFragment"
+        android:label="fragment_videos"
+        tools:layout="@layout/fragment_videos">
+        <action
+            android:id="@+id/videos_to_folder"
+            app:destination="@id/folderFragment" />
+    </fragment>
+</navigation>

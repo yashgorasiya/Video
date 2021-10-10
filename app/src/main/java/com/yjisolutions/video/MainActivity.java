@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
@@ -25,22 +24,20 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.loader.content.Loader;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.jiajunhui.xapp.medialoader.MediaLoader;
-import com.jiajunhui.xapp.medialoader.bean.VideoFolder;
-import com.jiajunhui.xapp.medialoader.bean.VideoResult;
-import com.jiajunhui.xapp.medialoader.callback.OnVideoLoaderCallBack;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.yjisolutions.video.code.VAdapter;
+import com.yjisolutions.video.code.Video;
 import com.yjisolutions.video.code.VideoRead;
 
+import java.io.File;
+import java.net.URI;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -83,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
             public void onPermissionsChecked(MultiplePermissionsReport multiplePermissionsReport) {
 
                 if (multiplePermissionsReport.areAllPermissionsGranted()) {
-                    doStuff();
+//                    doStuff();
                 } else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                     builder.setTitle("Alert");
@@ -113,17 +110,17 @@ public class MainActivity extends AppCompatActivity {
 
 
         // temp code
-        ImageView imageView = findViewById(R.id.homeScreenMore);
-        imageView.setOnClickListener(v -> {
-            @SuppressLint("CommitPrefEdits") SharedPreferences.Editor spe = sp.edit();
-
-
-            spe.putBoolean("homeScreenLayoutType", !viewStyle);
-            if (!spe.commit())
-                Toast.makeText(getApplicationContext(), "Failed to Save", Toast.LENGTH_SHORT).show();
-            viewStyle = sp.getBoolean("homeScreenLayoutType",true);
-            applySetting();
-        });
+//        ImageView imageView = findViewById(R.id.homeScreenMore);
+//        imageView.setOnClickListener(v -> {
+//            @SuppressLint("CommitPrefEdits") SharedPreferences.Editor spe = sp.edit();
+//
+//
+//            spe.putBoolean("homeScreenLayoutType", !viewStyle);
+//            if (!spe.commit())
+//                Toast.makeText(getApplicationContext(), "Failed to Save", Toast.LENGTH_SHORT).show();
+//            viewStyle = sp.getBoolean("homeScreenLayoutType",true);
+//            applySetting();
+//        });
 
 
     }
@@ -136,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1) {
-            adapter.update();
+//            adapter.update();
         }
         // API 30+
         // Requesting for delete file
@@ -147,51 +144,60 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void doStuff() {
-        sp = getSharedPreferences("UserData", Context.MODE_PRIVATE);
-        viewStyle = sp.getBoolean("homeScreenLayoutType",true);
-
-        adapter = new VAdapter(VideoRead.getVideo(this), MainActivity.this,viewStyle);
-        rv = findViewById(R.id.recView);
-
-        if (viewStyle) setRVGrid(1);
-        else setRVGrid(2);
-
-        rv.setAdapter(adapter);
-
-        toolbar = findViewById(R.id.materialToolbar);
-
-        rv.setHasFixedSize(true);
-        rv.setOnFlingListener(new RecyclerView.OnFlingListener() {
-            @Override
-            public boolean onFling(int velocityX, int velocityY) {
-                if (velocityY < 0) {
-                    toolbar.setVisibility(View.VISIBLE);
-                } else if (velocityY > 0) {
-                    toolbar.setVisibility(View.GONE);
-                }
-                return false;
-            }
-        });
-    }
-
-
-
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    @Override
-    public void onConfigurationChanged(@NonNull Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            if (viewStyle) setRVGrid(2);
-            else setRVGrid(4);
-        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            if (viewStyle) setRVGrid(1);
-            else setRVGrid(2);
-        }
-    }
+//    private void doStuff() {
+//        sp = getSharedPreferences("UserData", Context.MODE_PRIVATE);
+//        viewStyle = sp.getBoolean("homeScreenLayoutType",true);
+//
+//        List<Video> videos =  VideoRead.getVideo(this);
+//
+////        for (int i =0;i<videos.size();i++) {
+////
+////            Video v = videos.get(i);
+////            File f = new File(v.getUri().toString());
+////            Log.d("VideoS",(new File(URI.create(f.getPath()))).getAbsolutePath());
+////        }
+//        adapter = new VAdapter(videos, MainActivity.this,viewStyle);
+//        rv = findViewById(R.id.recView);
+//
+//
+//        if (viewStyle) setRVGrid(1);
+//        else setRVGrid(2);
+//
+//        rv.setAdapter(adapter);
+//
+//        toolbar = findViewById(R.id.materialToolbar);
+//
+//        rv.setHasFixedSize(true);
+//        rv.setOnFlingListener(new RecyclerView.OnFlingListener() {
+//            @Override
+//            public boolean onFling(int velocityX, int velocityY) {
+//                if (velocityY < 0) {
+//                    toolbar.setVisibility(View.VISIBLE);
+//                } else if (velocityY > 0) {
+//                    toolbar.setVisibility(View.GONE);
+//                }
+//                return false;
+//            }
+//        });
+//    }
 
 
-    void setRVGrid(int grid){
-        rv.setLayoutManager(new GridLayoutManager(this, grid));
-    }
+
+//    @RequiresApi(api = Build.VERSION_CODES.M)
+//    @Override
+//    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+//        super.onConfigurationChanged(newConfig);
+//        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+//            if (viewStyle) setRVGrid(2);
+//            else setRVGrid(4);
+//        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+//            if (viewStyle) setRVGrid(1);
+//            else setRVGrid(2);
+//        }
+//    }
+//
+//
+//    void setRVGrid(int grid){
+//        rv.setLayoutManager(new GridLayoutManager(this, grid));
+//    }
 }

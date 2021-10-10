@@ -151,7 +151,7 @@ public class VAdapter extends RecyclerView.Adapter<viewHolder> {
 
             deleteDialogView.findViewById(R.id.DailogDeleteBtn).setOnClickListener(v13 -> {
                 //your delete logic
-                com.yjisolutions.video.code.delete delete1 = new delete(activity);
+                DeleteFile delete1 = new DeleteFile(activity);
                 delete1.moveToBin(videos.get(position));
                 videos.remove(videos.get(position));
                 notifyItemRemoved(position);
@@ -232,53 +232,53 @@ public class VAdapter extends RecyclerView.Adapter<viewHolder> {
 }
 
 // Handling File Deleting Task
-class delete {
-    private static final int DELETE_REQUEST_CODE = 7;
-    private Video bin;
-    private final Activity activity;
-    private boolean deletecheck = true;
-
-    public delete(Activity activity) {
-        this.activity = activity;
-    }
-
-    void moveToBin(Video bin) {
-        this.bin = bin;
-        final Handler handler = new Handler();
-        handler.postDelayed(() -> {
-            // Do something after 5s = 5000ms
-            if (deletecheck) {
-                try {
-                    activity.getBaseContext().getContentResolver().delete(bin.getUri(), null, null);
-                } catch (SecurityException securityException) {
-
-                    List<Uri> urisToModify = Collections.singletonList(bin.getUri());
-
-                    PendingIntent editPendingIntent = null;
-
-                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
-                        editPendingIntent = MediaStore.createDeleteRequest(activity.getContentResolver(),
-                                urisToModify);
-                    }
-                    try {
-                        activity.startIntentSenderForResult(Objects.requireNonNull(editPendingIntent).getIntentSender(),
-                                DELETE_REQUEST_CODE, null, 0, 0, 0);
-                    } catch (IntentSender.SendIntentException e) {
-                        e.printStackTrace();
-                    }
-                }
-            } else {
-                Toast.makeText(activity, "Restored", Toast.LENGTH_SHORT).show();
-            }
-        }, 5000);
-    }
-
-    Video getFromBin() {
-        this.deletecheck = false;
-        return bin;
-    }
-
-}
+//public class delete {
+//    private static final int DELETE_REQUEST_CODE = 7;
+//    private Video bin;
+//    private final Activity activity;
+//    private boolean deletecheck = true;
+//
+//    public delete(Activity activity) {
+//        this.activity = activity;
+//    }
+//
+//    void moveToBin(Video bin) {
+//        this.bin = bin;
+//        final Handler handler = new Handler();
+//        handler.postDelayed(() -> {
+//            // Do something after 5s = 5000ms
+//            if (deletecheck) {
+//                try {
+//                    activity.getBaseContext().getContentResolver().delete(bin.getUri(), null, null);
+//                } catch (SecurityException securityException) {
+//
+//                    List<Uri> urisToModify = Collections.singletonList(bin.getUri());
+//
+//                    PendingIntent editPendingIntent = null;
+//
+//                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+//                        editPendingIntent = MediaStore.createDeleteRequest(activity.getContentResolver(),
+//                                urisToModify);
+//                    }
+//                    try {
+//                        activity.startIntentSenderForResult(Objects.requireNonNull(editPendingIntent).getIntentSender(),
+//                                DELETE_REQUEST_CODE, null, 0, 0, 0);
+//                    } catch (IntentSender.SendIntentException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            } else {
+//                Toast.makeText(activity, "Restored", Toast.LENGTH_SHORT).show();
+//            }
+//        }, 5000);
+//    }
+//
+//    Video getFromBin() {
+//        this.deletecheck = false;
+//        return bin;
+//    }
+//
+//}
 
 
 class viewHolder extends RecyclerView.ViewHolder {
