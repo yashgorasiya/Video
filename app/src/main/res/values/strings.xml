@@ -4,6 +4,6 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="deletedialogthumb">DeleteDialogThumb</string>
-    <string name="track_selection_title">Audio Track</string>
+    <string name="track_selection_title">Tracks</string>
 
 </resources>

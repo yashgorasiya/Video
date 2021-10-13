@@ -12,7 +12,9 @@
         tools:layout="@layout/fragment_folder">
         <action
             android:id="@+id/folder_to_videos"
-            app:destination="@id/videosFragment">
+            app:destination="@id/videosFragment"
+            app:enterAnim="@anim/nav_default_pop_enter_anim"
+            app:exitAnim="@anim/nav_default_pop_exit_anim">
             <argument
                 android:name="folderName"
                 android:defaultValue="Video"
@@ -26,6 +28,8 @@
         tools:layout="@layout/fragment_videos">
         <action
             android:id="@+id/videos_to_folder"
-            app:destination="@id/folderFragment" />
+            app:destination="@id/folderFragment"
+            app:enterAnim="@anim/nav_default_pop_enter_anim"
+            app:exitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
 </navigation>

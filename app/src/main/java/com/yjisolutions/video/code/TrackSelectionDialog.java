@@ -232,6 +232,7 @@ public final class TrackSelectionDialog extends DialogFragment {
         viewPager.setAdapter(new FragmentAdapter(getChildFragmentManager()));
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setVisibility(tabFragments.size() > 1 ? View.VISIBLE : View.GONE);
+        tabLayout.selectTab(tabLayout.getTabAt(1));
         cancelButton.setOnClickListener(view -> dismiss());
         okButton.setOnClickListener(
                 view -> {

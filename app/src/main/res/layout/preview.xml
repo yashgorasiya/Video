@@ -97,6 +97,8 @@
             android:fontFamily="@font/noto_sans"
             android:padding="8dp"
             android:text="title"
+            android:ellipsize="end"
+            android:maxLines="3"
             android:textSize="13sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"

@@ -18,7 +18,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-
         <TextView
             android:id="@+id/titlePlayer"
             android:layout_width="match_parent"
@@ -79,7 +78,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/controllerbg"
-        android:paddingTop="16dp"
+        android:paddingTop="18dp"
         android:paddingBottom="3dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -94,29 +93,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-<!--            <FrameLayout-->
-<!--                android:id="@+id/previewFrameLayout"-->
-<!--                android:layout_width="160dp"-->
-<!--                android:background="@drawable/preview_thumbnail_bg"-->
-<!--                android:layout_height="90dp">-->
-
-<!--                <androidx.cardview.widget.CardView-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="match_parent"-->
-<!--                    app:cardCornerRadius="8dp"-->
-<!--                    app:cardBackgroundColor="@color/black"-->
-<!--                    >-->
-
-<!--                    <ImageView-->
-<!--                            android:id="@+id/previewVideoFrame"-->
-<!--                            android:layout_width="match_parent"-->
-<!--                            android:layout_height="match_parent"/>-->
-
-<!--                </androidx.cardview.widget.CardView>-->
-
-<!--            </FrameLayout>-->
-
-
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/videoTimeContainer"
@@ -129,49 +105,63 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent">
 
-                <TextView
-                    android:id="@id/exo_position"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:minWidth="50dp"
-                    android:textColor="@color/white"
-                    android:textSize="14sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tool:text="dssdd" />
-
-<!--                <com.google.android.exoplayer2.ui.DefaultTimeBar-->
-<!--                    android:id="@+id/exo_progress"-->
-<!--                    android:layout_width="0dp"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_gravity="center"-->
-<!--                    android:layout_marginStart="7dp"-->
-<!--                    android:layout_marginLeft="7dp"-->
-<!--                    android:layout_marginEnd="7dp"-->
-<!--                    android:layout_marginRight="7dp"-->
-<!--                    android:layout_weight="1"-->
-<!--                    app:buffered_color="@color/white"-->
-<!--                    app:played_color="@color/purple_500"-->
-<!--                    app:scrubber_color="@color/purple_500" />-->
-
-                <TextView
-                    android:id="@id/exo_duration"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:gravity="right"
-                    android:minWidth="50dp"
-                    android:textColor="@color/white"
-                    android:textSize="14sp"
+                <ImageButton
+                    android:id="@+id/exo_playback_speed"
+                    style="@style/ExoStyledControls.Button.Bottom.PlaybackSpeed"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tool:ignore="RtlHardcoded"
-                    tool:text="dssdd" />
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <LinearLayout
+                    android:id="@+id/linearLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@id/exo_position"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:minWidth="46dp"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tool:text="dssdd" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="/"
+                        android:textColor="@color/white"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@id/exo_duration"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="right"
+                        android:minWidth="46dp"
+                        android:paddingStart="8dp"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tool:ignore="RtlHardcoded"
+                        tool:text="dssdd" />
+
+
+                </LinearLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
                 <com.google.android.exoplayer2.ui.DefaultTimeBar
                     android:id="@+id/exo_progress"
@@ -185,10 +175,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center">
-
-                <ImageButton
-                    android:id="@+id/exo_playback_speed"
-                    style="@style/ExoStyledControls.Button.Bottom.PlaybackSpeed"/>
 
                 <ImageButton
                     android:id="@+id/exo_track_selection_view"

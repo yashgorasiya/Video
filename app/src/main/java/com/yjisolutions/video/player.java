@@ -58,6 +58,7 @@ import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.util.Util;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.yjisolutions.video.code.TrackSelectionDialog;
 import com.yjisolutions.video.code.sizeConversion;
@@ -228,8 +229,8 @@ public class player extends AppCompatActivity {
     @SuppressLint({"ClickableViewAccessibility"})
     public void init(MediaItem mediaItem) {
 
-        boolean ffmpeg = FfmpegLibrary.isAvailable();
-        Toast.makeText(getApplicationContext(), ""+ffmpeg, Toast.LENGTH_SHORT).show();
+        if (!FfmpegLibrary.isAvailable())
+            Toast.makeText(getApplicationContext(), "FFmpegLibrary not found", Toast.LENGTH_SHORT).show();
         sp = getSharedPreferences("UserData", Context.MODE_PRIVATE);
 
         gestureDetectorCompat = new GestureDetectorCompat(getApplicationContext(), new MyGestureDetector());
@@ -264,10 +265,15 @@ public class player extends AppCompatActivity {
                 Snackbar.make(this.findViewById(android.R.id.content), "Play From Start", Snackbar.LENGTH_LONG)
                         .setAction("START", v1 -> simpleExoPlayer.seekTo(0))
                         .setActionTextColor(Color.RED)
+                        .setBackgroundTint(Color.BLACK)
+                        .setTextColor(Color.WHITE)
+                        .setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_SLIDE)
                         .show();
             }
             simpleExoPlayer.seekTo(lastPlayed- 3000);
         }
+
+
 
         simpleExoPlayer.play();
 

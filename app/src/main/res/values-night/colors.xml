@@ -4,5 +4,6 @@
     <color name="statusbar">#FF000000</color>
     <color name="BVblack">#65000000</color>
     <color name="homePreviewMore">#FFFFFFFF</color>
+    <color name="orange">#FF5900</color>
 
 </resources>
