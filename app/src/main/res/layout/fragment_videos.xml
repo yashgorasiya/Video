@@ -7,9 +7,9 @@
     tools:context=".VideosFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:background="@color/statusbar"
         android:orientation="horizontal"
         tools:context=".MainActivity">
@@ -19,6 +19,8 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:padding="12dp"
+            android:alpha="0.6"
+            android:layout_marginStart="5dp"
             android:src="@drawable/ic_baseline_arrow_back_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -40,11 +42,11 @@
             <TextView
                 android:id="@+id/videoFragmentTitle"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="22dp"
                 android:ellipsize="end"
                 android:fontFamily="@font/noto_sans"
                 android:maxLines="1"
-                android:textSize="14sp"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -53,7 +55,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:textSize="14sp" />
+                android:textSize="12sp" />
         </LinearLayout>
 
 
@@ -72,6 +74,7 @@
             android:layout_height="50dp"
             android:layout_gravity="right"
             android:padding="12dp"
+            android:alpha="0.6"
             android:src="@drawable/ic_baseline_more_vert_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -83,7 +86,7 @@
         android:id="@+id/recViewVideo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="55dp"
+        android:layout_marginTop="65dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

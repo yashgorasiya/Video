@@ -144,6 +144,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
 //    private void doStuff() {
 //        sp = getSharedPreferences("UserData", Context.MODE_PRIVATE);
 //        viewStyle = sp.getBoolean("homeScreenLayoutType",true);

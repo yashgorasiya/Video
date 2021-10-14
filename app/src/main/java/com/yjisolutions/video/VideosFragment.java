@@ -20,6 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentResultListener;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -39,6 +40,7 @@ import java.util.Objects;
 
 public class VideosFragment extends Fragment {
     ArrayList<Video> videos = new ArrayList<>();
+
 
 
     @SuppressLint("SetTextI18n")
@@ -69,6 +71,9 @@ public class VideosFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         VFAdapter adapter = new VFAdapter(videos, getActivity(), true);
         recyclerView.setAdapter(adapter);
+
+
+
         return v;
     }
     public static class VFAdapter extends RecyclerView.Adapter<viewHolderF> {

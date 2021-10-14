@@ -7,12 +7,13 @@
     android:padding="8dp">
 
     <ImageView
-        android:layout_width="80dp"
+        android:layout_width="70dp"
         android:layout_height="50dp"
         android:padding="3dp"
         android:src="@drawable/folder_icon"/>
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_marginEnd="16dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_gravity="center_vertical">
@@ -31,7 +32,7 @@
             android:layout_marginStart="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="15sp"
+            android:textSize="14sp"
             android:text="8 Videos"
             android:ellipsize="end"
             android:maxLines="1"/>

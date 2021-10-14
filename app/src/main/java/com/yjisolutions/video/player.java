@@ -77,7 +77,8 @@ public class player extends AppCompatActivity {
     private int getWidth, getHeight;
     private int cPotion;
     private String videoTitle;
-    SharedPreferences sp;
+    private SharedPreferences sp;
+    private MediaItem mediaItem;
 
     @SuppressLint({"ClickableViewAccessibility", "UseCompatLoadingForDrawables", "SourceLockedOrientationActivity", "SetTextI18n"})
     @RequiresApi(api = Build.VERSION_CODES.R)
@@ -89,7 +90,8 @@ public class player extends AppCompatActivity {
 
         Uri videoURL = Uri.parse(getIntent().getStringExtra("url"));
         videoTitle = getIntent().getStringExtra("title");
-        MediaItem mediaItem = MediaItem.fromUri(videoURL);
+        mediaItem = MediaItem.fromUri(videoURL);
+
         ImageView fitToScreen = findViewById(R.id.fitToScreen);
         TextView playerTitle = findViewById(R.id.titlePlayer);
         ImageView backArrow = findViewById(R.id.controllerbackarrow);
@@ -167,7 +169,7 @@ public class player extends AppCompatActivity {
         trackSelector = new DefaultTrackSelector(this);
 
         // Init Player
-        init(mediaItem);
+        init();
         hideSystemUi();
 
 
@@ -233,7 +235,9 @@ public class player extends AppCompatActivity {
     }
 
     @SuppressLint({"ClickableViewAccessibility"})
-    public void init(MediaItem mediaItem) {
+    public void init() {
+
+
 
         if (!FfmpegLibrary.isAvailable()) Toast.makeText(getApplicationContext(), "FFmpegLibrary not found", Toast.LENGTH_SHORT).show();
 
@@ -245,13 +249,15 @@ public class player extends AppCompatActivity {
         final DefaultExtractorsFactory extractorsFactory = new DefaultExtractorsFactory()
                 .setTsExtractorFlags(DefaultTsPayloadReaderFactory.FLAG_ENABLE_HDMV_DTS_AUDIO_STREAMS);
 
+        // changed Renderer
         RenderersFactory renderersFactory = new DefaultRenderersFactory(this)
-                .setExtensionRendererMode(DefaultRenderersFactory.EXTENSION_RENDERER_MODE_ON);
+                .setExtensionRendererMode(DefaultRenderersFactory.EXTENSION_RENDERER_MODE_PREFER);
 
         simpleExoPlayer = new SimpleExoPlayer.Builder(this,renderersFactory)
                 .setTrackSelector(trackSelector)
                 .setMediaSourceFactory(new DefaultMediaSourceFactory(this,extractorsFactory))
                 .build();
+
 
 
         BVIndicator = findViewById(R.id.BrightnessVolumeCard);
@@ -366,6 +372,8 @@ public class player extends AppCompatActivity {
     }
 
     private void releasePlayer() {
+        if (simpleExoPlayer.isPlaying()) simpleExoPlayer.stop();
+
         simpleExoPlayer.release();
     }
 
@@ -373,12 +381,13 @@ public class player extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         saveLastPosition();
-        simpleExoPlayer.stop();
+        releasePlayer();
     }
 
     @Override
     public void onBackPressed() {
         saveLastPosition();
+        releasePlayer();
         super.onBackPressed();
     }
 
@@ -386,21 +395,22 @@ public class player extends AppCompatActivity {
     public void onPause() {
         super.onPause();
         saveLastPosition();
-        simpleExoPlayer.pause();
-        if (Util.SDK_INT < 24) {
-            releasePlayer();
-        }
+        releasePlayer();
+    }
+
+    @Override
+    protected void onResume() {
+
+        super.onResume();
     }
 
     @Override
     public void onStop() {
         saveLastPosition();
-        simpleExoPlayer.stop();
+        releasePlayer();
         super.onStop();
-        if (Util.SDK_INT >= 24) {
-            releasePlayer();
-        }
     }
+
 
 
     @SuppressLint("UseCompatLoadingForDrawables")
@@ -573,5 +583,6 @@ public class player extends AppCompatActivity {
         }
 
     }
+
 
 }

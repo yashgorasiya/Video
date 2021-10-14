@@ -37,10 +37,12 @@
       <ImageView
           android:layout_width="50dp"
           android:layout_height="50dp"
-          android:padding="10dp"
+          android:padding="12dp"
+          android:alpha="0.6"
           android:layout_gravity="right"
           android:src="@drawable/ic_baseline_more_vert_24"
-          android:id="@+id/homeScreenMore"/>
+          android:id="@+id/homeScreenMore"
+          tools:ignore="RtlHardcoded" />
       <androidx.appcompat.widget.SearchView
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
