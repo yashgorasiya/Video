@@ -8,7 +8,7 @@
 
     <ImageView
         android:layout_width="80dp"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:padding="3dp"
         android:src="@drawable/folder_icon"/>
     <LinearLayout

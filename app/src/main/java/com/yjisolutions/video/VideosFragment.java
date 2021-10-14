@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -28,12 +27,11 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.snackbar.Snackbar;
+import com.yjisolutions.video.code.Conversion;
 import com.yjisolutions.video.code.DeleteFile;
 import com.yjisolutions.video.code.Video;
 import com.yjisolutions.video.code.VideoRead;
-import com.yjisolutions.video.code.Conversion;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -47,17 +45,23 @@ public class VideosFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
 
         View v = inflater.inflate(R.layout.fragment_videos, container, false);
+
+        ImageView backButton = v.findViewById(R.id.videoFragmentBack);
+        TextView toolBarTitle = v.findViewById(R.id.videoFragmentTitle);
+        TextView toolBarSubTitle = v.findViewById(R.id.videoFragmentSubTitle);
+
+        backButton.setOnClickListener(v1 -> requireActivity().onBackPressed());
+
         if (getArguments() != null) {
             String folderName = getArguments().getString("folderName");
             videos = VideoRead.getVideoFromFolder(getContext(),folderName);
-            TextView toolBarTitle = v.findViewById(R.id.videoFragmentTitle);
-            TextView toolBarSubTitle = v.findViewById(R.id.videoFragmentSubTitle);
-            String FName = folderName.substring(folderName.lastIndexOf("/")+1);
-            toolBarTitle.setText(FName);
-            toolBarSubTitle.setText(videos.size() + " Videos");
+
+            toolBarTitle.setText(folderName.substring(folderName.lastIndexOf("/")+1));
+
+            if (videos.size()==1) toolBarSubTitle.setText(videos.size() + " Video");
+            else toolBarSubTitle.setText(videos.size() + " Videos");
 
         }
         RecyclerView recyclerView = v.findViewById(R.id.recViewVideo);
@@ -106,6 +110,7 @@ public class VideosFragment extends Fragment {
             View view;
             if (viewStyle) view = holder.previewTile;
             else view = holder.thumb;
+
             view.setOnClickListener(v -> activity.startActivityForResult(
                     new Intent(activity.getBaseContext(), player.class)
                             .putExtra("url", video.getUri().toString())

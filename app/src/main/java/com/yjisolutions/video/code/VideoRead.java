@@ -6,17 +6,16 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
-import android.util.Log;
+import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class VideoRead {
 
-    public static List<Video> getVideo(Context context) {
+    public static ArrayList<Video> getVideo(Context context) {
 
-        List<Video> videoList = new ArrayList<>();
+        ArrayList<Video> videoList = new ArrayList<>();
 
         Uri collection;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
@@ -29,8 +28,7 @@ public class VideoRead {
                 MediaStore.Video.Media._ID,
                 MediaStore.Video.Media.DISPLAY_NAME,
                 MediaStore.Video.Media.DURATION,
-                MediaStore.Video.Media.SIZE,
-                MediaStore.Video.Media.DATA
+                MediaStore.Video.Media.SIZE
         };
         String selection = MediaStore.Video.Media.DURATION +
                 " >= ?";
@@ -70,7 +68,8 @@ public class VideoRead {
         }
         return videoList;
     }
-public static ArrayList<Video> getVideoFromFolder(Context context,String folderName) {
+
+    public static ArrayList<Video> getVideoFromFolder(Context context, String folderName) {
 
         ArrayList<Video> videoList = new ArrayList<>();
 
@@ -85,9 +84,10 @@ public static ArrayList<Video> getVideoFromFolder(Context context,String folderN
                 MediaStore.Video.Media._ID,
                 MediaStore.Video.Media.DISPLAY_NAME,
                 MediaStore.Video.Media.DURATION,
-                MediaStore.Video.Media.SIZE
+                MediaStore.Video.Media.SIZE,
+                MediaStore.Video.Media.DATA
         };
-        String selection = MediaStore.Video.Media.DATA +" like?";
+        String selection = MediaStore.Video.Media.DATA + " like?";
         String[] selectionArgs = new String[]{"%" + folderName + "%"};
         String sortOrder = MediaStore.Video.Media.DISPLAY_NAME + " ASC";
 
@@ -107,22 +107,45 @@ public static ArrayList<Video> getVideoFromFolder(Context context,String folderN
                     cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DURATION);
             int sizeColumn = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.SIZE);
 
-            while (cursor.moveToNext()) {
-                // Get values of columns for a given video.
-                long id = cursor.getLong(idColumn);
-                String name = cursor.getString(nameColumn);
-                int duration = cursor.getInt(durationColumn);
-                long size = cursor.getLong(sizeColumn);
-                Uri contentUri = ContentUris.withAppendedId(
-                        MediaStore.Video.Media.EXTERNAL_CONTENT_URI, id);
 
-                videoList.add(new Video(contentUri, name, duration, size));
+            String FName1 = folderName.substring(folderName.lastIndexOf("/") + 1);
+            if (FName1.equals("0")) {
+                while (cursor.moveToNext()) {
+                    // Get values of columns for a given video.
+                    long id = cursor.getLong(idColumn);
+                    String name = cursor.getString(nameColumn);
+                    int duration = cursor.getInt(durationColumn);
+                    long size = cursor.getLong(sizeColumn);
 
+                    Uri contentUri = ContentUris.withAppendedId(
+                            MediaStore.Video.Media.EXTERNAL_CONTENT_URI, id);
+
+                    String path = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.DATA));
+                    int index = path.lastIndexOf("/");
+                    String ss = path.substring(0, index);
+                    String FName = ss.substring(ss.lastIndexOf("/") + 1);
+                    if (FName.equals(FName1)) {
+                        videoList.add(new Video(contentUri, name, duration, size));
+                    }
+                }
+            } else {
+                while (cursor.moveToNext()) {
+                    // Get values of columns for a given video.
+                    long id = cursor.getLong(idColumn);
+                    String name = cursor.getString(nameColumn);
+                    int duration = cursor.getInt(durationColumn);
+                    long size = cursor.getLong(sizeColumn);
+
+                    Uri contentUri = ContentUris.withAppendedId(
+                            MediaStore.Video.Media.EXTERNAL_CONTENT_URI, id);
+
+                    videoList.add(new Video(contentUri, name, duration, size));
+
+                }
             }
         }
         return videoList;
     }
-
 
     public static ArrayList<String> getFolders(Context context) {
 
@@ -164,11 +187,9 @@ public static ArrayList<Video> getVideoFromFolder(Context context,String folderN
                 String path = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.DATA));
 
 
-
                 int index = path.lastIndexOf("/");
-                String ss = path.substring(0,index);
+                String ss = path.substring(0, index);
 //                String FName = ss.substring(ss.lastIndexOf("/")+1,ss.length());
-
 
                 if (!folderList.contains(ss)) {
                     folderList.add(ss);
@@ -180,6 +201,5 @@ public static ArrayList<Video> getVideoFromFolder(Context context,String folderN
 
         return folderList;
     }
-
 
 }
