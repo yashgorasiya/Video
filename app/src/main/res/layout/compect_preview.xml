@@ -90,6 +90,8 @@
                 android:layout_gravity="bottom"
                 android:fontFamily="@font/noto_sans"
                 android:gravity="left"
+                android:maxLines="2"
+                android:ellipsize="end"
                 android:paddingStart="4dp"
                 android:text="Title of the Video me apka swagat hey"
                 android:textColor="@color/white"

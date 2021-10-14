@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,7 +16,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -31,8 +31,9 @@ import com.google.android.material.snackbar.Snackbar;
 import com.yjisolutions.video.code.DeleteFile;
 import com.yjisolutions.video.code.Video;
 import com.yjisolutions.video.code.VideoRead;
-import com.yjisolutions.video.code.sizeConversion;
+import com.yjisolutions.video.code.Conversion;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -42,6 +43,7 @@ public class VideosFragment extends Fragment {
     ArrayList<Video> videos = new ArrayList<>();
 
 
+    @SuppressLint("SetTextI18n")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -51,15 +53,21 @@ public class VideosFragment extends Fragment {
         if (getArguments() != null) {
             String folderName = getArguments().getString("folderName");
             videos = VideoRead.getVideoFromFolder(getContext(),folderName);
+            TextView toolBarTitle = v.findViewById(R.id.videoFragmentTitle);
+            TextView toolBarSubTitle = v.findViewById(R.id.videoFragmentSubTitle);
+            String FName = folderName.substring(folderName.lastIndexOf("/")+1);
+            toolBarTitle.setText(FName);
+            toolBarSubTitle.setText(videos.size() + " Videos");
+
         }
         RecyclerView recyclerView = v.findViewById(R.id.recViewVideo);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        VFAdapter adapter = new VFAdapter(videos,getActivity(),true);
+        VFAdapter adapter = new VFAdapter(videos, getActivity(), true);
         recyclerView.setAdapter(adapter);
         return v;
     }
-    public class VFAdapter extends RecyclerView.Adapter<viewHolderF> {
+    public static class VFAdapter extends RecyclerView.Adapter<viewHolderF> {
 
         List<Video> videos;
         Activity activity;
@@ -84,8 +92,8 @@ public class VideosFragment extends Fragment {
             Video video = videos.get(position);
 
             holder.title.setText(video.getName());
-            holder.size.setText(sizeConversion.sizeConversion(video.getSize()));
-            holder.duration.setText(sizeConversion.timerConversion(video.getDuration()));
+            holder.size.setText(Conversion.sizeConversion(video.getSize()));
+            holder.duration.setText(Conversion.timerConversion(video.getDuration()));
             holder.seekBar.setClickable(false);
             holder.seekBar.setPadding(0, 0, 0, 0);
 
@@ -129,6 +137,8 @@ public class VideosFragment extends Fragment {
             notifyDataSetChanged();
         }
 
+
+
         @SuppressLint("ShowToast")
         private void showBottomSheetMore(Uri uri, int position) {
 
@@ -165,7 +175,7 @@ public class VideosFragment extends Fragment {
                 TextView deleteSize = deleteDialogView.findViewById(R.id.sizeDelete);
                 TextView deleteTille = deleteDialogView.findViewById(R.id.DeleteDialogTitle);
 
-                deleteSize.setText(sizeConversion.sizeConversion(video.getSize()));
+                deleteSize.setText(Conversion.sizeConversion(video.getSize()));
                 deleteTille.setText(video.getName());
 
                 deleteDialogView.findViewById(R.id.DailogDeleteBtn).setOnClickListener(v13 -> {
@@ -229,16 +239,17 @@ public class VideosFragment extends Fragment {
 //        mmr.release();
 
 
+
             ImageView Preview = bottomSheetDialog.findViewById(R.id.VIPreview);
             TextView size = bottomSheetDialog.findViewById(R.id.VISize);
             TextView title = bottomSheetDialog.findViewById(R.id.VITitle);
             TextView duration = bottomSheetDialog.findViewById(R.id.VIDuration);
-            TextView Width = bottomSheetDialog.findViewById(R.id.VIWidth);
-            TextView Height = bottomSheetDialog.findViewById(R.id.VIHeight);
+//            TextView Width = bottomSheetDialog.findViewById(R.id.VIWidth);
+//            TextView Height = bottomSheetDialog.findViewById(R.id.VIHeight);
 
             Objects.requireNonNull(title).setText(video.getName());
-            Objects.requireNonNull(size).setText(sizeConversion.sizeConversion(video.getSize()));
-            Objects.requireNonNull(duration).setText(sizeConversion.timerConversion(video.getDuration()));
+            Objects.requireNonNull(size).setText(Conversion.sizeConversion(video.getSize()));
+            Objects.requireNonNull(duration).setText(Conversion.timerConversion(video.getDuration()));
 
             Glide.with(activity)
                     .load(video.getUri())
@@ -251,9 +262,6 @@ public class VideosFragment extends Fragment {
     }
 
     // Handling File Deleting Task
-
-
-
     static class viewHolderF extends RecyclerView.ViewHolder {
 
         ImageView thumb, more;

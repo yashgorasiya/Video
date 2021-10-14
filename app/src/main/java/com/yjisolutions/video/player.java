@@ -12,7 +12,6 @@ import static com.google.android.exoplayer2.C.VIDEO_SCALING_MODE_SCALE_TO_FIT_WI
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
@@ -52,16 +51,14 @@ import com.google.android.exoplayer2.ext.ffmpeg.FfmpegLibrary;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.extractor.ts.DefaultTsPayloadReaderFactory;
 import com.google.android.exoplayer2.source.DefaultMediaSourceFactory;
-import com.google.android.exoplayer2.source.MediaSourceFactory;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 import com.google.android.exoplayer2.ui.PlayerView;
-import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.util.Util;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.yjisolutions.video.code.TrackSelectionDialog;
-import com.yjisolutions.video.code.sizeConversion;
+import com.yjisolutions.video.code.Conversion;
 
 public class player extends AppCompatActivity {
 
@@ -111,6 +108,7 @@ public class player extends AppCompatActivity {
 
         playerTitle.setText(videoTitle);
         backArrow.setOnClickListener(v -> finish());
+
         moreControls.setOnClickListener(v -> {
             // Do something in three dot Click
         });
@@ -123,82 +121,45 @@ public class player extends AppCompatActivity {
                 // the user clicked on colors[which]
 
                 if (which == 0) {
-
                     speedTxt.setVisibility(View.VISIBLE);
                     speedTxt.setText("0.25X");
                     PlaybackParameters param = new PlaybackParameters(0.5f);
                     simpleExoPlayer.setPlaybackParameters(param);
-
-
                 }
                 if (which == 1) {
-
                     speedTxt.setVisibility(View.VISIBLE);
                     speedTxt.setText("0.5X");
                     PlaybackParameters param = new PlaybackParameters(0.5f);
                     simpleExoPlayer.setPlaybackParameters(param);
-
-
                 }
                 if (which == 2) {
-
                     speedTxt.setVisibility(View.GONE);
                     PlaybackParameters param = new PlaybackParameters(1f);
                     simpleExoPlayer.setPlaybackParameters(param);
-
-
                 }
                 if (which == 3) {
                     speedTxt.setVisibility(View.VISIBLE);
                     speedTxt.setText("1.5X");
                     PlaybackParameters param = new PlaybackParameters(1.5f);
                     simpleExoPlayer.setPlaybackParameters(param);
-
                 }
                 if (which == 4) {
-
-
                     speedTxt.setVisibility(View.VISIBLE);
                     speedTxt.setText("2X");
-
                     PlaybackParameters param = new PlaybackParameters(2f);
                     simpleExoPlayer.setPlaybackParameters(param);
-
-
                 }
-
-
             });
             builder.show();
-
-
         });
+
         oriantation.setOnClickListener(v -> {
             int orientation = player.this.getResources().getConfiguration().orientation;
-            if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-                // code for portrait mode
-                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-
-            } else {
-                // code for landscape mode
-                Toast.makeText(player.this, "Land", Toast.LENGTH_SHORT).show();
-                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
-            }
-
+            if (orientation == Configuration.ORIENTATION_PORTRAIT) setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            else setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         });
-        trackSelection.setOnClickListener(v -> {
-            if (!isShowingTrackSelectionDialog
-                    && TrackSelectionDialog.willHaveContent(trackSelector)) {
-                isShowingTrackSelectionDialog = true;
-                TrackSelectionDialog trackSelectionDialog =
-                        TrackSelectionDialog.createForTrackSelector(
-                                trackSelector,
-                                /* onDismissListener= */ dismissedDialog -> isShowingTrackSelectionDialog = false);
-                trackSelectionDialog.show(getSupportFragmentManager(), /* tag= */ null);
 
-            }
-        });
+        trackSelection.setOnClickListener(v -> trackSelectionSetup());
 
         fitToScreen.setOnClickListener(v -> videoFitToScreen(fitToScreen));
 
@@ -212,25 +173,70 @@ public class player extends AppCompatActivity {
 
     }
 
+    private void trackSelectionSetup() {
+        if (!isShowingTrackSelectionDialog
+                && TrackSelectionDialog.willHaveContent(trackSelector)) {
+            isShowingTrackSelectionDialog = true;
+            TrackSelectionDialog trackSelectionDialog =
+                    TrackSelectionDialog.createForTrackSelector(
+                            trackSelector,
+                            /* onDismissListener= */ dismissedDialog -> isShowingTrackSelectionDialog = false);
+            trackSelectionDialog.show(getSupportFragmentManager(), /* tag= */ null);
+
+        }
+    }
+
 
     @SuppressLint("UseCompatLoadingForDrawables")
     void videoFitToScreen(ImageView fitToScreen) {
         if (simpleExoPlayer.getVideoScalingMode() == VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING) {
-            fitToScreen.setImageDrawable(getDrawable(R.drawable.ic_baseline_crop_7_5_24));
-            simpleExoPlayer.setVideoScalingMode(C.VIDEO_SCALING_MODE_SCALE_TO_FIT);
-            playerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIT);
+            switch (playerView.getResizeMode()) {
+                case AspectRatioFrameLayout.RESIZE_MODE_FIT:
+                    playerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIXED_WIDTH);
+                    break;
+                case AspectRatioFrameLayout.RESIZE_MODE_FIXED_WIDTH:
+                    playerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIXED_HEIGHT);
+                    break;
+                case AspectRatioFrameLayout.RESIZE_MODE_FIXED_HEIGHT:
+                    playerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FILL);
+                    break;
+                case AspectRatioFrameLayout.RESIZE_MODE_FILL:
+                    playerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_ZOOM);
+                    break;
+                case AspectRatioFrameLayout.RESIZE_MODE_ZOOM:
+                    playerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIT);
+                    fitToScreen.setImageDrawable(getDrawable(R.drawable.ic_baseline_crop_7_5_24));
+                    simpleExoPlayer.setVideoScalingMode(C.VIDEO_SCALING_MODE_SCALE_TO_FIT);
+                    break;
+            }
         } else {
-            fitToScreen.setImageDrawable(getDrawable(R.drawable.ic_baseline_crop_5_4_24));
-            playerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FILL);
-            simpleExoPlayer.setVideoScalingMode(VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING);
+            switch (playerView.getResizeMode()){
+                case AspectRatioFrameLayout.RESIZE_MODE_FIT:
+                    playerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIXED_WIDTH);
+                    break;
+                case AspectRatioFrameLayout.RESIZE_MODE_FIXED_WIDTH:
+                    playerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIXED_HEIGHT);
+                    break;
+                case AspectRatioFrameLayout.RESIZE_MODE_FIXED_HEIGHT:
+                    playerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FILL);
+                    break;
+                case AspectRatioFrameLayout.RESIZE_MODE_FILL:
+                    playerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_ZOOM);
+                    break;
+                case AspectRatioFrameLayout.RESIZE_MODE_ZOOM:
+                    playerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIT);
+                    fitToScreen.setImageDrawable(getDrawable(R.drawable.ic_baseline_crop_5_4_24));
+                    simpleExoPlayer.setVideoScalingMode(VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING);
+                    break;
+            }
         }
     }
 
     @SuppressLint({"ClickableViewAccessibility"})
     public void init(MediaItem mediaItem) {
 
-        if (!FfmpegLibrary.isAvailable())
-            Toast.makeText(getApplicationContext(), "FFmpegLibrary not found", Toast.LENGTH_SHORT).show();
+        if (!FfmpegLibrary.isAvailable()) Toast.makeText(getApplicationContext(), "FFmpegLibrary not found", Toast.LENGTH_SHORT).show();
+
         sp = getSharedPreferences("UserData", Context.MODE_PRIVATE);
 
         gestureDetectorCompat = new GestureDetectorCompat(getApplicationContext(), new MyGestureDetector());
@@ -323,7 +329,7 @@ public class player extends AppCompatActivity {
     void saveLastPosition() {
         SharedPreferences.Editor spe = sp.edit();
         spe.putLong(videoTitle, simpleExoPlayer.getCurrentPosition());
-        final boolean commit = spe.commit();
+        if (!spe.commit()) Toast.makeText(getApplicationContext(), "Fialed To Save Last Position", Toast.LENGTH_SHORT).show();
     }
 
     public void hideSystemUi() {
@@ -400,7 +406,7 @@ public class player extends AppCompatActivity {
     @SuppressLint("UseCompatLoadingForDrawables")
     private void adjustVolume(float yPercent) {
         AudioManager audioManager = (AudioManager) getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
-        int cVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+//        int cVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
         int maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
 
         int volume = (int) (yPercent * maxVolume);
@@ -474,25 +480,25 @@ public class player extends AppCompatActivity {
             boolean enoughHorizontalMovement = maxHorizontalMovement > 100;
 
             if (enoughHorizontalMovement) {
-                String ctime = sizeConversion.timerConversion(cPotion);
+                String ctime = Conversion.timerConversion(cPotion);
 
                 // right to left
                 if (xPercent > 0) {
                     simpleExoPlayer.seekTo((long) (cPotion - 10 * xPercent));
-                    SeekPreviewIndicator(sizeConversion.timerConversion((long) (cPotion - 10 * xPercent)) + "/" + ctime);
+                    SeekPreviewIndicator(Conversion.timerConversion((long) (cPotion - 10 * xPercent)) + "/" + ctime);
                     return true;
                 }
                 // left to right swipe
                 else if (xPercent <= 0) {
                     simpleExoPlayer.seekTo((long) (-10 * xPercent + cPotion));
-                    SeekPreviewIndicator(sizeConversion.timerConversion((long) (-10 * xPercent + cPotion)) + "/" + ctime);
+                    SeekPreviewIndicator(Conversion.timerConversion((long) (-10 * xPercent + cPotion)) + "/" + ctime);
                     return true;
                 }
             }
 
 
             // Volume And Brightness gestures
-            if (!canUseWipeControls || e1 == null) {
+            if (!canUseWipeControls) {
                 return super.onScroll(e1, e2, distanceX, distanceY);
             }
 
@@ -539,19 +545,22 @@ public class player extends AppCompatActivity {
             // devided double tap gestures to three part of screen
 
             // Forward
-            if (e.getX() > getWidth * 2 / 3) {
+            if (e.getX() > Float.parseFloat(String.valueOf(getWidth * 2 / 3))) {
                 SeekPreviewIndicator("+10 Seconds");
                 simpleExoPlayer.seekTo(simpleExoPlayer.getCurrentPosition() + 10000);
                 return true;
             }
             // Backward
-            if (e.getX() < getWidth / 3) {
+            if (e.getX() < Float.parseFloat(String.valueOf(getWidth / 3))) {
                 SeekPreviewIndicator("-10 Seconds");
                 simpleExoPlayer.seekTo(simpleExoPlayer.getCurrentPosition() - 10000);
                 return true;
             }
             // Play Pause
-            if (getWidth / 3 < e.getX() && e.getX() < getWidth * 2 / 3) {
+            if (Float.parseFloat(String.valueOf(getWidth / 3)) <
+                    e.getX() && e.getX() <
+                    Float.parseFloat(String.valueOf(getWidth * 2 / 3))) {
+
                 if (simpleExoPlayer.isPlaying()) {
                     simpleExoPlayer.pause();
                 } else {

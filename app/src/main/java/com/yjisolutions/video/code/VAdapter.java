@@ -2,27 +2,19 @@ package com.yjisolutions.video.code;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.Handler;
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.AnimRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -31,12 +23,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.snackbar.Snackbar;
 import com.yjisolutions.video.R;
 import com.yjisolutions.video.player;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -65,8 +55,8 @@ public class VAdapter extends RecyclerView.Adapter<viewHolder> {
         Video video = videos.get(position);
 
         holder.title.setText(video.getName());
-        holder.size.setText(sizeConversion.sizeConversion(video.getSize()));
-        holder.duration.setText(sizeConversion.timerConversion(video.getDuration()));
+        holder.size.setText(Conversion.sizeConversion(video.getSize()));
+        holder.duration.setText(Conversion.timerConversion(video.getDuration()));
         holder.seekBar.setClickable(false);
         holder.seekBar.setPadding(0, 0, 0, 0);
 
@@ -146,7 +136,7 @@ public class VAdapter extends RecyclerView.Adapter<viewHolder> {
             TextView deleteSize = deleteDialogView.findViewById(R.id.sizeDelete);
             TextView deleteTille = deleteDialogView.findViewById(R.id.DeleteDialogTitle);
 
-            deleteSize.setText(sizeConversion.sizeConversion(video.getSize()));
+            deleteSize.setText(Conversion.sizeConversion(video.getSize()));
             deleteTille.setText(video.getName());
 
             deleteDialogView.findViewById(R.id.DailogDeleteBtn).setOnClickListener(v13 -> {
@@ -218,8 +208,8 @@ public class VAdapter extends RecyclerView.Adapter<viewHolder> {
         TextView Height = bottomSheetDialog.findViewById(R.id.VIHeight);
 
         Objects.requireNonNull(title).setText(video.getName());
-        Objects.requireNonNull(size).setText(sizeConversion.sizeConversion(video.getSize()));
-        Objects.requireNonNull(duration).setText(sizeConversion.timerConversion(video.getDuration()));
+        Objects.requireNonNull(size).setText(Conversion.sizeConversion(video.getSize()));
+        Objects.requireNonNull(duration).setText(Conversion.timerConversion(video.getDuration()));
 
         Glide.with(activity)
                 .load(video.getUri())
@@ -230,55 +220,6 @@ public class VAdapter extends RecyclerView.Adapter<viewHolder> {
     }
 
 }
-
-// Handling File Deleting Task
-//public class delete {
-//    private static final int DELETE_REQUEST_CODE = 7;
-//    private Video bin;
-//    private final Activity activity;
-//    private boolean deletecheck = true;
-//
-//    public delete(Activity activity) {
-//        this.activity = activity;
-//    }
-//
-//    void moveToBin(Video bin) {
-//        this.bin = bin;
-//        final Handler handler = new Handler();
-//        handler.postDelayed(() -> {
-//            // Do something after 5s = 5000ms
-//            if (deletecheck) {
-//                try {
-//                    activity.getBaseContext().getContentResolver().delete(bin.getUri(), null, null);
-//                } catch (SecurityException securityException) {
-//
-//                    List<Uri> urisToModify = Collections.singletonList(bin.getUri());
-//
-//                    PendingIntent editPendingIntent = null;
-//
-//                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
-//                        editPendingIntent = MediaStore.createDeleteRequest(activity.getContentResolver(),
-//                                urisToModify);
-//                    }
-//                    try {
-//                        activity.startIntentSenderForResult(Objects.requireNonNull(editPendingIntent).getIntentSender(),
-//                                DELETE_REQUEST_CODE, null, 0, 0, 0);
-//                    } catch (IntentSender.SendIntentException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            } else {
-//                Toast.makeText(activity, "Restored", Toast.LENGTH_SHORT).show();
-//            }
-//        }, 5000);
-//    }
-//
-//    Video getFromBin() {
-//        this.deletecheck = false;
-//        return bin;
-//    }
-//
-//}
 
 
 class viewHolder extends RecyclerView.ViewHolder {

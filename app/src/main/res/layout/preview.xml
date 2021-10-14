@@ -1,19 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:backgroundTint="@color/statusbar"
-    android:id="@+id/recViewItem"
+    android:id="@+id/previewTileLayout"
+    android:background="?attr/selectableItemBackground"
     android:layout_width="match_parent"
-    android:layout_height="90dp"
-    android:padding="3dp">
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:padding="3dp"
-        android:id="@+id/previewTileLayout"
-        android:layout_marginEnd="32dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    android:padding="3dp"
+    android:layout_height="90dp">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView"
@@ -62,6 +55,7 @@
                     android:textColor="@color/white"
                     android:textSize="9sp"
                     android:textStyle="bold" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -83,11 +77,10 @@
                     android:textColor="@color/white"
                     android:textSize="10sp"
                     android:textStyle="bold" />
+
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>
-
-
 
         <TextView
             android:id="@+id/titleV"
@@ -96,9 +89,9 @@
             android:layout_marginStart="142dp"
             android:fontFamily="@font/noto_sans"
             android:padding="8dp"
-            android:text="title"
             android:ellipsize="end"
             android:maxLines="3"
+            android:layout_marginEnd="30dp"
             android:textSize="13sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -106,17 +99,15 @@
             app:layout_constraintStart_toEndOf="@+id/cardView"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <ImageView
+            android:id="@+id/previewHomeMore"
+            android:layout_width="24dp"
+            android:layout_height="56dp"
+            android:alpha="0.8"
+            android:foregroundGravity="top"
+            android:src="@drawable/ic_baseline_more_vert_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-    <ImageView
-        android:id="@+id/previewHomeMore"
-        android:layout_width="24dp"
-        android:layout_height="56dp"
-        android:layout_marginTop="18dp"
-        android:layout_marginEnd="10dp"
-        android:foregroundGravity="top"
-        android:layout_gravity="right"
-        android:alpha="0.8"
-        android:src="@drawable/ic_baseline_more_vert_24"
-     />
-</com.google.android.material.card.MaterialCardView>
+</androidx.constraintlayout.widget.ConstraintLayout>

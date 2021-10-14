@@ -16,15 +16,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.yjisolutions.video.code.VideoRead;
 
+import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Objects;
 
 
 public class FolderFragment extends Fragment {
     private ArrayList<String> folder;
-//    public FolderFragment(List<String> folders){
-//        this.folder = folders;
-//    }
 
     @Override
     public void onStart() {
@@ -38,27 +36,36 @@ public class FolderFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_folder, container, false);
         RecyclerView recyclerView = v.findViewById(R.id.folderRecView);
-        recAdapter adpter = new recAdapter(v);
+        recAdapter adapter = new recAdapter();
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(adpter);
+        recyclerView.setAdapter(adapter);
         return v;
     }
 
     class recAdapter extends RecyclerView.Adapter<viewHolder>{
-        private final View v;
-        public recAdapter(View v){
-                this.v = v;
-        }
+
         @NonNull
         @Override
         public viewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             return new viewHolder(LayoutInflater.from(getContext()).inflate(R.layout.folder_item, parent, false));
         }
 
+        @SuppressLint("SetTextI18n")
         @Override
         public void onBindViewHolder(@NonNull viewHolder holder, @SuppressLint("RecyclerView") int position) {
-            holder.fname.setText(folder.get(position));
+            File file=new File(folder.get(position));
+            File[] list = file.listFiles();
+            int count = 0;
+            for (File f: Objects.requireNonNull(list)){
+                String name = f.getName();
+                if (name.endsWith(".mp4") || name.endsWith(".mkv") || name.endsWith(".webm"))
+                    count++;
+            }
+            if (count==1) holder.vCount.setText(count+" Video");
+            else holder.vCount.setText(count+" Videos");
+            String FName = folder.get(position).substring(folder.get(position).lastIndexOf("/")+1);
+            holder.fName.setText(FName);
             holder.ly.setOnClickListener(v -> {
                 Bundle bundle = new Bundle();
                 bundle.putString("folderName", folder.get(position));
@@ -73,11 +80,12 @@ public class FolderFragment extends Fragment {
         }
     }
     static class viewHolder extends RecyclerView.ViewHolder{
-        TextView fname;
+        TextView fName,vCount;
         LinearLayout ly;
         public viewHolder(@NonNull View itemView) {
             super(itemView);
-            fname = itemView.findViewById(R.id.folderName);
+            fName = itemView.findViewById(R.id.folderName);
+            vCount = itemView.findViewById(R.id.folderVideoCount);
             ly = itemView.findViewById(R.id.folderItemLayout);
         }
     }

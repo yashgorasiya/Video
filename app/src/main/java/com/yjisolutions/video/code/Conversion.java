@@ -2,13 +2,12 @@ package com.yjisolutions.video.code;
 
 import android.annotation.SuppressLint;
 
-public class sizeConversion {
-
+public class Conversion {
 
     @SuppressLint("DefaultLocale")
     public static String sizeConversion (long sizel){
 
-        double KB = sizel/1024;
+        double KB = Double.parseDouble(String.valueOf(sizel/1024));
         double MB = KB/1024;
         double GB = MB/1024;
 

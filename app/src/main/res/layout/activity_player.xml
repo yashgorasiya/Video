@@ -15,7 +15,6 @@
         android:keepScreenOn="true"
         app:auto_show="true"
         app:resize_mode="fit"
-        app:show_buffering="when_playing"
         app:controller_layout_id="@layout/layout_exoplayer_control_view"
         />
 

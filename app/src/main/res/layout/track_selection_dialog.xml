@@ -10,8 +10,8 @@
         android:layout_marginTop="12dp"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
-        android:layout_height="200dp"
-       >
+        android:layout_marginBottom="5dp"
+        android:layout_height="200dp">
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/track_selection_dialog_tab_layout"
@@ -23,7 +23,7 @@
             app:tabIndicatorGravity="stretch"
             android:layout_marginEnd="20dp"
             app:tabIndicator="@drawable/home_tabindicator"
-            app:tabTextColor="@color/white"
+            app:tabTextColor="@color/homePreviewMore"
             app:tabGravity="fill"
             app:tabMode="fixed" />
 

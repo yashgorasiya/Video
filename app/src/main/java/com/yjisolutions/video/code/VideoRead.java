@@ -129,7 +129,6 @@ public static ArrayList<Video> getVideoFromFolder(Context context,String folderN
 
         ArrayList<String> folderList = new ArrayList<>();
 
-
         Uri collection;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             collection = MediaStore.Video.Media.getContentUri(MediaStore.VOLUME_EXTERNAL);
@@ -168,15 +167,17 @@ public static ArrayList<Video> getVideoFromFolder(Context context,String folderN
 
                 int index = path.lastIndexOf("/");
                 String ss = path.substring(0,index);
-                String FName = ss.substring(ss.lastIndexOf("/")+1,ss.length());
+//                String FName = ss.substring(ss.lastIndexOf("/")+1,ss.length());
 
-                if (!folderList.contains(FName)) {
-                    folderList.add(FName);
+
+                if (!folderList.contains(ss)) {
+                    folderList.add(ss);
                 }
 
 
             }
         }
+
         return folderList;
     }
 
