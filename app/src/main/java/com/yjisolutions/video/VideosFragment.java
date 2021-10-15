@@ -129,7 +129,7 @@ public class VideosFragment extends Fragment {
 
             Glide.with(activity.getBaseContext())
                     .load(video.getUri())
-                    .override(200,160)
+                    .override(300,240)
                     .into(holder.thumb);
 
             // Playing videos in player Activity
@@ -137,8 +137,8 @@ public class VideosFragment extends Fragment {
             if (viewStyle) view = holder.previewTile;
             else {
                 view = holder.thumb;
-                if (position%2==0)holder.materialCardView.setPadding(0,0,16,0);
-                else holder.materialCardView.setPadding(16,0,0,0);
+                if (position%2==0)holder.previewTile.setPadding(16,0,0,0);
+                else holder.previewTile.setPadding(0,0,16,0);
             }
 
             view.setOnClickListener(v -> activity.startActivityForResult(
@@ -303,7 +303,6 @@ public class VideosFragment extends Fragment {
         TextView title, duration, size;
         ConstraintLayout previewTile;
         SeekBar seekBar;
-        MaterialCardView materialCardView;
 
         public viewHolderF(@NonNull View itemView) {
             super(itemView);
@@ -314,7 +313,6 @@ public class VideosFragment extends Fragment {
             size = itemView.findViewById(R.id.sizePreview);
             previewTile = itemView.findViewById(R.id.previewTileLayout);
             seekBar = itemView.findViewById(R.id.home_preview_seekbar);
-            materialCardView = itemView.findViewById(R.id.previewMaterialCard);
 //        recViewItem = itemView.findViewById(R.id.recViewItem);
 
         }
