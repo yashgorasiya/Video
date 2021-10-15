@@ -8,8 +8,8 @@
     android:padding="3dp"
     android:layout_height="90dp">
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardView"
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/previewMaterialCard"
             android:layout_marginStart="10dp"
             android:layout_width="128dp"
             android:layout_height="74dp"
@@ -80,7 +80,7 @@
 
             </LinearLayout>
 
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
 
         <TextView
             android:id="@+id/titleV"

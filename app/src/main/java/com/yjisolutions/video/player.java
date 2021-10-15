@@ -238,7 +238,6 @@ public class player extends AppCompatActivity {
     public void init() {
 
 
-
         if (!FfmpegLibrary.isAvailable()) Toast.makeText(getApplicationContext(), "FFmpegLibrary not found", Toast.LENGTH_SHORT).show();
 
         sp = getSharedPreferences("UserData", Context.MODE_PRIVATE);

@@ -15,18 +15,22 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentResultListener;
+import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.snackbar.Snackbar;
 import com.yjisolutions.video.code.Conversion;
 import com.yjisolutions.video.code.DeleteFile;
@@ -39,9 +43,10 @@ import java.util.Objects;
 
 
 public class VideosFragment extends Fragment {
+
     ArrayList<Video> videos = new ArrayList<>();
-
-
+    SharedPreferences sp;
+    boolean viewStyle,manualDestroy;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -50,11 +55,24 @@ public class VideosFragment extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_videos, container, false);
 
+        sp = requireActivity().getSharedPreferences("UserData", Context.MODE_PRIVATE);
+        viewStyle = sp.getBoolean("homeScreenLayoutType",true);
+
         ImageView backButton = v.findViewById(R.id.videoFragmentBack);
+        ImageView viewGrid = v.findViewById(R.id.videoFragmentGrid);
         TextView toolBarTitle = v.findViewById(R.id.videoFragmentTitle);
         TextView toolBarSubTitle = v.findViewById(R.id.videoFragmentSubTitle);
 
         backButton.setOnClickListener(v1 -> requireActivity().onBackPressed());
+        viewGrid.setOnClickListener(v1 -> {
+            @SuppressLint("CommitPrefEdits") SharedPreferences.Editor spe = sp.edit();
+            spe.putBoolean("homeScreenLayoutType", !viewStyle);
+            if (!spe.commit()) Toast.makeText(getContext(), "Failed to Save", Toast.LENGTH_SHORT).show();
+            requireActivity().onBackPressed();
+            Bundle bundle = new Bundle();
+            bundle.putString("folderName", requireArguments().getString("folderName"));
+            Navigation.findNavController(v).navigate(R.id.folder_to_videos, bundle);
+        });
 
         if (getArguments() != null) {
             String folderName = getArguments().getString("folderName");
@@ -68,8 +86,11 @@ public class VideosFragment extends Fragment {
         }
         RecyclerView recyclerView = v.findViewById(R.id.recViewVideo);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        VFAdapter adapter = new VFAdapter(videos, getActivity(), true);
+        int grid;
+        if (viewStyle) grid =1;
+        else grid = 2;
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(),grid));
+        VFAdapter adapter = new VFAdapter(videos, getActivity(), viewStyle);
         recyclerView.setAdapter(adapter);
 
 
@@ -114,7 +135,11 @@ public class VideosFragment extends Fragment {
             // Playing videos in player Activity
             View view;
             if (viewStyle) view = holder.previewTile;
-            else view = holder.thumb;
+            else {
+                view = holder.thumb;
+                if (position%2==0)holder.materialCardView.setPadding(0,0,16,0);
+                else holder.materialCardView.setPadding(16,0,0,0);
+            }
 
             view.setOnClickListener(v -> activity.startActivityForResult(
                     new Intent(activity.getBaseContext(), player.class)
@@ -278,6 +303,7 @@ public class VideosFragment extends Fragment {
         TextView title, duration, size;
         ConstraintLayout previewTile;
         SeekBar seekBar;
+        MaterialCardView materialCardView;
 
         public viewHolderF(@NonNull View itemView) {
             super(itemView);
@@ -288,6 +314,7 @@ public class VideosFragment extends Fragment {
             size = itemView.findViewById(R.id.sizePreview);
             previewTile = itemView.findViewById(R.id.previewTileLayout);
             seekBar = itemView.findViewById(R.id.home_preview_seekbar);
+            materialCardView = itemView.findViewById(R.id.previewMaterialCard);
 //        recViewItem = itemView.findViewById(R.id.recViewItem);
 
         }
