@@ -32,10 +32,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="60dp"
-            android:layout_marginEnd="100dp"
+            android:layout_marginEnd="105dp"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/videoSearchView"
+            app:layout_constraintEnd_toStartOf="@+id/searchVideos"
             app:layout_constraintStart_toEndOf="@+id/videoFragmentBack"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -60,13 +60,20 @@
 
 
         <androidx.appcompat.widget.SearchView
-            android:id="@+id/videoSearchView"
+            android:id="@+id/searchVideos"
             android:layout_width="wrap_content"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
+            android:paddingStart="8dp"
             android:layout_gravity="right"
+            android:foregroundGravity="right"
+            android:background="@color/statusbar"
+            android:gravity="right"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/videoFragmentGrid"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toStartOf="@+id/linearLayout2"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintHorizontal_bias="1"
+            tools:ignore="RtlHardcoded,RtlSymmetry" />
 
         <ImageView
             android:id="@+id/videoFragmentGrid"
@@ -74,11 +81,12 @@
             android:layout_height="50dp"
             android:layout_gravity="right"
             android:padding="12dp"
-            android:alpha="0.6"
+            android:alpha="0.9"
             android:src="@drawable/ic_baseline_grid_view_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="RtlHardcoded" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

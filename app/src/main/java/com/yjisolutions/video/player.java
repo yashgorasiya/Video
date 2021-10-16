@@ -79,6 +79,7 @@ public class player extends AppCompatActivity {
     private String videoTitle;
     private SharedPreferences sp;
     private MediaItem mediaItem;
+    private Uri videoURL;
 
     @SuppressLint({"ClickableViewAccessibility", "UseCompatLoadingForDrawables", "SourceLockedOrientationActivity", "SetTextI18n"})
     @RequiresApi(api = Build.VERSION_CODES.R)
@@ -88,7 +89,7 @@ public class player extends AppCompatActivity {
         setContentView(R.layout.activity_player);
 
 
-        Uri videoURL = Uri.parse(getIntent().getStringExtra("url"));
+        videoURL = Uri.parse(getIntent().getStringExtra("url"));
         videoTitle = getIntent().getStringExtra("title");
         mediaItem = MediaItem.fromUri(videoURL);
 
@@ -334,6 +335,8 @@ public class player extends AppCompatActivity {
     void saveLastPosition() {
         SharedPreferences.Editor spe = sp.edit();
         spe.putLong(videoTitle, simpleExoPlayer.getCurrentPosition());
+        spe.putString("recentVideoTitle",videoTitle);
+        spe.putString("recentVideoUrl",videoURL.toString());
         if (!spe.commit()) Toast.makeText(getApplicationContext(), "Fialed To Save Last Position", Toast.LENGTH_SHORT).show();
     }
 

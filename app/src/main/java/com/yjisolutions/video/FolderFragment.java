@@ -1,105 +1,98 @@
 package com.yjisolutions.video;
 
-import android.Manifest;
-import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.karumi.dexter.Dexter;
-import com.karumi.dexter.MultiplePermissionsReport;
-import com.karumi.dexter.PermissionToken;
-import com.karumi.dexter.listener.PermissionRequest;
-import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.yjisolutions.video.code.VideoRead;
+import com.yjisolutions.video.code.recFolderAdapter;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 
 public class FolderFragment extends Fragment {
     private ArrayList<String> folder;
-
-    @Override
-    public void onStart() {
-
-        folder = VideoRead.getFolders(getContext());
-        super.onStart();
-    }
+    private recFolderAdapter adapter;
+    private RecyclerView recyclerView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_folder, container, false);
-        RecyclerView recyclerView = v.findViewById(R.id.folderRecView);
-        recAdapter adapter = new recAdapter();
+
+        ImageView recentPlayed = v.findViewById(R.id.recentPlayResume);
+
+        SearchView searchView = v.findViewById(R.id.searchFolder);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filter(newText.toLowerCase());
+                return false;
+            }
+        });
+
+        recentPlayed.setOnClickListener(v1 -> {
+            SharedPreferences sp = requireActivity().getSharedPreferences("UserData", Context.MODE_PRIVATE);
+            String videoTitle = sp.getString("recentVideoTitle","0");
+            String videoUrl = sp.getString("recentVideoUrl","0");
+            Activity activity = getActivity();
+            if (!videoUrl.equals("0") && activity!=null) {
+                    activity.startActivity(
+                            new Intent(activity, player.class)
+                                    .putExtra("url", videoUrl)
+                                    .putExtra("title", videoTitle));
+            }else Toast.makeText(activity, "Not Played any Video yet", Toast.LENGTH_SHORT).show();
+        });
+
+        recyclerView = v.findViewById(R.id.folderRecView);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        folder = VideoRead.getFolders(getContext());
+        adapter = new recFolderAdapter(folder,getContext());
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(),1));
         recyclerView.setAdapter(adapter);
         return v;
     }
 
-    class recAdapter extends RecyclerView.Adapter<viewHolder>{
-
-        @NonNull
-        @Override
-        public viewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            return new viewHolder(LayoutInflater.from(getContext()).inflate(R.layout.folder_item, parent, false));
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            recyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
+        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            recyclerView.setLayoutManager(new GridLayoutManager(getContext(),1));
         }
+        super.onConfigurationChanged(newConfig);
+    }
 
-        @SuppressLint("SetTextI18n")
-        @Override
-        public void onBindViewHolder(@NonNull viewHolder holder, @SuppressLint("RecyclerView") int position) {
-            File file=new File(folder.get(position));
-            File[] list = file.listFiles();
-            int count = 0;
-            for (File f: Objects.requireNonNull(list)){
-                String name = f.getName();
-                if (name.endsWith(".mp4") || name.endsWith(".mkv") || name.endsWith(".webm"))
-                    count++;
+    void filter(String text) {
+        ArrayList<String> temp = new ArrayList<>();
+        for (String d : folder) {
+            if (d.toLowerCase().contains(text)) {
+                temp.add(d);
             }
-            if (count==1) holder.vCount.setText(count+" Video");
-            else holder.vCount.setText(count+" Videos");
-            String FName = folder.get(position).substring(folder.get(position).lastIndexOf("/")+1);
-            holder.fName.setText(FName);
-            holder.ly.setOnClickListener(v -> {
-                Bundle bundle = new Bundle();
-                bundle.putString("folderName", folder.get(position));
-                Navigation.findNavController(v).navigate(R.id.folder_to_videos, bundle);
-
-            });
         }
-
-        @Override
-        public int getItemCount() {
-            return folder.size();
-        }
+        adapter.updateList(temp);
     }
-    static class viewHolder extends RecyclerView.ViewHolder{
-        TextView fName,vCount;
-        LinearLayout ly;
-        public viewHolder(@NonNull View itemView) {
-            super(itemView);
-            fName = itemView.findViewById(R.id.folderName);
-            vCount = itemView.findViewById(R.id.folderVideoCount);
-            ly = itemView.findViewById(R.id.folderItemLayout);
-        }
-    }
+
+
 }

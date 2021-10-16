@@ -9,6 +9,7 @@
        android:layout_width="match_parent"
        android:layout_height="match_parent"
       android:orientation="vertical">
+
    <androidx.appcompat.widget.Toolbar
        android:id="@+id/materialToolbar"
        android:layout_marginTop="12dp"
@@ -43,7 +44,19 @@
           android:src="@drawable/ic_baseline_more_vert_24"
           android:id="@+id/homeScreenMore"
           tools:ignore="RtlHardcoded" />
+      <ImageView
+          android:layout_width="30dp"
+          android:layout_height="50dp"
+          android:paddingStart="8dp"
+          android:alpha="0.6"
+          android:id="@+id/recentPlayResume"
+          android:src="@drawable/replay_recent_icon"
+          android:layout_gravity="right"
+          tools:ignore="RtlSymmetry"
+          app:tint="@color/homePreviewMore" />
+
       <androidx.appcompat.widget.SearchView
+          android:id="@+id/searchFolder"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_gravity="right"

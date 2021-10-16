@@ -4,49 +4,30 @@ import static android.view.WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACK
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
-import com.yjisolutions.video.code.VAdapter;
-import com.yjisolutions.video.code.Video;
-import com.yjisolutions.video.code.VideoRead;
 
-import java.io.File;
-import java.net.URI;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private RecyclerView rv;
-    private Toolbar toolbar;
-    private VAdapter adapter;
-    SharedPreferences sp;
-    boolean viewStyle;
 
     @SuppressLint("NotifyDataSetChanged")
     @Override
@@ -108,19 +89,7 @@ public class MainActivity extends AppCompatActivity {
                 .onSameThread()
                 .check();
 
-
-        // temp code
-//        ImageView imageView = findViewById(R.id.homeScreenMore);
-//        imageView.setOnClickListener(v -> {
-//            @SuppressLint("CommitPrefEdits") SharedPreferences.Editor spe = sp.edit();
-//
-//
-//            spe.putBoolean("homeScreenLayoutType", !viewStyle);
-//            if (!spe.commit())
-//                Toast.makeText(getApplicationContext(), "Failed to Save", Toast.LENGTH_SHORT).show();
-//            viewStyle = sp.getBoolean("homeScreenLayoutType",true);
-//            applySetting();
-//        });
+//        Configuration config = this.getResources().getConfiguration();
 
 
     }
@@ -129,10 +98,12 @@ public class MainActivity extends AppCompatActivity {
         startActivity(new Intent(this,MainActivity.class));
         finish();
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1) {
+            VideosFragment.Update();
 //            adapter.update();
         }
         // API 30+
