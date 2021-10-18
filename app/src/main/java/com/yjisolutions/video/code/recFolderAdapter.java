@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Objects;
 
 public  class recFolderAdapter extends RecyclerView.Adapter<recFolderAdapter.recFolderViewHolder>{
-    private List<String> listOfFolders = new ArrayList<>();
+    private List<String> listOfFolders;
     protected Context c;
 
     public recFolderAdapter(ArrayList<String> Folders, Context c){
@@ -60,7 +60,8 @@ public  class recFolderAdapter extends RecyclerView.Adapter<recFolderAdapter.rec
 
     @Override
     public int getItemCount() {
-        return listOfFolders.size();
+        if(listOfFolders!=null) return listOfFolders.size();
+        else return 0;
     }
 
     @SuppressLint("NotifyDataSetChanged")

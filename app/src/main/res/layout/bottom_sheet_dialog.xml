@@ -21,14 +21,15 @@
             android:layout_height="24dp"
             android:src="@drawable/ic_baseline_share_24"
             android:layout_margin="8dp"
-            app:tint="@color/homePreviewMore" />
+            app:tint="@color/homePreviewMore"
+            android:contentDescription="@string/shareIon" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Share"
+            android:text="@string/share"
             android:layout_gravity="center_vertical"
-            android:fontFamily="@font/noto_sans"
+            android:fontFamily="@font/not_sans"
             android:textSize="16sp"
             android:textColor="@color/homePreviewMore"
             android:padding="8dp"/>
@@ -49,14 +50,15 @@
             android:layout_height="24dp"
             android:src="@drawable/ic_baseline_delete_24"
             app:tint="@color/homePreviewMore"
-            android:layout_margin="8dp"/>
+            android:layout_margin="8dp"
+            android:contentDescription="@string/deleteIcon" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Delete File Selection"
+            android:text="@string/delete_file"
             android:layout_gravity="center_vertical"
-            android:fontFamily="@font/noto_sans"
+            android:fontFamily="@font/not_sans"
             android:textSize="16sp"
             android:textColor="@color/homePreviewMore"
             android:padding="8dp"/>
@@ -75,13 +77,14 @@
             android:layout_height="24dp"
             android:src="@drawable/ic_baseline_info"
             app:tint="@color/homePreviewMore"
-            android:layout_margin="8dp"/>
+            android:layout_margin="8dp"
+            android:contentDescription="@string/infoIcon" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Video information"
-            android:fontFamily="@font/noto_sans"
+            android:text="@string/video_information"
+            android:fontFamily="@font/not_sans"
             android:textSize="16sp"
             android:textColor="@color/homePreviewMore"
             android:layout_gravity="center_vertical"

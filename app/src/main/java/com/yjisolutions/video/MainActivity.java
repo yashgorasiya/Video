@@ -2,29 +2,17 @@ package com.yjisolutions.video;
 
 import static android.view.WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.karumi.dexter.Dexter;
-import com.karumi.dexter.MultiplePermissionsReport;
-import com.karumi.dexter.PermissionToken;
-import com.karumi.dexter.listener.PermissionRequest;
-import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
-
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -52,52 +40,8 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        Dexter.withContext(getApplicationContext())
-                .withPermissions(
-                        Manifest.permission.READ_EXTERNAL_STORAGE,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE
-                ).withListener(new MultiplePermissionsListener() {
-            @Override
-            public void onPermissionsChecked(MultiplePermissionsReport multiplePermissionsReport) {
-
-                if (multiplePermissionsReport.areAllPermissionsGranted()) {
-//                    doStuff();
-                } else {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                    builder.setTitle("Alert");
-                    builder.setMessage("This app needs storage permission");
-                    builder.setPositiveButton("GOTO SETTINGS", (dialog, which) -> {
-                        dialog.cancel();
-                        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                        Uri uri = Uri.fromParts("package", getPackageName(), null);
-                        intent.setData(uri);
-                        startActivityIfNeeded(intent, 101);
-                    });
-                    builder.setNegativeButton("Cancel", (dialog, which) -> {
-                        dialog.cancel();
-                        MainActivity.this.finish();
-                    });
-                    builder.show();
-                }
-            }
-
-            @Override
-            public void onPermissionRationaleShouldBeShown(List<PermissionRequest> list, PermissionToken permissionToken) {
-                permissionToken.continuePermissionRequest();
-            }
-        }).withErrorListener(error -> Toast.makeText(getApplicationContext(), "Error occurred! ", Toast.LENGTH_SHORT).show())
-                .onSameThread()
-                .check();
-
-//        Configuration config = this.getResources().getConfiguration();
-
-
     }
 
-    void applySetting(){
-        startActivity(new Intent(this,MainActivity.class));
-        finish();
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -116,60 +60,4 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-//    private void doStuff() {
-//        sp = getSharedPreferences("UserData", Context.MODE_PRIVATE);
-//        viewStyle = sp.getBoolean("homeScreenLayoutType",true);
-//
-//        List<Video> videos =  VideoRead.getVideo(this);
-//
-////        for (int i =0;i<videos.size();i++) {
-////
-////            Video v = videos.get(i);
-////            File f = new File(v.getUri().toString());
-////            Log.d("VideoS",(new File(URI.create(f.getPath()))).getAbsolutePath());
-////        }
-//        adapter = new VAdapter(videos, MainActivity.this,viewStyle);
-//        rv = findViewById(R.id.recView);
-//
-//
-//        if (viewStyle) setRVGrid(1);
-//        else setRVGrid(2);
-//
-//        rv.setAdapter(adapter);
-//
-//        toolbar = findViewById(R.id.materialToolbar);
-//
-//        rv.setHasFixedSize(true);
-//        rv.setOnFlingListener(new RecyclerView.OnFlingListener() {
-//            @Override
-//            public boolean onFling(int velocityX, int velocityY) {
-//                if (velocityY < 0) {
-//                    toolbar.setVisibility(View.VISIBLE);
-//                } else if (velocityY > 0) {
-//                    toolbar.setVisibility(View.GONE);
-//                }
-//                return false;
-//            }
-//        });
-//    }
-
-
-
-//    @RequiresApi(api = Build.VERSION_CODES.M)
-//    @Override
-//    public void onConfigurationChanged(@NonNull Configuration newConfig) {
-//        super.onConfigurationChanged(newConfig);
-//        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-//            if (viewStyle) setRVGrid(2);
-//            else setRVGrid(4);
-//        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
-//            if (viewStyle) setRVGrid(1);
-//            else setRVGrid(2);
-//        }
-//    }
-//
-//
-//    void setRVGrid(int grid){
-//        rv.setLayoutManager(new GridLayoutManager(this, grid));
-//    }
 }

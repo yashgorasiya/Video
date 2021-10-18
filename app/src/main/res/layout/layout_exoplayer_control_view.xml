@@ -11,7 +11,7 @@
         android:id="@+id/layout_header_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/controllertopbg"
+        android:background="@drawable/controller_top_bg"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -25,15 +25,16 @@
             android:layout_marginBottom="28dp"
             android:layout_marginEnd="70dp"
             android:layout_marginStart="70dp"
-            android:text="title Of Song Shown Here"
+            android:text="@string/dummyVideoTitle"
             android:textColor="@color/white"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/controllerbackarrow"
+            app:layout_constraintStart_toStartOf="@+id/controllerBackArrow"
             app:layout_constraintTop_toTopOf="parent"
             tool:ignore="RtlSymmetry" />
 
             <ImageView
+                android:contentDescription="@string/more"
                 android:id="@+id/moreControls"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -46,7 +47,8 @@
                 app:tint="@color/white" />
 
             <ImageView
-                android:id="@+id/controllerbackarrow"
+                android:contentDescription="@string/backArrow"
+                android:id="@+id/controllerBackArrow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
@@ -64,7 +66,7 @@
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/controllerbg"
+        android:background="@drawable/controller_bg"
         android:paddingTop="18dp"
         android:paddingBottom="3dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -92,6 +94,7 @@
                 app:layout_constraintStart_toStartOf="parent">
 
                 <ImageButton
+                    android:contentDescription="@string/exo_controls_fullscreen_enter_description"
                     android:id="@+id/exo_fullscreen"
                     style="@style/ExoStyledControls.Button.Bottom.FullScreen"
                     android:layout_width="wrap_content"
@@ -101,6 +104,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageButton
+                    android:contentDescription="@string/exo_controls_playback_speed"
                     android:id="@+id/exo_playback_speed"
                     style="@style/ExoStyledControls.Button.Bottom.PlaybackSpeed"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -126,12 +130,12 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        tool:text="dssdd" />
+                        tool:text="@string/dummyDuration10_12_01" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="/"
+                        android:text="@string/textDivider"
                         android:textColor="@color/white"
                         android:textSize="14sp" />
 
@@ -148,8 +152,8 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        tool:ignore="RtlHardcoded"
-                        tool:text="dssdd" />
+                        tool:ignore="RtlHardcoded,RtlSymmetry"
+                        tool:text="@string/dummyDuration10_12_01" />
 
                 </LinearLayout>
 
@@ -171,6 +175,7 @@
 
 
                 <ImageButton
+                    android:contentDescription="@string/trackSelectionButton"
                     android:id="@+id/exo_track_selection_view"
                     style="@style/ExoStyledControls.Button.Bottom.AudioTrack"
                     android:layout_marginStart="16dp"
@@ -189,6 +194,7 @@
                     app:layout_constraintTop_toTopOf="parent">
 
                     <ImageButton
+                        android:contentDescription="@string/exo_controls_rewind_description"
                         android:id="@+id/exo_rew"
                         style="@style/ExoMediaButton.Rewind"
                         android:src="@drawable/exo_icon_previous"
@@ -222,6 +228,7 @@
                         app:layout_constraintStart_toStartOf="parent" />
 
                     <ImageButton
+                        android:contentDescription="@string/exo_controls_fastforward_description"
                         android:id="@+id/exo_ffwd"
                         style="@style/ExoMediaButton.FastForward"
                         android:src="@drawable/exo_controls_next"
@@ -238,6 +245,7 @@
                 </LinearLayout>
 
                 <ImageView
+                    android:contentDescription="@string/videoFitting"
                     android:id="@+id/fitToScreen"
                     android:layout_width="56dp"
                     android:layout_height="56dp"

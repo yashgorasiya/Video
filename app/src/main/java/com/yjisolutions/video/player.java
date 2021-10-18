@@ -54,7 +54,6 @@ import com.google.android.exoplayer2.source.DefaultMediaSourceFactory;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 import com.google.android.exoplayer2.ui.PlayerView;
-import com.google.android.exoplayer2.util.Util;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.yjisolutions.video.code.TrackSelectionDialog;
@@ -95,7 +94,7 @@ public class player extends AppCompatActivity {
 
         ImageView fitToScreen = findViewById(R.id.fitToScreen);
         TextView playerTitle = findViewById(R.id.titlePlayer);
-        ImageView backArrow = findViewById(R.id.controllerbackarrow);
+        ImageView backArrow = findViewById(R.id.controllerBackArrow);
         ImageView moreControls = findViewById(R.id.moreControls);
 
         ImageButton speedControl = findViewById(R.id.exo_playback_speed);

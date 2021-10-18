@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.graphics.Color;
 import android.net.Uri;
 import android.view.LayoutInflater;
@@ -26,7 +25,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.snackbar.Snackbar;
 import com.yjisolutions.video.R;
-import com.yjisolutions.video.VideosFragment;
 import com.yjisolutions.video.player;
 
 import java.util.ArrayList;
@@ -38,7 +36,6 @@ public class VFAdapter extends RecyclerView.Adapter<VFAdapter.viewHolderF> {
     List<Video> videos;
     Activity activity;
     boolean viewStyle;
-    private boolean orientation;
 
     public VFAdapter(List<Video> videos, Activity activity, boolean viewStyle) {
         this.videos = videos;
@@ -74,15 +71,9 @@ public class VFAdapter extends RecyclerView.Adapter<VFAdapter.viewHolderF> {
         // Playing videos in player Activity
         View view;
         if (viewStyle) view = holder.previewTile;
-        else {
-            view = holder.thumb;
-            if (!orientation) {
-                if (position % 2 == 0) holder.previewTile.setPadding(16, 0, 0, 0);
-                else holder.previewTile.setPadding(0, 0, 16, 0);
-            } else {
-                holder.previewTile.setPadding(0, 0, 0, 0);
-            }
-        }
+        else view = holder.thumb;
+
+
 
         view.setOnClickListener(v -> activity.startActivityForResult(
                 new Intent(activity.getBaseContext(), player.class)
@@ -115,10 +106,6 @@ public class VFAdapter extends RecyclerView.Adapter<VFAdapter.viewHolderF> {
         notifyDataSetChanged();
     }
 
-    public void OrientationChanged(boolean orientation) {
-        this.orientation = orientation;
-
-    }
 
 
     @SuppressLint("ShowToast")
@@ -160,7 +147,7 @@ public class VFAdapter extends RecyclerView.Adapter<VFAdapter.viewHolderF> {
             deleteSize.setText(Conversion.sizeConversion(video.getSize()));
             deleteTille.setText(video.getName());
 
-            deleteDialogView.findViewById(R.id.DailogDeleteBtn).setOnClickListener(v13 -> {
+            deleteDialogView.findViewById(R.id.DialogDeleteBtn).setOnClickListener(v13 -> {
                 //your delete logic
                 DeleteFile delete1 = new DeleteFile(activity);
                 delete1.moveToBin(videos.get(position));
@@ -179,7 +166,7 @@ public class VFAdapter extends RecyclerView.Adapter<VFAdapter.viewHolderF> {
                 deleteDialog.dismiss();
             });
 
-            deleteDialogView.findViewById(R.id.DailogDeleteCancleTxt).setOnClickListener(v12 -> deleteDialog.dismiss());
+            deleteDialogView.findViewById(R.id.DialogDeleteCancelTxt).setOnClickListener(v12 -> deleteDialog.dismiss());
 
             deleteDialog.show();
 

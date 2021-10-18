@@ -118,9 +118,22 @@ public class VideosFragment extends Fragment {
         if (viewStyle) grid = 1;
         else grid = 2;
 
+        Configuration configuration = requireActivity().getResources().getConfiguration();
+        if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) grid = grid * 2;
+
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), grid));
         adapter = new VFAdapter(videos, getActivity(), viewStyle);
         recyclerView.setAdapter(adapter);
+
+        recyclerView.setOnFlingListener(new RecyclerView.OnFlingListener() {
+            @Override
+            public boolean onFling(int velocityX, int velocityY) {
+                ConstraintLayout c = v.findViewById(R.id.conLayoutToolbarVideos);
+                if (velocityY>0) c.setVisibility(View.GONE);
+                else c.setVisibility(View.VISIBLE);
+                return false;
+            }
+        });
 
         return v;
     }
@@ -131,14 +144,13 @@ public class VideosFragment extends Fragment {
         if (viewStyle) grid = 1;
         else grid = 2;
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            adapter.OrientationChanged(true);
             recyclerView.setLayoutManager(new GridLayoutManager(getContext(), grid * 2));
         } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            adapter.OrientationChanged(false);
             recyclerView.setLayoutManager(new GridLayoutManager(getContext(), grid));
         }
         super.onConfigurationChanged(newConfig);
     }
+
 
     void filter(String text) {
         ArrayList<Video> temp = new ArrayList<>();
@@ -149,4 +161,5 @@ public class VideosFragment extends Fragment {
         }
         adapter.updateList(temp);
     }
+
 }

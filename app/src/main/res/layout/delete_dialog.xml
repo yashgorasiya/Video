@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
@@ -16,7 +17,7 @@
             android:layout_marginTop="16dp"
             android:textSize="14sp"
             android:textColor="@color/homePreviewMore"
-            android:fontFamily="@font/noto_sans"
+            android:fontFamily="@font/not_sans"
             />
 
 
@@ -39,7 +40,7 @@
                 android:layout_height="match_parent"
                 android:background="@drawable/preview_thumbnail_bg"
                 android:scaleType="centerCrop"
-                android:contentDescription="@string/deletedialogthumb" />
+                android:contentDescription="@string/deleteDialogThumb" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -52,15 +53,16 @@
                     android:layout_gravity="end"
                     android:layout_marginEnd="5dp"
                     android:layout_marginBottom="3dp"
-                    android:background="@drawable/duration_size_bg">
+                    android:background="@drawable/duration_size_bg"
+                    tools:ignore="UselessParent">
                 <TextView
                     android:id="@+id/sizeDelete"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/noto_sans"
+                    android:fontFamily="@font/not_sans"
                     android:paddingStart="5dp"
                     android:paddingEnd="4dp"
-                    android:text="50MB"
+                    android:text="@string/dummyVideoSize50mb"
                     android:textColor="@color/white"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -86,9 +88,9 @@
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="8dp"
             android:textSize="14sp"
-            android:fontFamily="@font/noto_sans"
+            android:fontFamily="@font/not_sans"
             android:textColor="@color/homePreviewMore"
-            android:text="Are you sure you want to delete ?"/>
+            android:text="@string/deleteWaringMassage"/>
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -97,10 +99,10 @@
             android:layout_gravity="end">
 
             <TextView
-                android:id="@+id/DailogDeleteCancleTxt"
+                android:id="@+id/DialogDeleteCancelTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Cancle"
+                android:text="@string/cancel"
                 android:textStyle="bold"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp"
@@ -113,12 +115,12 @@
                 />
 
             <Button
-                android:id="@+id/DailogDeleteBtn"
+                android:id="@+id/DialogDeleteBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:shadowColor="@android:color/holo_red_dark"
                 android:backgroundTint="@android:color/holo_red_light"
-                android:text="Delete" />
+                android:text="@string/delete" />
 
         </LinearLayout>
 

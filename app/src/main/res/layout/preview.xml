@@ -10,17 +10,16 @@
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/previewMaterialCard"
-            android:layout_marginStart="10dp"
             android:layout_width="128dp"
             android:layout_height="74dp"
             app:cardCornerRadius="6dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
+            android:layout_marginStart="6dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
+                android:contentDescription="@string/videoThumbnail"
                 android:id="@+id/thumbnail"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -48,13 +47,14 @@
                     android:id="@+id/sizePreview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/noto_sans"
+                    android:fontFamily="@font/not_sans"
                     android:paddingStart="5dp"
                     android:paddingEnd="4dp"
-                    android:text="50MB"
+                    android:text="@string/dummyVideoSize50mb"
                     android:textColor="@color/white"
                     android:textSize="9sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    tools:ignore="SmallSp" />
 
             </LinearLayout>
 
@@ -68,15 +68,16 @@
                     android:id="@+id/durationV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/noto_sans"
+                    android:fontFamily="@font/not_sans"
                     android:paddingStart="4dp"
                     android:paddingTop="1dp"
                     android:paddingEnd="5dp"
                     android:gravity="center"
-                    android:text="duration"
+                    android:text="@string/duration"
                     android:textColor="@color/white"
                     android:textSize="10sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    tools:ignore="SmallSp" />
 
             </LinearLayout>
 
@@ -87,7 +88,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="142dp"
-            android:fontFamily="@font/noto_sans"
+            android:fontFamily="@font/not_sans"
             android:padding="8dp"
             android:ellipsize="end"
             android:maxLines="3"
@@ -101,12 +102,13 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
+            android:contentDescription="@string/more"
             android:id="@+id/previewHomeMore"
             android:layout_width="24dp"
             android:layout_height="56dp"
             android:alpha="0.6"
             android:foregroundGravity="top"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="4dp"
             android:src="@drawable/ic_baseline_more_vert_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

@@ -6,12 +6,16 @@
         <entry key="..\:/Users/goras/.gradle/caches/transforms-3/4dd2ca5db3464c94c38d7c44b18ab6c8/transformed/jetified-exoplayer-ui-2.15.1/res/layout/exo_track_selection_dialog.xml" value="0.24479166666666666" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable/bottom_sheet_dailog_bg.xml" value="0.2598958333333333" />
+        <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable/controllerBG.xml" value="0.26510416666666664" />
+        <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable/controller_bg.xml" value="0.26510416666666664" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable/controller_brightness_volume_bg.xml" value="0.156140350877193" />
+        <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable/controller_top_bg.xml" value="0.26510416666666664" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable/controllerbg.xml" value="0.21157407407407408" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable/controllertopbg.xml" value="0.21157407407407408" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable/delete_dialog_bg.xml" value="0.2598958333333333" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable/duration_size_bg.xml" value="0.4" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable/home_preview_seekbar_process.xml" value="0.2598958333333333" />
+        <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable/home_tab_indicator.xml" value="0.26510416666666664" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable/home_tabindicator.xml" value="0.261025641025641" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable/ic_baseline_arrow_back_24.xml" value="0.21157407407407408" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable/ic_baseline_arrow_back_ios_24.xml" value="0.21157407407407408" />
@@ -30,6 +34,7 @@
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable/preview_thumbnail_bg.xml" value="0.21157407407407408" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable/subtitles.xml" value="0.2598958333333333" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable/tablayout_bg.xml" value="0.261025641025641" />
+        <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/font/NotSans.xml" value="0.27487179487179486" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/layout/activity_fullscreen.xml" value="0.1766304347826087" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/layout/activity_main.xml" value="0.264" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/layout/activity_player.xml" value="0.28122912491649965" />

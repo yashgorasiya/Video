@@ -33,7 +33,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="24sp"
-                android:text="10:20/10:50"
                 android:textColor="@color/white"
                 android:padding="10dp"
                 />
@@ -54,6 +53,7 @@
                 android:layout_width="42dp"
                 android:layout_height="42dp"
                 android:padding="1dp"
+                android:contentDescription="@string/brightnessVolumeIcon"
                 android:layout_marginTop="10dp"
                 android:layout_gravity="center_horizontal"
                 android:src="@drawable/ic_baseline_brightness_5_24"/>
@@ -61,7 +61,6 @@
                 android:id="@+id/BrightnessVolumeText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="60%"
                 android:layout_marginTop="3dp"
                 android:layout_gravity="center_horizontal"
                 android:textColor="@color/white"

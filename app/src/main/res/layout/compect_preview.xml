@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:backgroundTint="@color/statusbar"
+    android:backgroundTint="@color/statusBar"
     android:id="@+id/previewTileLayout"
     android:layout_width="match_parent"
     android:layout_marginStart="6dp"
@@ -29,7 +29,8 @@
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
             android:background="@drawable/preview_thumbnail_bg"
-            tools:ignore="MissingConstraints" />
+            tools:ignore="MissingConstraints"
+            android:contentDescription="@string/videoThumbnail" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -42,11 +43,11 @@
                 android:id="@+id/sizePreview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/noto_sans"
+                android:fontFamily="@font/not_sans"
                 android:paddingStart="5dp"
                 android:paddingTop="1dp"
                 android:paddingEnd="4dp"
-                android:text="50MB"
+                android:text="@string/dummyVideoSize50mb"
                 android:textColor="@color/white"
                 android:textSize="11sp"
                 android:textStyle="bold" />
@@ -62,12 +63,12 @@
                 android:id="@+id/durationV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/noto_sans"
+                android:fontFamily="@font/not_sans"
                 android:gravity="center"
                 android:paddingStart="4dp"
                 android:paddingTop="1dp"
                 android:paddingEnd="5dp"
-                android:text="duration"
+                android:text="@string/dummyDuration10_12_01"
                 android:textColor="@color/white"
                 android:textSize="12sp"
                 android:textStyle="bold" />
@@ -78,7 +79,7 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_gravity="bottom"
-            android:background="@drawable/controllerbg">
+            android:background="@drawable/controller_bg">
 
             <TextView
                 android:id="@+id/titleV"
@@ -88,16 +89,16 @@
                 android:layout_marginStart="3dp"
                 android:layout_marginBottom="4dp"
                 android:layout_gravity="bottom"
-                android:fontFamily="@font/noto_sans"
+                android:fontFamily="@font/not_sans"
                 android:gravity="left"
                 android:maxLines="2"
                 android:ellipsize="end"
                 android:paddingStart="4dp"
-                android:text="Title of the Video me apka swagat hey"
+                android:text="@string/dummyVideoTitle"
                 android:textColor="@color/white"
                 android:textSize="12sp"
                 android:textStyle="bold"
-                tools:ignore="RtlSymmetry" />
+                tools:ignore="RtlHardcoded,RtlSymmetry" />
 
 
         </LinearLayout>
@@ -128,6 +129,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:tint="@color/white"
+                android:contentDescription="@string/more"
                 tools:ignore="MissingConstraints,RtlHardcoded" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

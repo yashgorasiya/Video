@@ -3,7 +3,36 @@
     <string name="title_activity_fullscreen">FullscreenActivity</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
-    <string name="deletedialogthumb">DeleteDialogThumb</string>
+    <string name="deleteDialogThumb">DeleteDialogThumb</string>
     <string name="track_selection_title">Tracks</string>
+    <string name="backArrow">BackArrow</string>
+    <string name="layoutSwitcher">LayoutSwitcher</string>
+    <string name="more">more</string>
+    <string name="resumeLastPlayed">ResumeLastPlayed</string>
+    <string name="brightnessVolumeIcon">BrightnessVolumeIcon</string>
+    <string name="shareIon">ShareIon</string>
+    <string name="delete_file">Delete File</string>
+    <string name="video_information">Video information</string>
+    <string name="share">Share</string>
+    <string name="deleteIcon">DeleteIcon</string>
+    <string name="infoIcon">InfoIcon</string>
+    <string name="title">Title</string>
+    <string name="duration">Duration :</string>
+    <string name="size">Size :</string>
+    <string name="width">Width :</string>
+    <string name="height">Height :</string>
+    <string name="videoThumbnail">VideoThumbnail</string>
+    <string name="dummyVideoSize50mb">50MB</string>
+    <string name="dummyDuration10_12_01">10:12:01</string>
+    <string name="dummyVideoTitle">Video Capture in 1942 By Me</string>
+    <string name="deleteWaringMassage">Are you sure you want to delete ?</string>
+    <string name="cancel">Cancel</string>
+    <string name="delete">Delete</string>
+    <string name="folderIcon">FolderIcon</string>
+    <string name="dummyFolderName">FolderName</string>
+    <string name="dummyVideoCount8_videos">8 Videos</string>
+    <string name="textDivider">/</string>
+    <string name="trackSelectionButton">trackSelectionButton</string>
+    <string name="videoFitting">VideoFitting</string>
 
 </resources>

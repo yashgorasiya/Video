@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/statusbar"
+    android:background="@color/statusBar"
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:layout_height="match_parent"
@@ -19,63 +19,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:defaultNavHost="true"
         app:navGraph="@navigation/my_navigation" />
-
-
-<!--    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
-<!--    xmlns:tools="http://schemas.android.com/tools"-->
-<!--    android:background="@color/statusbar"-->
-<!--    android:layout_width="match_parent"-->
-<!--    android:orientation="vertical"-->
-<!--    android:layout_height="match_parent"-->
-<!--    tools:context=".MainActivity">-->
-
-<!--    <androidx.appcompat.widget.Toolbar-->
-<!--        android:id="@+id/materialToolbar"-->
-<!--        android:layout_marginTop="12dp"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:background="@color/statusbar"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        tools:ignore="MissingConstraints">-->
-
-<!--        <ImageView-->
-<!--            android:layout_width="56dp"-->
-<!--            android:layout_height="56dp"-->
-<!--            android:layout_marginEnd="8dp"-->
-<!--            android:src="@drawable/logo" />-->
-
-<!--        <TextView-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="@string/app_name"-->
-<!--            android:textColor="@color/homePreviewMore"-->
-<!--            android:textSize="20sp"-->
-<!--            android:textStyle="bold" />-->
-<!--        <ImageView-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_gravity="right"-->
-<!--            android:src="@drawable/ic_baseline_more_vert_24"-->
-<!--            android:id="@+id/homeScreenMore"/>-->
-<!--        <androidx.appcompat.widget.SearchView-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_gravity="right"-->
-<!--            tools:ignore="RtlHardcoded" />-->
-
-<!--    </androidx.appcompat.widget.Toolbar>-->
-<!--    <androidx.recyclerview.widget.RecyclerView-->
-<!--        android:id="@+id/recView"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/materialToolbar"-->
-<!--        app:layout_constraintVertical_bias="0.0" />-->
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
