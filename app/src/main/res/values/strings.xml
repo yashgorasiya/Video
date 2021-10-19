@@ -34,5 +34,7 @@
     <string name="textDivider">/</string>
     <string name="trackSelectionButton">trackSelectionButton</string>
     <string name="videoFitting">VideoFitting</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

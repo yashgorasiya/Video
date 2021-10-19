@@ -25,7 +25,6 @@ import com.yjisolutions.video.code.VideoRead;
 import com.yjisolutions.video.code.recFolderAdapter;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 
 public class FolderFragment extends Fragment implements OnPermissionGranted {
@@ -39,16 +38,18 @@ public class FolderFragment extends Fragment implements OnPermissionGranted {
         super.onStart();
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
-
         View v = inflater.inflate(R.layout.fragment_folder, container, false);
 
         ImageView recentPlayed = v.findViewById(R.id.recentPlayResume);
         SearchView searchView = v.findViewById(R.id.searchFolder);
+        ImageView imageView = v.findViewById(R.id.homeScreenMore);
+        imageView.setOnClickListener(v1 -> {
+        });
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -87,7 +88,6 @@ public class FolderFragment extends Fragment implements OnPermissionGranted {
             }
         });
     }
-
 
     private void recentPlayedResume() {
         SharedPreferences sp = requireActivity().getSharedPreferences("UserData", Context.MODE_PRIVATE);
