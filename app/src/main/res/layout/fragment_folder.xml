@@ -11,7 +11,8 @@
             android:id="@+id/materialToolbarFolders"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:paddingTop="12dp"
+            android:elevation="8dp"
             android:background="@color/statusBar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -22,6 +23,7 @@
                 android:layout_width="56dp"
                 android:layout_height="56dp"
                 android:layout_marginEnd="8dp"
+                android:scaleType="centerCrop"
                 android:contentDescription="@string/app_name"
                 android:src="@drawable/logo" />
 
@@ -52,9 +54,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/app_name"
-                android:textColor="@color/homePreviewMore"
+                android:fontFamily="@font/not_sans"
                 android:textSize="20sp"
                 android:textStyle="bold" />
+
 
             <androidx.appcompat.widget.SearchView
                 android:id="@+id/searchFolder"
@@ -67,6 +70,7 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/folderRecView"
+            android:paddingTop="5dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:listitem="@layout/folder_item" />

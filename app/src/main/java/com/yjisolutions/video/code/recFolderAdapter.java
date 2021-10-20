@@ -2,7 +2,11 @@ package com.yjisolutions.video.code;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.provider.OpenableColumns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -40,15 +45,23 @@ public  class recFolderAdapter extends RecyclerView.Adapter<recFolderAdapter.rec
         File file=new File(listOfFolders.get(position));
         File[] list = file.listFiles();
         int count = 0;
+        long size = 0;
         for (File f: Objects.requireNonNull(list)){
             String name = f.getName();
-            if (name.endsWith(".mp4") || name.endsWith(".mkv") || name.endsWith(".webm"))
+            if (name.endsWith(".mp4") || name.endsWith(".mkv") || name.endsWith(".webm")) {
                 count++;
+                size = size + Conversion.sizeToMB(f.length());
+            }
         }
+
+        holder.fSize.setText(Conversion.sizeTotal(size));
+
         if (count==1) holder.vCount.setText(count+" Video");
         else holder.vCount.setText(count+" Videos");
+
         String FName = listOfFolders.get(position).substring(listOfFolders.get(position).lastIndexOf("/")+1);
         holder.fName.setText(FName);
+
         holder.ly.setOnClickListener(v -> {
             Bundle bundle = new Bundle();
             bundle.putString("folderName", listOfFolders.get(position));
@@ -71,12 +84,13 @@ public  class recFolderAdapter extends RecyclerView.Adapter<recFolderAdapter.rec
     }
 
     static class recFolderViewHolder extends RecyclerView.ViewHolder{
-        TextView fName,vCount;
-        LinearLayout ly;
+        TextView fName,vCount,fSize;
+        ConstraintLayout ly;
         public recFolderViewHolder(@NonNull View itemView) {
             super(itemView);
             fName = itemView.findViewById(R.id.folderName);
             vCount = itemView.findViewById(R.id.folderVideoCount);
+            fSize = itemView.findViewById(R.id.folderSize);
             ly = itemView.findViewById(R.id.folderItemLayout);
         }
     }

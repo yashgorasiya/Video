@@ -59,7 +59,7 @@ public class VideosFragment extends Fragment {
         adapter.update();
     }
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint({"SetTextI18n", "UseCompatLoadingForDrawables"})
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -88,6 +88,8 @@ public class VideosFragment extends Fragment {
             }
         });
 
+        if (viewStyle) viewGrid.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_grid_view_24));
+        else viewGrid.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_view_list_24));
 
         backButton.setOnClickListener(v1 -> requireActivity().onBackPressed());
         viewGrid.setOnClickListener(v1 -> {
