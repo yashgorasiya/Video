@@ -67,7 +67,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/controller_bg"
-        android:paddingTop="18dp"
+        android:paddingTop="60dp"
         android:paddingBottom="3dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -75,7 +75,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -93,26 +93,10 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent">
 
-                <ImageButton
-                    android:contentDescription="@string/exo_controls_fullscreen_enter_description"
-                    android:id="@+id/exo_fullscreen"
-                    style="@style/ExoStyledControls.Button.Bottom.FullScreen"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageButton
-                    android:contentDescription="@string/exo_controls_playback_speed"
-                    android:id="@+id/exo_playback_speed"
-                    style="@style/ExoStyledControls.Button.Bottom.PlaybackSpeed"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/exo_fullscreen"
-                    app:layout_constraintTop_toTopOf="parent" />
 
                 <LinearLayout
                     android:id="@+id/linearLayout"
+                    android:layout_marginStart="4dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -124,9 +108,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:minWidth="46dp"
+                        android:minWidth="25dp"
                         android:textColor="@color/white"
-                        android:textSize="14sp"
+                        android:textSize="12sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -136,8 +120,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/textDivider"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="5dp"
                         android:textColor="@color/white"
-                        android:textSize="14sp" />
+                        android:textSize="12sp" />
 
                     <TextView
                         android:id="@id/exo_duration"
@@ -145,10 +131,10 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:gravity="right"
-                        android:minWidth="46dp"
+                        android:minWidth="25dp"
                         android:paddingStart="8dp"
                         android:textColor="@color/white"
-                        android:textSize="14sp"
+                        android:textSize="12sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -161,8 +147,8 @@
 
         <com.google.android.exoplayer2.ui.DefaultTimeBar
             android:id="@+id/exo_progress"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             app:played_color="@color/orange"
             app:buffered_color="@color/exo_white_opacity_70"
             android:layout_width="wrap_content"
@@ -199,6 +185,7 @@
                         style="@style/ExoMediaButton.Rewind"
                         android:src="@drawable/exo_icon_previous"
                         android:visibility="visible"
+                        android:layout_marginEnd="8dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintRight_toLeftOf="@+id/barrier_left" />
 
@@ -233,6 +220,7 @@
                         style="@style/ExoMediaButton.FastForward"
                         android:src="@drawable/exo_controls_next"
                         android:visibility="visible"
+                        android:layout_marginStart="8dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintLeft_toRightOf="@+id/barrier_right" />
 
@@ -262,4 +250,24 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+
+    <ImageButton
+        android:contentDescription="@string/exo_controls_fullscreen_enter_description"
+        android:id="@+id/exo_fullscreen"
+        style="@style/ExoStyledControls.Button.Bottom.FullScreen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="75dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <ImageButton
+        android:contentDescription="@string/exo_controls_playback_speed"
+        android:id="@+id/exo_playback_speed"
+        android:layout_marginBottom="75dp"
+        style="@style/ExoStyledControls.Button.Bottom.PlaybackSpeed"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/exo_fullscreen"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>

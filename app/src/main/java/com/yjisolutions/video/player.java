@@ -54,10 +54,11 @@ import com.google.android.exoplayer2.source.DefaultMediaSourceFactory;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 import com.google.android.exoplayer2.ui.PlayerView;
+import com.google.android.exoplayer2.video.VideoSize;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
-import com.yjisolutions.video.code.TrackSelectionDialog;
 import com.yjisolutions.video.code.Conversion;
+import com.yjisolutions.video.code.TrackSelectionDialog;
 
 public class player extends AppCompatActivity {
 
@@ -109,7 +110,7 @@ public class player extends AppCompatActivity {
 
 
         playerTitle.setText(videoTitle);
-        backArrow.setOnClickListener(v -> finish());
+        backArrow.setOnClickListener(v -> onBackPressed());
 
         moreControls.setOnClickListener(v -> {
             // Do something in three dot Click
@@ -284,8 +285,6 @@ public class player extends AppCompatActivity {
             simpleExoPlayer.seekTo(lastPlayed- 3000);
         }
 
-
-
         simpleExoPlayer.play();
 
         playerView.setControllerShowTimeoutMs(2000);
@@ -325,6 +324,13 @@ public class player extends AppCompatActivity {
                 if (playbackState == ExoPlayer.STATE_ENDED) {
                     finish();
                     releasePlayer();
+                }
+            }
+
+            @Override
+            public void onVideoSizeChanged(@NonNull VideoSize videoSize) {
+                if (videoSize.height<videoSize.width) {
+                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
                 }
             }
         });
@@ -374,7 +380,6 @@ public class player extends AppCompatActivity {
 
     private void releasePlayer() {
         if (simpleExoPlayer.isPlaying()) simpleExoPlayer.stop();
-
         simpleExoPlayer.release();
     }
 
@@ -393,26 +398,16 @@ public class player extends AppCompatActivity {
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-        saveLastPosition();
-        releasePlayer();
-    }
-
-    @Override
     protected void onResume() {
-
+        simpleExoPlayer.play();
         super.onResume();
     }
 
     @Override
-    public void onStop() {
-        saveLastPosition();
-        releasePlayer();
-        super.onStop();
+    protected void onPause() {
+        simpleExoPlayer.pause();
+        super.onPause();
     }
-
-
 
     @SuppressLint("UseCompatLoadingForDrawables")
     private void adjustVolume(float yPercent) {
@@ -445,7 +440,6 @@ public class player extends AppCompatActivity {
         TextView BVText = findViewById(R.id.BrightnessVolumeText);
         BV.setImageDrawable(res);
         BVText.setText(String.format("%02d", val) + "%");
-//        BVText.setText(persent+"");
     }
 
     // Seek bar Indicator Canter of Screen While using Gesture
@@ -490,7 +484,12 @@ public class player extends AppCompatActivity {
             maxHorizontalMovement = Math.max(maxHorizontalMovement, Math.abs(distanceXSinceTouchbegin));
             boolean enoughHorizontalMovement = maxHorizontalMovement > 100;
 
-            if (enoughHorizontalMovement) {
+
+            float distanceYSinceTouchbegin = e1.getY() - e2.getY();
+            maxVerticalMovement = Math.max(maxVerticalMovement, Math.abs(distanceYSinceTouchbegin));
+            boolean enoughVerticalMovement = maxVerticalMovement > 100;
+
+            if (enoughHorizontalMovement && !enoughVerticalMovement) {
                 String ctime = Conversion.timerConversion(cPotion);
 
                 // right to left
@@ -504,6 +503,9 @@ public class player extends AppCompatActivity {
                     simpleExoPlayer.seekTo((long) (-10 * xPercent + cPotion));
                     SeekPreviewIndicator(Conversion.timerConversion((long) (-10 * xPercent + cPotion)) + "/" + ctime);
                     return true;
+                } else {
+                    endScroll();
+                    return super.onScroll(e1, e2, distanceX, distanceY);
                 }
             }
 
@@ -513,9 +515,6 @@ public class player extends AppCompatActivity {
                 return super.onScroll(e1, e2, distanceX, distanceY);
             }
 
-            float distanceYSinceTouchbegin = e1.getY() - e2.getY();
-            maxVerticalMovement = Math.max(maxVerticalMovement, Math.abs(distanceYSinceTouchbegin));
-            boolean enoughVerticalMovement = maxVerticalMovement > 100;
 
             if (!enoughVerticalMovement) {
                 return super.onScroll(e1, e2, distanceX, distanceY);
@@ -523,16 +522,20 @@ public class player extends AppCompatActivity {
 
             float yPercent = 1 - (e2.getY() / getHeight);
 
-            if (e2.getX() < INDICATOR_WIDTH) {
-                adjustBrightness(yPercent);
-                return true;
-            } else if (e2.getX() > getWidth - INDICATOR_WIDTH) {
-                adjustVolume(yPercent);
-                return true;
-            } else {
-                endScroll();
-                return super.onScroll(e1, e2, distanceX, distanceY);
+            if (!enoughHorizontalMovement) {
+                if (e2.getX() < INDICATOR_WIDTH) {
+                    adjustBrightness(yPercent);
+                    return true;
+                } else if (e2.getX() > getWidth - INDICATOR_WIDTH) {
+                    adjustVolume(yPercent);
+                    return true;
+                } else {
+                    endScroll();
+                    return super.onScroll(e1, e2, distanceX, distanceY);
+                }
             }
+
+            return super.onScroll(e1, e2, distanceX, distanceY);
         }
 
         @Override
@@ -553,8 +556,9 @@ public class player extends AppCompatActivity {
 
         @Override
         public boolean onDoubleTap(MotionEvent e) {
-            // devided double tap gestures to three part of screen
+            // divided double tap gestures to three part of screen
 
+            if (playerView.isControllerVisible()) playerView.hideController();
             // Forward
             if (e.getX() > Float.parseFloat(String.valueOf(getWidth * 2 / 3))) {
                 SeekPreviewIndicator("+10 Seconds");
