@@ -17,4 +17,6 @@
     <color name="light_blue_A400">#FF00B0FF</color>
     <color name="black_overlay">#66000000</color>
     <color name="homeBG">#FFC7D4E7</color>
+    <color name="PrimaryLight">#FFF1D9</color>
+    <color name="PrimaryDark">#F3B678</color>
 </resources>
