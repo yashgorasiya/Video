@@ -1,15 +1,12 @@
-package com.yjisolutions.video.code;
+package com.yjisolutions.video.Adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,36 +17,35 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public  class recFolderAdapter extends RecyclerView.Adapter<recFolderAdapter.recFolderViewHolder>{
+public class FolderAdapter extends RecyclerView.Adapter<FolderViewHolder>{
     private List<String> listOfFolders;
     protected Context c;
-
-    public recFolderAdapter(ArrayList<String> Folders, Context c){
-            this.listOfFolders = Folders;
-            this.c = c;
+    public FolderAdapter(ArrayList<String> Folders, Context c){
+        this.listOfFolders = Folders;
+        this.c = c;
     }
     @NonNull
     @Override
-    public recFolderViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new recFolderViewHolder(LayoutInflater.from(c).inflate(R.layout.folder_item, parent, false));
+    public FolderViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new FolderViewHolder(LayoutInflater.from(c).inflate(R.layout.folder_item, parent, false));
     }
 
     @SuppressLint("SetTextI18n")
     @Override
-    public void onBindViewHolder(@NonNull recFolderViewHolder holder, @SuppressLint("RecyclerView") int position) {
+    public void onBindViewHolder(@NonNull FolderViewHolder holder, @SuppressLint("RecyclerView") int position) {
         File file=new File(listOfFolders.get(position));
         File[] list = file.listFiles();
         int count = 0;
-        long size = 0;
+//        long size = 0;
         for (File f: Objects.requireNonNull(list)){
             String name = f.getName();
             if (name.endsWith(".mp4") || name.endsWith(".mkv") || name.endsWith(".webm")) {
                 count++;
-                size = size + Conversion.sizeToMB(f.length());
+//                size = size + Conversion.sizeToMB(f.length());
             }
         }
 
-        holder.fSize.setText(Conversion.sizeTotal(size));
+//        holder.fSize.setText(Conversion.sizeTotal(size));
 
         if (count==1) holder.vCount.setText(count+" Video");
         else holder.vCount.setText(count+" Videos");
@@ -78,15 +74,4 @@ public  class recFolderAdapter extends RecyclerView.Adapter<recFolderAdapter.rec
         notifyDataSetChanged();
     }
 
-    static class recFolderViewHolder extends RecyclerView.ViewHolder{
-        TextView fName,vCount,fSize;
-        ConstraintLayout ly;
-        public recFolderViewHolder(@NonNull View itemView) {
-            super(itemView);
-            fName = itemView.findViewById(R.id.folderName);
-            vCount = itemView.findViewById(R.id.folderVideoCount);
-            fSize = itemView.findViewById(R.id.folderSize);
-            ly = itemView.findViewById(R.id.folderItemLayout);
-        }
-    }
 }

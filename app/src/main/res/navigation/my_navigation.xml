@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/folderFragment"
-        android:name="com.yjisolutions.video.FolderFragment"
+        android:name="com.yjisolutions.video.Fragments.FolderFragment"
         android:label="fragment_folder"
         tools:layout="@layout/fragment_folder">
         <action
@@ -23,7 +23,7 @@
     </fragment>
     <fragment
         android:id="@+id/videosFragment"
-        android:name="com.yjisolutions.video.VideosFragment"
+        android:name="com.yjisolutions.video.Fragments.VideosFragment"
         android:label="fragment_videos"
         tools:layout="@layout/fragment_videos">
         <action

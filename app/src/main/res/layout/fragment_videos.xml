@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".VideosFragment">
+    tools:context=".Fragments.VideosFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/conLayoutToolbarVideos"
@@ -14,7 +14,7 @@
         android:layout_height="50dp"
         android:background="@color/statusBar"
         android:orientation="horizontal"
-        tools:context=".MainActivity">
+        tools:context=".Activities.MainActivity">
 
         <ImageView
             android:id="@+id/videoFragmentBack"
@@ -35,7 +35,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="60dp"
-            android:layout_marginEnd="105dp"
+            android:layout_marginEnd="138dp"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/searchVideos"
@@ -87,6 +87,20 @@
             android:alpha="0.6"
             android:contentDescription="@string/layoutSwitcher"
             android:src="@drawable/ic_baseline_grid_view_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/videoFragmentMore"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="RtlHardcoded" />
+
+        <ImageView
+            android:id="@+id/videoFragmentMore"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="right"
+            android:alpha="0.6"
+            android:contentDescription="@string/layoutSwitcher"
+            android:padding="12dp"
+            android:src="@drawable/ic_baseline_more_vert_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"

@@ -55,17 +55,17 @@
             android:textSize="14sp" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/folderSize"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="11sp"
-        android:alpha="0.6"
-        android:fontFamily="@font/not_sans"
-        android:layout_marginBottom="3dp"
-        android:layout_marginStart="12dp"
-        android:textColor="@color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/imageFolderIcon"
-         />
+<!--    <TextView-->
+<!--        android:id="@+id/folderSize"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:textSize="11sp"-->
+<!--        android:alpha="0.6"-->
+<!--        android:fontFamily="@font/not_sans"-->
+<!--        android:layout_marginBottom="3dp"-->
+<!--        android:layout_marginStart="12dp"-->
+<!--        android:textColor="@color/black"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="@+id/imageFolderIcon"-->
+<!--         />-->
 </androidx.constraintlayout.widget.ConstraintLayout>

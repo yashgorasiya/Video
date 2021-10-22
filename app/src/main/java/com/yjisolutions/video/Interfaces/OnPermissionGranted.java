@@ -1,4 +1,4 @@
-package com.yjisolutions.video.code;
+package com.yjisolutions.video.Interfaces;
 
 public interface OnPermissionGranted {
     void onGranted();

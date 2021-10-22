@@ -1,4 +1,4 @@
-package com.yjisolutions.video;
+package com.yjisolutions.video.Activities;
 
 /*
 https://github.com/google/ExoPlayer/blob/r2.11.7/demos/main/src/main/java/com/google/android/exoplayer2/demo/TrackSelectionDialog.java#L115
@@ -8,23 +8,18 @@ import static android.view.WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACK
 import static android.view.WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN;
 import static android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN;
 import static android.view.WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
-import static com.google.android.exoplayer2.C.MICROS_PER_SECOND;
 import static com.google.android.exoplayer2.C.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
-import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.DisplayMetrics;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -43,6 +38,11 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GestureDetectorCompat;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
+import com.github.rubensousa.previewseekbar.PreviewLoader;
+import com.github.rubensousa.previewseekbar.exoplayer.PreviewTimeBar;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlayer;
@@ -61,10 +61,12 @@ import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.video.VideoSize;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
+import com.yjisolutions.video.R;
 import com.yjisolutions.video.code.Conversion;
 import com.yjisolutions.video.code.TrackSelectionDialog;
+import com.yjisolutions.video.code.Utils;
 
-public class player extends AppCompatActivity {
+public class PlayerActivity extends AppCompatActivity {
 
     // Experimental
     private boolean isShowingTrackSelectionDialog;
@@ -77,11 +79,10 @@ public class player extends AppCompatActivity {
     DisplayMetrics metrics = new DisplayMetrics();
     private int INDICATOR_WIDTH = 600;
     private LinearLayout BVIndicator;
-    LinearLayout SeekGesturePreviewLayout;
+    private LinearLayout SeekGesturePreviewLayout;
     private int getWidth, getHeight;
     private int cPotion;
     private String videoTitle;
-    private SharedPreferences sp;
     private MediaItem mediaItem;
     private Uri videoURL;
 
@@ -107,6 +108,11 @@ public class player extends AppCompatActivity {
         ImageButton trackSelection = findViewById(R.id.exo_track_selection_view);
         TextView speedTxt = findViewById(R.id.speedTEXT);
 
+        ImageView seekbarPreview = findViewById(R.id.seekbarPreview);
+        PreviewTimeBar previewSeekBar = findViewById(R.id.exo_progress);
+        PreviewLoader imagePreviewLoader = ImagePreviewLoader(seekbarPreview);
+        previewSeekBar.setPreviewLoader(imagePreviewLoader);
+
 
         // Full Screen For Notch Devices
         getWindow().getAttributes().layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_ALWAYS;
@@ -122,7 +128,7 @@ public class player extends AppCompatActivity {
 
         speedControl.setOnClickListener(v -> {
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(player.this);
+            AlertDialog.Builder builder = new AlertDialog.Builder(PlayerActivity.this);
             builder.setTitle("Set Speed");
             builder.setItems(speed, (dialog, which) -> {
                 // the user clicked on colors[which]
@@ -161,8 +167,9 @@ public class player extends AppCompatActivity {
         });
 
         oriantation.setOnClickListener(v -> {
-            int orientation = player.this.getResources().getConfiguration().orientation;
-            if (orientation == Configuration.ORIENTATION_PORTRAIT) setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            int orientation = PlayerActivity.this.getResources().getConfiguration().orientation;
+            if (orientation == Configuration.ORIENTATION_PORTRAIT)
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
             else setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         });
 
@@ -179,6 +186,20 @@ public class player extends AppCompatActivity {
 
 
     }
+
+    private PreviewLoader ImagePreviewLoader(ImageView imageView) {
+        return (currentPosition, max) -> {
+            RequestOptions options = new RequestOptions().frame(currentPosition * 1000);
+            Glide.with(getBaseContext())
+                    .asDrawable()
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .load(videoURL)
+                    .apply(options)
+                    .override(160, 90)
+                    .into(imageView);
+        };
+    }
+
 
     private void trackSelectionSetup() {
         if (!isShowingTrackSelectionDialog
@@ -217,7 +238,7 @@ public class player extends AppCompatActivity {
                     break;
             }
         } else {
-            switch (playerView.getResizeMode()){
+            switch (playerView.getResizeMode()) {
                 case AspectRatioFrameLayout.RESIZE_MODE_FIT:
                     playerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIXED_WIDTH);
                     break;
@@ -243,9 +264,8 @@ public class player extends AppCompatActivity {
     public void init() {
 
 
-        if (!FfmpegLibrary.isAvailable()) Toast.makeText(getApplicationContext(), "FFmpegLibrary not found", Toast.LENGTH_SHORT).show();
-
-        sp = getSharedPreferences("UserData", Context.MODE_PRIVATE);
+        if (!FfmpegLibrary.isAvailable())
+            Toast.makeText(getApplicationContext(), "FFmpegLibrary not found", Toast.LENGTH_SHORT).show();
 
         gestureDetectorCompat = new GestureDetectorCompat(getApplicationContext(), new MyGestureDetector());
         playerView = findViewById(R.id.idExoPlayerVIew);
@@ -257,11 +277,10 @@ public class player extends AppCompatActivity {
         RenderersFactory renderersFactory = new DefaultRenderersFactory(this)
                 .setExtensionRendererMode(DefaultRenderersFactory.EXTENSION_RENDERER_MODE_PREFER);
 
-        simpleExoPlayer = new SimpleExoPlayer.Builder(this,renderersFactory)
+        simpleExoPlayer = new SimpleExoPlayer.Builder(this, renderersFactory)
                 .setTrackSelector(trackSelector)
-                .setMediaSourceFactory(new DefaultMediaSourceFactory(this,extractorsFactory))
+                .setMediaSourceFactory(new DefaultMediaSourceFactory(this, extractorsFactory))
                 .build();
-
 
 
         BVIndicator = findViewById(R.id.BrightnessVolumeCard);
@@ -275,9 +294,9 @@ public class player extends AppCompatActivity {
         simpleExoPlayer.setMediaItem(mediaItem);
         simpleExoPlayer.prepare();
 
-        long lastPlayed = sp.getLong(videoTitle, 0) ;
+        long lastPlayed = Utils.sp.getLong(videoTitle, 0);
         if (lastPlayed > 0) {
-            if (lastPlayed>=simpleExoPlayer.getDuration()){
+            if (lastPlayed >= simpleExoPlayer.getDuration()) {
                 Snackbar.make(this.findViewById(android.R.id.content), "Play From Start", Snackbar.LENGTH_LONG)
                         .setAction("START", v1 -> simpleExoPlayer.seekTo(0))
                         .setActionTextColor(Color.RED)
@@ -286,7 +305,7 @@ public class player extends AppCompatActivity {
                         .setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_SLIDE)
                         .show();
             }
-            simpleExoPlayer.seekTo(lastPlayed- 3000);
+            simpleExoPlayer.seekTo(lastPlayed - 3000);
         }
 
         simpleExoPlayer.play();
@@ -333,7 +352,7 @@ public class player extends AppCompatActivity {
 
             @Override
             public void onVideoSizeChanged(@NonNull VideoSize videoSize) {
-                if (videoSize.height<videoSize.width) {
+                if (videoSize.height < videoSize.width) {
                     setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
                 }
             }
@@ -342,11 +361,10 @@ public class player extends AppCompatActivity {
     }
 
     void saveLastPosition() {
-        SharedPreferences.Editor spe = sp.edit();
-        spe.putLong(videoTitle, simpleExoPlayer.getCurrentPosition());
-        spe.putString("recentVideoTitle",videoTitle);
-        spe.putString("recentVideoUrl",videoURL.toString());
-        if (!spe.commit()) Toast.makeText(getApplicationContext(), "Fialed To Save Last Position", Toast.LENGTH_SHORT).show();
+        if (!Utils.setRecentlyPlayed(videoTitle,
+                videoURL.toString(),
+                simpleExoPlayer.getCurrentPosition()))
+            Toast.makeText(getApplicationContext(), "Failed To Save Last Position", Toast.LENGTH_SHORT).show();
     }
 
     public void hideSystemUi() {
@@ -416,7 +434,8 @@ public class player extends AppCompatActivity {
     @SuppressLint("UseCompatLoadingForDrawables")
     private void adjustVolume(float yPercent) {
         AudioManager audioManager = (AudioManager) getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
-//        int cVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+
+        // in my case max volume is 16
         int maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
 
         int volume = (int) (yPercent * maxVolume);

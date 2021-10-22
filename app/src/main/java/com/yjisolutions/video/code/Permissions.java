@@ -13,12 +13,13 @@ import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
+import com.yjisolutions.video.Interfaces.OnPermissionGranted;
 
 import java.util.List;
 
 public class Permissions {
 
-    public static void request(Activity context,OnPermissionGranted onPermissionGranted) {
+    public static void request(Activity context, OnPermissionGranted onPermissionGranted) {
         Dexter.withContext(context)
                 .withPermissions(
                         Manifest.permission.READ_EXTERNAL_STORAGE,
