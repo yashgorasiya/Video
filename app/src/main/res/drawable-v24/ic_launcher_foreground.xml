@@ -13,17 +13,17 @@
           android:pathData="M0,0h512v512h-512z"/>
       <path
           android:pathData="M256,256m-256,0a256,256 0,1 1,512 0a256,256 0,1 1,-512 0"
-          android:fillColor="#fff1d9"/>
+          android:fillColor="#e9d6ff"/>
       <path
           android:pathData="M383.664,233.444a27,27 0,0 1,-0 46.113L206.55,387.485A27,27 114.953,0 1,165.5 364.429L165.5,148.571a27,27 84.401,0 1,41.05 -23.056Z">
         <aapt:attr name="android:fillColor">
           <gradient 
-              android:gradientRadius="429.5743"
-              android:centerX="319.15573"
-              android:centerY="224.13246"
+              android:gradientRadius="467.51584"
+              android:centerX="-12.054251"
+              android:centerY="259.45312"
               android:type="radial">
-            <item android:offset="0" android:color="#FFF3B678"/>
-            <item android:offset="1" android:color="#FFD3710D"/>
+            <item android:offset="0" android:color="#FF8E4BEA"/>
+            <item android:offset="1" android:color="#FF5F30A1"/>
           </gradient>
         </aapt:attr>
       </path>

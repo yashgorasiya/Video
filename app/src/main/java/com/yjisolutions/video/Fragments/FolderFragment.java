@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.yjisolutions.video.Activities.PlayerActivity;
 import com.yjisolutions.video.Adapters.FolderAdapter;
 import com.yjisolutions.video.Interfaces.OnPermissionGranted;
@@ -29,7 +30,7 @@ import java.util.ArrayList;
 
 
 public class FolderFragment extends Fragment implements OnPermissionGranted {
-    private ArrayList<String> folder = new ArrayList<>();
+    private ArrayList<VideoRead.Folder> folder = new ArrayList<>();
     private FolderAdapter adapter;
     private RecyclerView recyclerView;
     private ImageView more;
@@ -49,7 +50,7 @@ public class FolderFragment extends Fragment implements OnPermissionGranted {
 
         View v = inflater.inflate(R.layout.fragment_folder, container, false);
 
-        ImageView recentPlayed = v.findViewById(R.id.recentPlayResume);
+        FloatingActionButton recentPlayed = v.findViewById(R.id.recentPlayResume);
         recentPlayed.setOnClickListener(v1 -> recentPlayedResume());
 
         recyclerView = v.findViewById(R.id.folderRecView);
@@ -157,9 +158,9 @@ public class FolderFragment extends Fragment implements OnPermissionGranted {
     }
 
     void filter(String text) {
-        ArrayList<String> temp = new ArrayList<>();
-        for (String d : folder) {
-            if (d.toLowerCase().contains(text)) {
+        ArrayList<VideoRead.Folder> temp = new ArrayList<>();
+        for (VideoRead.Folder d : folder) {
+            if (d.getName().toLowerCase().contains(text)) {
                 temp.add(d);
             }
         }

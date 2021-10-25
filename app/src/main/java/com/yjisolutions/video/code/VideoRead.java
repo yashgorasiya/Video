@@ -26,6 +26,7 @@ public class VideoRead {
             MediaStore.Video.Media.DURATION,
             MediaStore.Video.Media.SIZE,
     };
+
     public static ArrayList<Video> getVideoFromFolder(Context context, String folderName) {
 
         ArrayList<Video> videoList = new ArrayList<>();
@@ -104,9 +105,81 @@ public class VideoRead {
         return videoList;
     }
 
-    public static ArrayList<String> getFolders(Context context) {
+    public static int getNumOfFolder(Context context, String folderName) {
+
+        int numOfVideosInFolder = 0;
+
+        Uri collection;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            collection = MediaStore.Video.Media.getContentUri(MediaStore.VOLUME_EXTERNAL);
+        } else {
+            collection = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
+        }
+
+        String[] projection = new String[]{
+                MediaStore.Video.Media._ID,
+                MediaStore.Video.Media.DATA
+        };
+        String selection = MediaStore.Video.Media.DATA + " like?";
+        String[] selectionArgs = new String[]{"%" + folderName + "%"};
+        String sortOrder = sortBy[Utils.SORT_BY_VIDEOS] + order[Utils.SORT_ORDER_VIDEOS];
+
+        try (
+                Cursor cursor = context.getContentResolver().query(
+                        collection,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null
+                )) {
+            // Cache column indices.
+            int idColumn = cursor.getColumnIndexOrThrow(MediaStore.Video.Media._ID);
+
+
+            String FName1 = folderName.substring(folderName.lastIndexOf("/") + 1);
+            if (FName1.equals("0")) {
+                while (cursor.moveToNext()) {
+                    // Get values of columns for a given video
+                    String path = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.DATA));
+                    int index = path.lastIndexOf("/");
+                    String ss = path.substring(0, index);
+                    String FName = ss.substring(ss.lastIndexOf("/") + 1);
+                    if (FName.equals(FName1)) {
+                        numOfVideosInFolder++;
+                    }
+                }
+            } else {
+                while (cursor.moveToNext()) {
+                    // Get values of columns for a given video.
+                    numOfVideosInFolder++;
+
+                }
+            }
+        }
+        return numOfVideosInFolder;
+    }
+
+    public static class Folder{
+        public String getName() {
+            return Name;
+        }
+
+        public int getCount() {
+            return count;
+        }
+
+        private String Name;
+        private int count;
+
+        public Folder(String name, int count) {
+            Name = name;
+            this.count = count;
+        }
+    }
+    public static ArrayList<Folder> getFolders(Context context) {
 
         ArrayList<String> folderList = new ArrayList<>();
+        ArrayList<Folder> folderListWithCount = new ArrayList<>();
 
         Uri collection;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
@@ -147,12 +220,13 @@ public class VideoRead {
 
                 if (!folderList.contains(ss)) {
                     folderList.add(ss);
+                    folderListWithCount.add(new Folder(ss,VideoRead.getNumOfFolder(context,ss)));
                 }
 
 
             }
         }
-        return folderList;
+        return folderListWithCount;
     }
 
     public static ArrayList<Video> getVideo(Context context) {

@@ -11,11 +11,11 @@
 
     <ImageView
         android:id="@+id/imageFolderIcon"
-        android:layout_width="70dp"
-        android:layout_height="50dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="5dp"
         android:contentDescription="@string/folderIcon"
-        android:padding="3dp"
-        android:src="@drawable/folder_icon"
+        android:src="@drawable/ic_folder_icon"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -40,7 +40,7 @@
             android:fontFamily="@font/not_sans"
             android:maxLines="1"
             android:text="@string/dummyFolderName"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:textStyle="bold" />
 
         <TextView
@@ -52,7 +52,7 @@
             android:fontFamily="@font/not_sans"
             android:maxLines="1"
             android:text="@string/dummyVideoCount8_videos"
-            android:textSize="14sp" />
+            android:textSize="12sp" />
     </LinearLayout>
 
 <!--    <TextView-->

@@ -4,12 +4,14 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -107,7 +109,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoViewHolder> {
     @SuppressLint("ShowToast")
     private void showBottomSheetMore(Uri uri, int position) {
 
-        final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(activity);
+        final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(activity,R.style.BottomSheetCustom);
         bottomSheetDialog.setContentView(R.layout.bottom_sheet_dialog);
 
         LinearLayout share = bottomSheetDialog.findViewById(R.id.shareLinearLayout);
@@ -139,6 +141,11 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoViewHolder> {
 
             TextView deleteSize = deleteDialogView.findViewById(R.id.sizeDelete);
             TextView deleteTille = deleteDialogView.findViewById(R.id.DeleteDialogTitle);
+            SeekBar seekBar = deleteDialogView.findViewById(R.id.delete_preview_seekbar);
+
+            seekBar.setPadding(0,0,0,0);
+            seekBar.setMax(video.getDuration());
+            seekBar.setProgress(Integer.parseInt(String.valueOf(Utils.sp.getLong(video.getName(),0))));
 
             deleteSize.setText(Conversion.sizeConversion(video.getSize()));
             deleteTille.setText(video.getName());
@@ -191,25 +198,32 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoViewHolder> {
     @SuppressLint("SetTextI18n")
     private void showBottomSheetMore(int position) {
 
-        final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(activity);
+        final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(activity,R.style.BottomSheetCustom);
         bottomSheetDialog.setContentView(R.layout.bottom_sheet_video_information);
 
         Video video = videos.get(position);
+        String w="0",h="0";
+        long l=0;
 
-//        FFmpegMediaMetadataRetriever mmr = new FFmpegMediaMetadataRetriever();
-//        mmr.setDataSource(mUri);
-//        mmr.extractMetadata(FFmpegMediaMetadataRetriever.METADATA_KEY_ALBUM);
-//        mmr.extractMetadata(FFmpegMediaMetadataRetriever.METADATA_KEY_ARTIST);
-//
-//        mmr.release();
+        try (MediaMetadataRetriever mmr = new MediaMetadataRetriever()) {
+            mmr.setDataSource(activity, video.getUri());
+            w = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_WIDTH);
+            h = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT);
+            l = Long.parseLong(mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_BITRATE));
+            mmr.release();
+        }
 
 
         ImageView Preview = bottomSheetDialog.findViewById(R.id.VIPreview);
         TextView size = bottomSheetDialog.findViewById(R.id.VISize);
         TextView title = bottomSheetDialog.findViewById(R.id.VITitle);
         TextView duration = bottomSheetDialog.findViewById(R.id.VIDuration);
-//            TextView Width = bottomSheetDialog.findViewById(R.id.VIWidth);
-//            TextView Height = bottomSheetDialog.findViewById(R.id.VIHeight);
+        TextView Width = bottomSheetDialog.findViewById(R.id.VIWidth);
+        TextView Height = bottomSheetDialog.findViewById(R.id.VIHeight);
+        TextView location = bottomSheetDialog.findViewById(R.id.VILocation);
+        Objects.requireNonNull(Width).setText(w);
+        Objects.requireNonNull(Height).setText(h);
+        Objects.requireNonNull(location).setText(Conversion.sizeConversion(l)+"ps");
 
         Objects.requireNonNull(title).setText(video.getName());
         Objects.requireNonNull(size).setText(Conversion.sizeConversion(video.getSize()));
@@ -217,6 +231,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoViewHolder> {
 
         Glide.with(activity)
                 .load(video.getUri())
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(Objects.requireNonNull(Preview));
 
         bottomSheetDialog.show();

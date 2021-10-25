@@ -3,10 +3,15 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:paddingTop="12dp"
-    android:paddingBottom="12dp"
+    android:paddingTop="16dp"
+    android:paddingBottom="16dp"
+    android:paddingEnd="8dp"
+    android:paddingStart="8dp"
+    android:clickable="true"
+    android:focusable="true"
+    app:layout_behavior="@string/bottom_sheet_behavior"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,7 +19,9 @@
         android:orientation="horizontal"
         android:id="@+id/shareLinearLayout"
         android:background="?android:attr/selectableItemBackground"
-        android:padding="8dp">
+        android:padding="8dp"
+        android:clickable="true"
+        android:focusable="true">
 
         <ImageView
             android:layout_width="24dp"
@@ -43,7 +50,9 @@
         android:orientation="horizontal"
         android:id="@+id/delete"
         android:background="?android:attr/selectableItemBackground"
-        android:padding="8dp">
+        android:padding="8dp"
+        android:clickable="true"
+        android:focusable="true">
 
         <ImageView
             android:layout_width="24dp"
@@ -70,7 +79,9 @@
         android:orientation="horizontal"
         android:id="@+id/videoInformation"
         android:background="?android:attr/selectableItemBackground"
-        android:padding="8dp">
+        android:padding="8dp"
+        android:clickable="true"
+        android:focusable="true">
 
         <ImageView
             android:layout_width="24dp"

@@ -8,28 +8,27 @@
     android:orientation="vertical"
     android:background="@drawable/delete_dialog_bg">
 
-        <TextView
-            android:id="@+id/DeleteDialogTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="42dp"
-            android:layout_marginStart="18dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginTop="16dp"
-            android:textSize="14sp"
-            android:textColor="@color/homePreviewMore"
-            android:fontFamily="@font/not_sans"
-            />
-
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="16dp"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:fontFamily="@font/not_sans"
+        android:textColor="@color/homePreviewMore"
+        android:text="@string/deleteWaringMassage"/>
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:layout_marginTop="6dp"
+            android:layout_height="180dp"
+            android:layout_marginTop="10dp"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="5dp"
-            app:cardCornerRadius="12dp"
+            app:cardCornerRadius="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -42,17 +41,21 @@
                 android:scaleType="centerCrop"
                 android:contentDescription="@string/deleteDialogThumb" />
 
-            <LinearLayout
+            <SeekBar
+                android:id="@+id/delete_preview_seekbar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_gravity="bottom">
+                android:layout_height="4dp"
+                android:layout_gravity="bottom"
+                android:progressDrawable="@drawable/home_preview_seekbar_process"
+                android:thumb="@android:color/transparent" />
+
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
+                    android:layout_marginTop="152dp"
                     android:layout_marginEnd="5dp"
-                    android:layout_marginBottom="3dp"
+                    android:layout_marginBottom="5dp"
                     android:background="@drawable/duration_size_bg"
                     tools:ignore="UselessParent">
                 <TextView
@@ -64,62 +67,50 @@
                     android:paddingEnd="4dp"
                     android:text="@string/dummyVideoSize50mb"
                     android:textColor="@color/white"
-                    android:textSize="18sp"
+                    android:textSize="14sp"
                     android:textStyle="bold" />
                 </LinearLayout>
 
-            </LinearLayout>
-
-            <SeekBar
-                android:id="@+id/home_preview_seekbar"
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_gravity="bottom"
-                android:padding="0dp"
-                android:progressDrawable="@drawable/home_preview_seekbar_process"
-                android:thumb="@color/black" />
-
         </androidx.cardview.widget.CardView>
 
-        <TextView
+    <TextView
+        android:id="@+id/DeleteDialogTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="18dp"
+        android:layout_marginEnd="16dp"
+        android:textSize="12sp"
+        android:textColor="@color/homePreviewMore"
+        android:fontFamily="@font/not_sans" />
+
+
+    <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="18dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="8dp"
-            android:textSize="14sp"
-            android:fontFamily="@font/not_sans"
-            android:textColor="@color/homePreviewMore"
-            android:text="@string/deleteWaringMassage"/>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
             android:layout_gravity="end">
 
-            <TextView
+            <Button
                 android:id="@+id/DialogDeleteCancelTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/cancel"
-                android:textStyle="bold"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                android:paddingEnd="12dp"
-                android:paddingStart="8dp"
-                android:textSize="16sp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="1dp"
+                android:backgroundTint="@color/GreenLight"
+                android:textColor="@android:color/holo_green_dark"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="12dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
                 />
 
             <Button
                 android:id="@+id/DialogDeleteBtn"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="12dp"
+                android:layout_marginTop="8dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:shadowColor="@android:color/holo_red_dark"
-                android:backgroundTint="@android:color/holo_red_light"
+                android:backgroundTint="@color/RedLight"
+                android:textColor="@android:color/holo_red_dark"
                 android:text="@string/delete" />
 
         </LinearLayout>

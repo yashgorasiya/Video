@@ -10,8 +10,8 @@
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/previewMaterialCard"
-            android:layout_width="128dp"
-            android:layout_height="74dp"
+            android:layout_width="120dp"
+            android:layout_height="70dp"
             app:cardCornerRadius="6dp"
             android:layout_marginStart="6dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -52,7 +52,7 @@
                     android:paddingEnd="4dp"
                     android:text="@string/dummyVideoSize50mb"
                     android:textColor="@color/white"
-                    android:textSize="9sp"
+                    android:textSize="8sp"
                     android:textStyle="bold"
                     tools:ignore="SmallSp" />
 
@@ -75,7 +75,7 @@
                     android:gravity="center"
                     android:text="@string/duration"
                     android:textColor="@color/white"
-                    android:textSize="10sp"
+                    android:textSize="9sp"
                     android:textStyle="bold"
                     tools:ignore="SmallSp" />
 
@@ -87,14 +87,14 @@
             android:id="@+id/titleV"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginStart="142dp"
+            android:layout_marginStart="130dp"
             android:fontFamily="@font/not_sans"
             android:padding="8dp"
             android:ellipsize="end"
             android:maxLines="3"
             android:gravity="center_vertical"
             android:layout_marginEnd="30dp"
-            android:textSize="13sp"
+            android:textSize="12sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -104,11 +104,11 @@
         <ImageView
             android:contentDescription="@string/more"
             android:id="@+id/previewHomeMore"
-            android:layout_width="24dp"
-            android:layout_height="56dp"
+            android:layout_width="30dp"
+            android:layout_height="match_parent"
             android:alpha="0.6"
+            android:padding="3dp"
             android:foregroundGravity="top"
-            android:layout_marginEnd="4dp"
             android:src="@drawable/ic_baseline_more_vert_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

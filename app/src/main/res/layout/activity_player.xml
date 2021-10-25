@@ -18,6 +18,116 @@
         app:controller_layout_id="@layout/layout_exoplayer_control_view"
         />
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/VolumeCard"
+        android:visibility="invisible"
+        >
+
+        <SeekBar
+            android:id="@+id/VolumeSeekBar"
+            android:layout_width="150dp"
+            android:layout_height="34dp"
+            android:progressDrawable="@drawable/brightness_volume_slider_seekbar_bg"
+            android:rotation="270"
+            android:thumb="@android:color/transparent"
+            app:labelBehavior="gone"
+            android:background="@drawable/controller_brightness_volume_bg"
+            app:layout_constraintVertical_bias="0.46"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:thumbElevation="0dp" />
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="60dp"
+            android:background="@drawable/controller_brightness_volume_bg"
+            android:orientation="vertical"
+            android:padding="8dp"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="@+id/VolumeSeekBar"
+            app:layout_constraintStart_toStartOf="@+id/VolumeSeekBar"
+            app:layout_constraintTop_toBottomOf="@+id/VolumeSeekBar">
+
+            <ImageView
+                android:id="@+id/BrightnessVolumeRes"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center_horizontal"
+                android:contentDescription="@string/brightnessVolumeIcon"
+                android:padding="1dp"
+                android:src="@drawable/ic_baseline_volume_up_24" />
+
+            <TextView
+                android:id="@+id/VolumeText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:textColor="@color/white"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout> <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/BrightnessCard"
+        android:visibility="invisible"
+        android:layout_gravity="right"
+        >
+
+        <SeekBar
+            android:id="@+id/BrightnessSeekBar"
+            android:layout_width="150dp"
+            android:layout_height="34dp"
+            android:progressDrawable="@drawable/brightness_volume_slider_seekbar_bg"
+            android:rotation="270"
+            android:thumb="@android:color/transparent"
+            app:labelBehavior="gone"
+            android:background="@drawable/controller_brightness_volume_bg"
+            app:layout_constraintVertical_bias="0.46"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:thumbElevation="0dp" />
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="60dp"
+            android:background="@drawable/controller_brightness_volume_bg"
+            android:orientation="vertical"
+            android:padding="8dp"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="@+id/BrightnessSeekBar"
+            app:layout_constraintStart_toStartOf="@+id/BrightnessSeekBar"
+            app:layout_constraintTop_toBottomOf="@+id/BrightnessSeekBar">
+
+            <ImageView
+                android:id="@+id/BrightnessRes"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center_horizontal"
+                android:contentDescription="@string/brightnessVolumeIcon"
+                android:padding="1dp"
+                android:src="@drawable/ic_baseline_brightness_5_24" />
+
+            <TextView
+                android:id="@+id/BrightnessText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:textColor="@color/white"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -33,38 +143,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="24sp"
+                android:layout_marginBottom="5dp"
                 android:textColor="@color/white"
                 android:padding="10dp"
                 />
 
         </LinearLayout>
 
-       <LinearLayout
-           android:id="@+id/BrightnessVolumeCard"
-            android:layout_width="86dp"
-            android:layout_height="86dp"
-           android:visibility="invisible"
-            android:background="@drawable/controller_brightness_volume_bg"
-            android:layout_gravity="center"
-            android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/BrightnessVolumeRes"
-                android:layout_width="42dp"
-                android:layout_height="42dp"
-                android:padding="1dp"
-                android:contentDescription="@string/brightnessVolumeIcon"
-                android:layout_marginTop="10dp"
-                android:layout_gravity="center_horizontal"
-                android:src="@drawable/ic_baseline_brightness_5_24"/>
-            <TextView
-                android:id="@+id/BrightnessVolumeText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"
-                android:layout_gravity="center_horizontal"
-                android:textColor="@color/white"
-                android:textSize="18sp"/>
-        </LinearLayout>
 
 </FrameLayout>

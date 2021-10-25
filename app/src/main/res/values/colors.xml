@@ -7,9 +7,10 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="BVBlack">#67000000</color>
+    <color name="DuSizeBackground">#99121212</color>
     <color name="white">#FFFFFFFF</color>
     <color name="statusBar">#FFFFFFFF</color>
-    <color name="orange">#FF5900</color>
+    <color name="orange">#E6FF0000</color>
     <color name="homePreviewMore">#FF000000</color>
     <color name="light_blue_600">#FF039BE5</color>
     <color name="light_blue_900">#FF01579B</color>
@@ -17,6 +18,8 @@
     <color name="light_blue_A400">#FF00B0FF</color>
     <color name="black_overlay">#66000000</color>
     <color name="homeBG">#FFC7D4E7</color>
-    <color name="PrimaryLight">#FFF1D9</color>
+    <color name="PrimaryLight">#E9D6FF</color>
     <color name="PrimaryDark">#F3B678</color>
+    <color name="RedLight">#FFD6D6</color>
+    <color name="GreenLight">#D6FFD6</color>
 </resources>

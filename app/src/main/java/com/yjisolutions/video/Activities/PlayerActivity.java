@@ -7,6 +7,7 @@ https://github.com/google/ExoPlayer/blob/r2.11.7/demos/main/src/main/java/com/go
 import static android.view.WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS;
 import static android.view.WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN;
 import static android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN;
+import static android.view.WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS;
 import static android.view.WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
 import static com.google.android.exoplayer2.C.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING;
 
@@ -15,7 +16,6 @@ import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Build;
@@ -24,18 +24,21 @@ import android.util.DisplayMetrics;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.view.GestureDetectorCompat;
 
 import com.bumptech.glide.Glide;
@@ -47,7 +50,6 @@ import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.MediaItem;
-import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.RenderersFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -59,6 +61,9 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.video.VideoSize;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.yjisolutions.video.R;
@@ -66,25 +71,27 @@ import com.yjisolutions.video.code.Conversion;
 import com.yjisolutions.video.code.TrackSelectionDialog;
 import com.yjisolutions.video.code.Utils;
 
+import java.util.Objects;
+
 public class PlayerActivity extends AppCompatActivity {
 
     // Experimental
     private boolean isShowingTrackSelectionDialog;
     private DefaultTrackSelector trackSelector;
-    String[] speed = {"0.25x", "0.5x", "Normal", "1.5x", "2x"};
 
     private PlayerView playerView;
     private SimpleExoPlayer simpleExoPlayer;
     private GestureDetectorCompat gestureDetectorCompat;
     DisplayMetrics metrics = new DisplayMetrics();
     private int INDICATOR_WIDTH = 600;
-    private LinearLayout BVIndicator;
+    private ConstraintLayout BIndicator,VIndicator;
     private LinearLayout SeekGesturePreviewLayout;
     private int getWidth, getHeight;
     private int cPotion;
     private String videoTitle;
     private MediaItem mediaItem;
     private Uri videoURL;
+    private float PlayBackSpeed = 1.00f;
 
     @SuppressLint({"ClickableViewAccessibility", "UseCompatLoadingForDrawables", "SourceLockedOrientationActivity", "SetTextI18n"})
     @RequiresApi(api = Build.VERSION_CODES.R)
@@ -103,10 +110,9 @@ public class PlayerActivity extends AppCompatActivity {
         ImageView backArrow = findViewById(R.id.controllerBackArrow);
         ImageView moreControls = findViewById(R.id.moreControls);
 
-        ImageButton speedControl = findViewById(R.id.exo_playback_speed);
-        ImageButton oriantation = findViewById(R.id.exo_fullscreen);
+        ImageView speedControl = findViewById(R.id.playback_speed);
+        ImageButton orientation = findViewById(R.id.exo_fullscreen);
         ImageButton trackSelection = findViewById(R.id.exo_track_selection_view);
-        TextView speedTxt = findViewById(R.id.speedTEXT);
 
         ImageView seekbarPreview = findViewById(R.id.seekbarPreview);
         PreviewTimeBar previewSeekBar = findViewById(R.id.exo_progress);
@@ -116,59 +122,29 @@ public class PlayerActivity extends AppCompatActivity {
 
         // Full Screen For Notch Devices
         getWindow().getAttributes().layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_ALWAYS;
+        getWindow().addFlags(FLAG_FULLSCREEN);
+
+        getWindow().setFlags(FLAG_LAYOUT_NO_LIMITS,
+                FLAG_LAYOUT_NO_LIMITS);
+
+
+
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
 
         playerTitle.setText(videoTitle);
         backArrow.setOnClickListener(v -> onBackPressed());
+        speedControl.setOnClickListener(v -> PlayBackSpeedDialog());
 
         moreControls.setOnClickListener(v -> {
             // Do something in three dot Click
         });
 
-        speedControl.setOnClickListener(v -> {
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(PlayerActivity.this);
-            builder.setTitle("Set Speed");
-            builder.setItems(speed, (dialog, which) -> {
-                // the user clicked on colors[which]
 
-                if (which == 0) {
-                    speedTxt.setVisibility(View.VISIBLE);
-                    speedTxt.setText("0.25X");
-                    PlaybackParameters param = new PlaybackParameters(0.5f);
-                    simpleExoPlayer.setPlaybackParameters(param);
-                }
-                if (which == 1) {
-                    speedTxt.setVisibility(View.VISIBLE);
-                    speedTxt.setText("0.5X");
-                    PlaybackParameters param = new PlaybackParameters(0.5f);
-                    simpleExoPlayer.setPlaybackParameters(param);
-                }
-                if (which == 2) {
-                    speedTxt.setVisibility(View.GONE);
-                    PlaybackParameters param = new PlaybackParameters(1f);
-                    simpleExoPlayer.setPlaybackParameters(param);
-                }
-                if (which == 3) {
-                    speedTxt.setVisibility(View.VISIBLE);
-                    speedTxt.setText("1.5X");
-                    PlaybackParameters param = new PlaybackParameters(1.5f);
-                    simpleExoPlayer.setPlaybackParameters(param);
-                }
-                if (which == 4) {
-                    speedTxt.setVisibility(View.VISIBLE);
-                    speedTxt.setText("2X");
-                    PlaybackParameters param = new PlaybackParameters(2f);
-                    simpleExoPlayer.setPlaybackParameters(param);
-                }
-            });
-            builder.show();
-        });
-
-        oriantation.setOnClickListener(v -> {
-            int orientation = PlayerActivity.this.getResources().getConfiguration().orientation;
-            if (orientation == Configuration.ORIENTATION_PORTRAIT)
+        orientation.setOnClickListener(v -> {
+            int ori = PlayerActivity.this.getResources().getConfiguration().orientation;
+            if (ori == Configuration.ORIENTATION_PORTRAIT)
                 setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
             else setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         });
@@ -184,6 +160,43 @@ public class PlayerActivity extends AppCompatActivity {
         init();
         hideSystemUi();
 
+
+    }
+
+    private void setupFullHeight(BottomSheetDialog bottomSheetDialog) {
+        FrameLayout bottomSheet = (FrameLayout) bottomSheetDialog.findViewById(R.id.design_bottom_sheet);
+        BottomSheetBehavior<FrameLayout> behavior = BottomSheetBehavior.from(Objects.requireNonNull(bottomSheet));
+        ViewGroup.LayoutParams layoutParams = bottomSheet.getLayoutParams();
+        if (layoutParams != null) layoutParams.height = 320;
+        bottomSheet.setLayoutParams(layoutParams);
+        behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+    }
+
+    @SuppressLint("DefaultLocale")
+    private void PlayBackSpeedDialog() {
+        final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this,R.style.BottomSheetSpeed);
+        bottomSheetDialog.setContentView(R.layout.playback_speed_dialog);
+        setupFullHeight(bottomSheetDialog);
+
+        FloatingActionButton add = bottomSheetDialog.findViewById(R.id.speedIncreaseButton);
+        FloatingActionButton remove = bottomSheetDialog.findViewById(R.id.speedDecreaseButton);
+        TextView textView = bottomSheetDialog.findViewById(R.id.playBack_Speed_text);
+
+        Objects.requireNonNull(textView).setText(String.format("%.2f",PlayBackSpeed));
+
+        Objects.requireNonNull(add).setOnClickListener(v -> {
+            PlayBackSpeed = PlayBackSpeed + 0.05f;
+            Objects.requireNonNull(textView).setText(String.format("%.2f",PlayBackSpeed));
+            simpleExoPlayer.setPlaybackSpeed(PlayBackSpeed);
+        });
+
+        Objects.requireNonNull(remove).setOnClickListener(v -> {
+            if (PlayBackSpeed>0.10) PlayBackSpeed = PlayBackSpeed - 0.05f;
+            Objects.requireNonNull(textView).setText(String.format("%.2f",PlayBackSpeed));
+            simpleExoPlayer.setPlaybackSpeed(PlayBackSpeed);
+        });
+
+        bottomSheetDialog.show();
 
     }
 
@@ -283,7 +296,8 @@ public class PlayerActivity extends AppCompatActivity {
                 .build();
 
 
-        BVIndicator = findViewById(R.id.BrightnessVolumeCard);
+        BIndicator = findViewById(R.id.BrightnessCard);
+        VIndicator = findViewById(R.id.VolumeCard);
         SeekGesturePreviewLayout = findViewById(R.id.SeekGesturePreviewLayout);
 
         getWidth = metrics.widthPixels;
@@ -372,13 +386,26 @@ public class PlayerActivity extends AppCompatActivity {
         getWindow().setFlags(FLAG_FULLSCREEN, FLAG_FULLSCREEN);
         getWindow().clearFlags(FLAG_TRANSLUCENT_STATUS);
         getWindow().clearFlags(FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        getWindow().addFlags(FLAG_LAYOUT_NO_LIMITS);
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_IMMERSIVE
+                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN);
+
     }
 
     public void showSystemUi() {
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN, WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+        getWindow().setFlags(FLAG_FORCE_NOT_FULLSCREEN, FLAG_FORCE_NOT_FULLSCREEN);
         getWindow().addFlags(FLAG_TRANSLUCENT_STATUS);
         getWindow().addFlags(FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         getWindow().setStatusBarColor(Color.TRANSPARENT);
+
+        getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -440,8 +467,7 @@ public class PlayerActivity extends AppCompatActivity {
 
         int volume = (int) (yPercent * maxVolume);
         audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, volume, 0);
-
-        BVIndicator(yPercent, getDrawable(R.drawable.ic_baseline_volume_up_24));
+        VIndicator(yPercent);
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
@@ -450,18 +476,30 @@ public class PlayerActivity extends AppCompatActivity {
         WindowManager.LayoutParams lp = window.getAttributes();
         lp.screenBrightness = yPercent;
         window.setAttributes(lp);
-        BVIndicator(yPercent, getDrawable(R.drawable.ic_baseline_brightness_5_24));
+        BIndicator(yPercent);
     }
 
     // Brightness And Volume Indicator Canter of Screen While using Gesture
     @SuppressLint({"SetTextI18n", "DefaultLocale"})
-    private void BVIndicator(float persent, Drawable res) {
-        float temp = 100 * persent;
+    private void BIndicator(float p) {
+        float temp = 100 * p;
         int val = (int) temp;
-        BVIndicator.setVisibility(View.VISIBLE);
-        ImageView BV = findViewById(R.id.BrightnessVolumeRes);
-        TextView BVText = findViewById(R.id.BrightnessVolumeText);
-        BV.setImageDrawable(res);
+        BIndicator.setVisibility(View.VISIBLE);
+        TextView BVText = findViewById(R.id.BrightnessText);
+        SeekBar seekBar = findViewById(R.id.BrightnessSeekBar);
+        seekBar.setMax(100);
+        seekBar.setProgress(val);
+        BVText.setText(String.format("%02d", val) + "%");
+    }
+  @SuppressLint({"SetTextI18n", "DefaultLocale"})
+    private void VIndicator(float p) {
+        float temp = 100 * p;
+        int val = (int) temp;
+        VIndicator.setVisibility(View.VISIBLE);
+        TextView BVText = findViewById(R.id.VolumeText);
+        SeekBar seekBar = findViewById(R.id.VolumeSeekBar);
+        seekBar.setMax(100);
+        seekBar.setProgress(val);
         BVText.setText(String.format("%02d", val) + "%");
     }
 
@@ -489,7 +527,8 @@ public class PlayerActivity extends AppCompatActivity {
     }
 
     private void endScroll() {
-        BVIndicator.setVisibility(View.INVISIBLE);
+        BIndicator.setVisibility(View.INVISIBLE);
+        VIndicator.setVisibility(View.INVISIBLE);
         SeekGesturePreviewLayout.setVisibility(View.INVISIBLE);
     }
 
@@ -572,7 +611,7 @@ public class PlayerActivity extends AppCompatActivity {
             cPotion = (int) simpleExoPlayer.getCurrentPosition();
             maxVerticalMovement = 0;
             maxHorizontalMovement = 0;
-            canUseWipeControls = !playerView.isControllerVisible();
+            //canUseWipeControls = !playerView.isControllerVisible();
             return super.onDown(e);
         }
 

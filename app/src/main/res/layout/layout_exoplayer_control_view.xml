@@ -7,6 +7,7 @@
     android:visibility="visible"
     android:id="@+id/exoPlayerController">
 
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_header_view"
         android:layout_width="match_parent"
@@ -16,12 +17,42 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <ImageView
+            android:id="@+id/playback_speed"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/player_buttons_bg"
+            android:contentDescription="@string/exo_controls_playback_speed"
+            android:padding="10dp"
+            android:src="@drawable/ic_baseline_speed"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/moreControls"
+            app:layout_constraintVertical_bias="1.0"
+            app:tint="@color/white" />
+
+        <ImageView
+            android:id="@+id/playerNight"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginEnd="12dp"
+            android:background="@drawable/player_buttons_bg"
+            android:padding="10dp"
+            android:src="@drawable/ic_baseline_nights_stay_24"
+            app:layout_constraintBottom_toBottomOf="@+id/playback_speed"
+            app:layout_constraintEnd_toStartOf="@+id/playback_speed"
+            app:layout_constraintTop_toTopOf="@+id/playback_speed"
+            app:tint="@color/white" />
+
+
         <TextView
             android:id="@+id/titlePlayer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:layout_marginTop="42dp"
+            android:layout_marginTop="34dp"
             android:layout_marginBottom="28dp"
             android:layout_marginEnd="70dp"
             android:layout_marginStart="70dp"
@@ -38,27 +69,27 @@
                 android:id="@+id/moreControls"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
                 android:layout_marginEnd="20dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginTop="32dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:src="@drawable/ic_baseline_more_vert_24"
                 app:tint="@color/white" />
 
-            <ImageView
-                android:contentDescription="@string/backArrow"
-                android:id="@+id/controllerBackArrow"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="32dp"
-                android:layout_marginBottom="28dp"
-                android:src="@drawable/ic_baseline_arrow_back_24"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+        <ImageView
+            android:id="@+id/controllerBackArrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="28dp"
+            android:contentDescription="@string/backArrow"
+            android:padding="10dp"
+            android:src="@drawable/ic_baseline_arrow_back_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -67,16 +98,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/controller_bg"
-        android:paddingTop="60dp"
+        android:paddingTop="20dp"
         android:paddingBottom="3dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
+
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
+            android:paddingTop="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -178,7 +212,7 @@
             <com.github.rubensousa.previewseekbar.exoplayer.PreviewTimeBar
                 android:id="@+id/exo_progress"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="16dp"
                 app:played_color="@color/orange"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
@@ -254,12 +288,6 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintLeft_toRightOf="@+id/barrier_right" />
 
-
-                    <TextView
-                        android:id="@+id/speedTEXT"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
                 </LinearLayout>
 
                 <ImageView
@@ -288,16 +316,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="75dp"
+        android:layout_marginBottom="80dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <ImageButton
-        android:contentDescription="@string/exo_controls_playback_speed"
-        android:id="@+id/exo_playback_speed"
-        android:layout_marginBottom="75dp"
-        style="@style/ExoStyledControls.Button.Bottom.PlaybackSpeed"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/exo_fullscreen"
-        />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,6 +4,8 @@
     <color name="statusBar">#FF000000</color>
     <color name="BVBlack">#65000000</color>
     <color name="homePreviewMore">#FFFFFFFF</color>
-    <color name="orange">#FF5900</color>
-
+    <color name="orange">#E6FF0000</color>
+    <color name="DuSizeBackground">#B3121212</color>
+    <color name="RedLight">#FFD6D6</color>
+    <color name="GreenLight">#D6FFD6</color>
 </resources>

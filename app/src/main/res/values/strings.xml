@@ -34,8 +34,6 @@
     <string name="textDivider">/</string>
     <string name="trackSelectionButton">trackSelectionButton</string>
     <string name="videoFitting">VideoFitting</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="name">Name</string>
     <string name="date_added">Date Added</string>
     <string name="date_modified">Date Modified</string>
@@ -44,5 +42,6 @@
     <string name="ascending">Ascending</string>
     <string name="descending">Descending</string>
     <string name="seekbarPreviewImage">SeekbarPreviewImage</string>
+    <string name="bitrate">Bitrate :</string>
 
 </resources>

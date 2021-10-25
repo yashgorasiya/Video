@@ -11,6 +11,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yjisolutions.video.R;
+import com.yjisolutions.video.code.VideoRead;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -18,9 +19,9 @@ import java.util.List;
 import java.util.Objects;
 
 public class FolderAdapter extends RecyclerView.Adapter<FolderViewHolder>{
-    private List<String> listOfFolders;
+    private List<VideoRead.Folder> listOfFolders;
     protected Context c;
-    public FolderAdapter(ArrayList<String> Folders, Context c){
+    public FolderAdapter(ArrayList<VideoRead.Folder> Folders, Context c){
         this.listOfFolders = Folders;
         this.c = c;
     }
@@ -33,29 +34,17 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderViewHolder>{
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull FolderViewHolder holder, @SuppressLint("RecyclerView") int position) {
-        File file=new File(listOfFolders.get(position));
-        File[] list = file.listFiles();
-        int count = 0;
-//        long size = 0;
-        for (File f: Objects.requireNonNull(list)){
-            String name = f.getName();
-            if (name.endsWith(".mp4") || name.endsWith(".mkv") || name.endsWith(".webm")) {
-                count++;
-//                size = size + Conversion.sizeToMB(f.length());
-            }
-        }
+        VideoRead.Folder temp = listOfFolders.get(position);
 
-//        holder.fSize.setText(Conversion.sizeTotal(size));
+        if (temp.getCount()==1) holder.vCount.setText(temp.getCount()+" Video");
+        else holder.vCount.setText(temp.getCount()+" Videos");
 
-        if (count==1) holder.vCount.setText(count+" Video");
-        else holder.vCount.setText(count+" Videos");
-
-        String FName = listOfFolders.get(position).substring(listOfFolders.get(position).lastIndexOf("/")+1);
+        String FName = temp.getName().substring(temp.getName().lastIndexOf("/")+1);
         holder.fName.setText(FName);
 
         holder.ly.setOnClickListener(v -> {
             Bundle bundle = new Bundle();
-            bundle.putString("folderName", listOfFolders.get(position));
+            bundle.putString("folderName", temp.getName());
             Navigation.findNavController(v).navigate(R.id.folder_to_videos, bundle);
 
         });
@@ -69,7 +58,7 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderViewHolder>{
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    public void updateList(ArrayList<String> temp) {
+    public void updateList(ArrayList<VideoRead.Folder> temp) {
         listOfFolders = temp;
         notifyDataSetChanged();
     }
