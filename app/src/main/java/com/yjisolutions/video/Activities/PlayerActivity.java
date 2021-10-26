@@ -92,6 +92,7 @@ public class PlayerActivity extends AppCompatActivity {
     private MediaItem mediaItem;
     private Uri videoURL;
     private float PlayBackSpeed = 1.00f;
+    private float NightIntensity = 0.0f;
 
     @SuppressLint({"ClickableViewAccessibility", "UseCompatLoadingForDrawables", "SourceLockedOrientationActivity", "SetTextI18n"})
     @RequiresApi(api = Build.VERSION_CODES.R)
@@ -109,6 +110,7 @@ public class PlayerActivity extends AppCompatActivity {
         TextView playerTitle = findViewById(R.id.titlePlayer);
         ImageView backArrow = findViewById(R.id.controllerBackArrow);
         ImageView moreControls = findViewById(R.id.moreControls);
+        ImageView playerNight = findViewById(R.id.playerNight);
 
         ImageView speedControl = findViewById(R.id.playback_speed);
         ImageButton orientation = findViewById(R.id.exo_fullscreen);
@@ -135,6 +137,7 @@ public class PlayerActivity extends AppCompatActivity {
         playerTitle.setText(videoTitle);
         backArrow.setOnClickListener(v -> onBackPressed());
         speedControl.setOnClickListener(v -> PlayBackSpeedDialog());
+        playerNight.setOnClickListener(v -> setNightIntensity());
 
         moreControls.setOnClickListener(v -> {
             // Do something in three dot Click
@@ -163,11 +166,49 @@ public class PlayerActivity extends AppCompatActivity {
 
     }
 
-    private void setupFullHeight(BottomSheetDialog bottomSheetDialog) {
+    private void setNightIntensity() {
+        final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this,R.style.BottomSheetSpeed);
+        bottomSheetDialog.setContentView(R.layout.bottom_night_dialog);
+        setupFullHeight(bottomSheetDialog,270);
+        ImageView imageView = bottomSheetDialog.findViewById(R.id.doneImgNDialog);
+        Objects.requireNonNull(imageView).setOnClickListener(v -> bottomSheetDialog.cancel());
+
+        final float[] intensities = {0f,0.1f,0.2f,0.3f,0.4f,0.5f,0.6f,0.7f,0.8f,0.9f,1f};
+        SeekBar seekBar = bottomSheetDialog.findViewById(R.id.nightSeekbar);
+        Objects.requireNonNull(seekBar).setMax(10);
+        int c = 0;
+        for (float f:intensities) {
+            if (NightIntensity==f)break;
+            c++;
+        }
+        seekBar.setProgress(c);
+        LinearLayout l = findViewById(R.id.LLNightSurface);
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                NightIntensity = intensities[progress];
+                l.setAlpha(NightIntensity);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+        bottomSheetDialog.show();
+    }
+
+    private void setupFullHeight(BottomSheetDialog bottomSheetDialog,int height) {
         FrameLayout bottomSheet = (FrameLayout) bottomSheetDialog.findViewById(R.id.design_bottom_sheet);
         BottomSheetBehavior<FrameLayout> behavior = BottomSheetBehavior.from(Objects.requireNonNull(bottomSheet));
         ViewGroup.LayoutParams layoutParams = bottomSheet.getLayoutParams();
-        if (layoutParams != null) layoutParams.height = 320;
+        if (layoutParams != null) layoutParams.height = height;
         bottomSheet.setLayoutParams(layoutParams);
         behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
     }
@@ -176,12 +217,13 @@ public class PlayerActivity extends AppCompatActivity {
     private void PlayBackSpeedDialog() {
         final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this,R.style.BottomSheetSpeed);
         bottomSheetDialog.setContentView(R.layout.playback_speed_dialog);
-        setupFullHeight(bottomSheetDialog);
+        setupFullHeight(bottomSheetDialog,370);
 
         FloatingActionButton add = bottomSheetDialog.findViewById(R.id.speedIncreaseButton);
         FloatingActionButton remove = bottomSheetDialog.findViewById(R.id.speedDecreaseButton);
         TextView textView = bottomSheetDialog.findViewById(R.id.playBack_Speed_text);
-
+        ImageView imageView = bottomSheetDialog.findViewById(R.id.doneImgPSDialog);
+        Objects.requireNonNull(imageView).setOnClickListener(v -> bottomSheetDialog.cancel());
         Objects.requireNonNull(textView).setText(String.format("%.2f",PlayBackSpeed));
 
         Objects.requireNonNull(add).setOnClickListener(v -> {
