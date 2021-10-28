@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,9 +14,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -23,13 +26,15 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.snackbar.Snackbar;
 import com.yjisolutions.video.Activities.PlayerActivity;
+import com.yjisolutions.video.Fragments.VideosFragment;
+import com.yjisolutions.video.Modal.Video;
 import com.yjisolutions.video.R;
 import com.yjisolutions.video.code.Conversion;
 import com.yjisolutions.video.code.DeleteFile;
 import com.yjisolutions.video.code.Utils;
-import com.yjisolutions.video.code.Video;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
@@ -38,6 +43,10 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoViewHolder> {
     List<Video> videos;
     Activity activity;
     boolean viewStyle;
+    private boolean isSelected = false;
+    private boolean firstLongPress = false;
+    List<Video> selectedItems;
+    private final View view = VideosFragment.parentView;
 
     public VideoAdapter(List<Video> videos, Activity activity, boolean viewStyle) {
         this.videos = videos;
@@ -56,7 +65,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoViewHolder> {
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
-    public void onBindViewHolder(@NonNull VideoViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull VideoViewHolder holder, @SuppressLint("RecyclerView") int position) {
         Video video = videos.get(position);
 
         holder.title.setText(video.getName());
@@ -65,26 +74,66 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoViewHolder> {
         holder.seekBar.setClickable(false);
         holder.seekBar.setPadding(0, 0, 0, 0);
 
-        Glide.with(activity.getBaseContext())
-                .load(video.getUri())
-                .override(250, 200)
-                .into(holder.thumb);
-
         // Playing videos in PlayerActivity Activity
         View view;
         if (viewStyle) view = holder.previewTile;
         else view = holder.thumb;
 
 
+        view.setOnLongClickListener(v -> {
+            selectedItems = new ArrayList<>();
 
-        view.setOnClickListener(v -> activity.startActivityForResult(
-                new Intent(activity.getBaseContext(), PlayerActivity.class)
-                        .putExtra("url", video.getUri().toString())
-                        .putExtra("title", video.getName())
-                , 1));
+            isSelected = true;
+            firstLongPress = true;
+
+            selectedItems.add(videos.get(position));
+            holder.selectedIndicator.setVisibility(View.VISIBLE);
+            setSelectedCount(selectedItems.size());
+
+            changeToolbar();
+            return false;
+        });
 
 
-        holder.more.setOnClickListener(v -> showBottomSheetMore(video.getUri(), position));
+        if (isSelected) {
+            if (Objects.requireNonNull(selectedItems).contains(videos.get(position)))
+                holder.selectedIndicator.setVisibility(View.VISIBLE);
+            else holder.selectedIndicator.setVisibility(View.GONE);
+        }else holder.selectedIndicator.setVisibility(View.GONE);
+
+        view.setOnClickListener(v -> {
+                    if (isSelected) {
+                        if (firstLongPress) firstLongPress = false;
+                        else {
+                            if (Objects.requireNonNull(selectedItems).contains(videos.get(position))) {
+                                selectedItems.remove(videos.get(position));
+                                holder.selectedIndicator.setVisibility(View.GONE);
+                                if (selectedItems.size() == 0) {
+                                    isSelected = false;
+                                    changeToolbar();
+                                }
+                            } else {
+                                selectedItems.add(videos.get(position));
+                                holder.selectedIndicator.setVisibility(View.VISIBLE);
+                            }
+                            setSelectedCount(selectedItems.size());
+                        }
+                    } else {
+                        activity.startActivityForResult(
+                                new Intent(activity.getBaseContext(), PlayerActivity.class)
+                                        .putExtra("url", video.getUri().toString())
+                                        .putExtra("title", video.getName())
+                                , 1);
+                    }
+                }
+        );
+
+
+        holder.more.setOnClickListener(v ->
+
+        {
+            if (!isSelected) showBottomSheetMore(video.getUri(), position);
+        });
 
 
         long lastPlayed = Utils.sp.getLong(video.getName(), 0);
@@ -93,12 +142,64 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoViewHolder> {
             holder.seekBar.setProgress((int) lastPlayed);
         }
 
+        Glide.with(activity.getBaseContext())
+                .load(video.getUri())
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .override(250, 200)
+                .into(holder.thumb);
+
     }
 
 
     @Override
     public int getItemCount() {
         return videos.size();
+    }
+
+    @SuppressLint("SetTextI18n")
+    public void setSelectedCount(int num){
+        TextView textView = view.findViewById(R.id.videoFragmentNumOfSelected);
+        textView.setText(num+" Selected");
+    }
+    public void changeToolbar(){
+        ConstraintLayout defaultToolbar = view.findViewById(R.id.conLayoutToolbarVideos);
+        ConstraintLayout selectionToolbar = view.findViewById(R.id.conLayoutToolbarVideosSelection);
+        if (isSelected){
+            defaultToolbar.setVisibility(View.GONE);
+            selectionToolbar.setVisibility(View.VISIBLE);
+            setSelectionLis();
+        }else{
+            defaultToolbar.setVisibility(View.VISIBLE);
+            selectionToolbar.setVisibility(View.GONE);
+        }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void setSelectionLis(){
+
+        ImageView delete,selectAll,share,back;
+
+        delete = view.findViewById(R.id.videoFragmentDelete);
+        selectAll = view.findViewById(R.id.videoFragmentSelectAll);
+        share = view.findViewById(R.id.videoFragmentShare);
+        back = view.findViewById(R.id.videoFragmentExitSelectionMode);
+
+        delete.setOnClickListener(v -> Toast.makeText(activity, "Available Soon", Toast.LENGTH_SHORT).show());
+
+        selectAll.setOnClickListener(v -> {
+            selectedItems = videos;
+            setSelectedCount(selectedItems.size());
+            notifyDataSetChanged();
+        });
+
+        share.setOnClickListener(v -> Toast.makeText(activity, "Available Soon", Toast.LENGTH_SHORT).show());
+
+        back.setOnClickListener(v -> {
+            selectedItems = new ArrayList<>();
+            isSelected = false;
+            changeToolbar();
+            notifyDataSetChanged();
+        });
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -109,7 +210,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoViewHolder> {
     @SuppressLint("ShowToast")
     private void showBottomSheetMore(Uri uri, int position) {
 
-        final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(activity,R.style.BottomSheetCustom);
+        final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(activity, R.style.BottomSheetCustom);
         bottomSheetDialog.setContentView(R.layout.bottom_sheet_dialog);
 
         LinearLayout share = bottomSheetDialog.findViewById(R.id.shareLinearLayout);
@@ -143,9 +244,9 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoViewHolder> {
             TextView deleteTille = deleteDialogView.findViewById(R.id.DeleteDialogTitle);
             SeekBar seekBar = deleteDialogView.findViewById(R.id.delete_preview_seekbar);
 
-            seekBar.setPadding(0,0,0,0);
+            seekBar.setPadding(0, 0, 0, 0);
             seekBar.setMax(video.getDuration());
-            seekBar.setProgress(Integer.parseInt(String.valueOf(Utils.sp.getLong(video.getName(),0))));
+            seekBar.setProgress(Integer.parseInt(String.valueOf(Utils.sp.getLong(video.getName(), 0))));
 
             deleteSize.setText(Conversion.sizeConversion(video.getSize()));
             deleteTille.setText(video.getName());
@@ -198,12 +299,12 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoViewHolder> {
     @SuppressLint("SetTextI18n")
     private void showBottomSheetMore(int position) {
 
-        final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(activity,R.style.BottomSheetCustom);
+        final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(activity, R.style.BottomSheetCustom);
         bottomSheetDialog.setContentView(R.layout.bottom_sheet_video_information);
 
         Video video = videos.get(position);
-        String w="0",h="0";
-        long l=0;
+        String w = "0", h = "0";
+        long l = 0;
 
         try (MediaMetadataRetriever mmr = new MediaMetadataRetriever()) {
             mmr.setDataSource(activity, video.getUri());
@@ -223,7 +324,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoViewHolder> {
         TextView location = bottomSheetDialog.findViewById(R.id.VILocation);
         Objects.requireNonNull(Width).setText(w);
         Objects.requireNonNull(Height).setText(h);
-        Objects.requireNonNull(location).setText(Conversion.sizeConversion(l)+"ps");
+        Objects.requireNonNull(location).setText(Conversion.sizeConversion(l) + "ps");
 
         Objects.requireNonNull(title).setText(video.getName());
         Objects.requireNonNull(size).setText(Conversion.sizeConversion(video.getSize()));

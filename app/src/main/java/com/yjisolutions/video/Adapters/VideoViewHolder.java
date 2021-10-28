@@ -1,6 +1,7 @@
 package com.yjisolutions.video.Adapters;
 
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -17,6 +18,7 @@ public class VideoViewHolder extends RecyclerView.ViewHolder {
     TextView title, duration, size;
     ConstraintLayout previewTile;
     SeekBar seekBar;
+    FrameLayout selectedIndicator;
 
     public VideoViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -27,5 +29,6 @@ public class VideoViewHolder extends RecyclerView.ViewHolder {
         size = itemView.findViewById(R.id.sizePreview);
         previewTile = itemView.findViewById(R.id.previewTileLayout);
         seekBar = itemView.findViewById(R.id.home_preview_seekbar);
+        selectedIndicator = itemView.findViewById(R.id.selectedIndicator);
     }
 }

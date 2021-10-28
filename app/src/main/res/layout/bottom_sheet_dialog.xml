@@ -3,10 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:paddingTop="16dp"
-    android:paddingBottom="16dp"
-    android:paddingEnd="8dp"
-    android:paddingStart="8dp"
+    android:padding="8dp"
     android:clickable="true"
     android:focusable="true"
     app:layout_behavior="@string/bottom_sheet_behavior"
@@ -19,16 +16,22 @@
         android:orientation="horizontal"
         android:id="@+id/shareLinearLayout"
         android:background="?android:attr/selectableItemBackground"
-        android:padding="8dp"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="4dp"
         android:clickable="true"
         android:focusable="true">
 
         <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:src="@drawable/ic_baseline_share_24"
+            android:background="@drawable/player_buttons_bg"
+            android:backgroundTint="@color/PrimaryLight"
+            android:padding="8dp"
             android:layout_margin="8dp"
-            app:tint="@color/homePreviewMore"
+            app:tint="@color/purple_500"
             android:contentDescription="@string/shareIon" />
 
         <TextView
@@ -50,15 +53,21 @@
         android:orientation="horizontal"
         android:id="@+id/delete"
         android:background="?android:attr/selectableItemBackground"
-        android:padding="8dp"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
         android:clickable="true"
         android:focusable="true">
 
         <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:src="@drawable/ic_baseline_delete_24"
-            app:tint="@color/homePreviewMore"
+            android:background="@drawable/player_buttons_bg"
+            android:backgroundTint="@color/PrimaryLight"
+            android:padding="8dp"
+            app:tint="@color/purple_500"
             android:layout_margin="8dp"
             android:contentDescription="@string/deleteIcon" />
 
@@ -79,16 +88,22 @@
         android:orientation="horizontal"
         android:id="@+id/videoInformation"
         android:background="?android:attr/selectableItemBackground"
-        android:padding="8dp"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:paddingTop="4dp"
+        android:paddingBottom="8dp"
         android:clickable="true"
         android:focusable="true">
 
         <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:src="@drawable/ic_baseline_info"
-            app:tint="@color/homePreviewMore"
+            android:background="@drawable/player_buttons_bg"
+            android:backgroundTint="@color/PrimaryLight"
+            android:padding="8dp"
             android:layout_margin="8dp"
+            app:tint="@color/purple_500"
             android:contentDescription="@string/infoIcon" />
 
         <TextView

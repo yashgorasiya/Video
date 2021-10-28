@@ -1,4 +1,4 @@
-package com.yjisolutions.video.code;
+package com.yjisolutions.video.Modal;
 
 import android.net.Uri;
 

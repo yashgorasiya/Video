@@ -24,10 +24,8 @@ import android.util.DisplayMetrics;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -61,13 +59,13 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.video.VideoSize;
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.yjisolutions.video.R;
 import com.yjisolutions.video.code.Conversion;
+import com.yjisolutions.video.code.SetupFullDialog;
 import com.yjisolutions.video.code.TrackSelectionDialog;
 import com.yjisolutions.video.code.Utils;
 
@@ -113,7 +111,7 @@ public class PlayerActivity extends AppCompatActivity {
         ImageView playerNight = findViewById(R.id.playerNight);
 
         ImageView speedControl = findViewById(R.id.playback_speed);
-        ImageButton orientation = findViewById(R.id.exo_fullscreen);
+        ImageView orientation = findViewById(R.id.exo_fullscreen);
         ImageButton trackSelection = findViewById(R.id.exo_track_selection_view);
 
         ImageView seekbarPreview = findViewById(R.id.seekbarPreview);
@@ -169,7 +167,7 @@ public class PlayerActivity extends AppCompatActivity {
     private void setNightIntensity() {
         final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this,R.style.BottomSheetSpeed);
         bottomSheetDialog.setContentView(R.layout.bottom_night_dialog);
-        setupFullHeight(bottomSheetDialog,270);
+        SetupFullDialog.setupFullHeight(bottomSheetDialog,270);
         ImageView imageView = bottomSheetDialog.findViewById(R.id.doneImgNDialog);
         Objects.requireNonNull(imageView).setOnClickListener(v -> bottomSheetDialog.cancel());
 
@@ -204,20 +202,12 @@ public class PlayerActivity extends AppCompatActivity {
         bottomSheetDialog.show();
     }
 
-    private void setupFullHeight(BottomSheetDialog bottomSheetDialog,int height) {
-        FrameLayout bottomSheet = (FrameLayout) bottomSheetDialog.findViewById(R.id.design_bottom_sheet);
-        BottomSheetBehavior<FrameLayout> behavior = BottomSheetBehavior.from(Objects.requireNonNull(bottomSheet));
-        ViewGroup.LayoutParams layoutParams = bottomSheet.getLayoutParams();
-        if (layoutParams != null) layoutParams.height = height;
-        bottomSheet.setLayoutParams(layoutParams);
-        behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-    }
 
     @SuppressLint("DefaultLocale")
     private void PlayBackSpeedDialog() {
         final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this,R.style.BottomSheetSpeed);
         bottomSheetDialog.setContentView(R.layout.playback_speed_dialog);
-        setupFullHeight(bottomSheetDialog,370);
+        SetupFullDialog.setupFullHeight(bottomSheetDialog,370);
 
         FloatingActionButton add = bottomSheetDialog.findViewById(R.id.speedIncreaseButton);
         FloatingActionButton remove = bottomSheetDialog.findViewById(R.id.speedDecreaseButton);
@@ -406,12 +396,12 @@ public class PlayerActivity extends AppCompatActivity {
                 }
             }
 
-            @Override
-            public void onVideoSizeChanged(@NonNull VideoSize videoSize) {
-                if (videoSize.height < videoSize.width) {
-                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-                }
-            }
+//            @Override
+//            public void onVideoSizeChanged(@NonNull VideoSize videoSize) {
+//                if (videoSize.height < videoSize.width) {
+//                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+//                }
+//            }
         });
 
     }
@@ -496,7 +486,7 @@ public class PlayerActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
-        simpleExoPlayer.pause();
+        if (simpleExoPlayer.isPlaying())simpleExoPlayer.pause();
         super.onPause();
     }
 

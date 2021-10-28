@@ -62,16 +62,33 @@
                 tools:ignore="RtlHardcoded" />
 
 
-            <TextView
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:alpha="0.6"
-                android:fontFamily="@font/not_sans"
-                android:text="@string/app_name"
-                android:textColor="@color/homePreviewMore"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                android:orientation="vertical">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="24dp"
+                    android:alpha="0.8"
+                    android:fontFamily="@font/not_sans"
+                    android:text="@string/app_name"
+                    android:textColor="@color/homePreviewMore"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:alpha="0.6"
+                    android:fontFamily="@font/not_sans"
+                    android:text="The Beginning"
+                    android:textColor="@color/homePreviewMore"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+
+            </LinearLayout>
 
             <androidx.appcompat.widget.SearchView
                 android:id="@+id/searchFolder"
@@ -91,7 +108,6 @@
             android:layout_height="match_parent"
             android:paddingTop="5dp"
             tools:listitem="@layout/folder_item" />
-
 
     </LinearLayout>
 

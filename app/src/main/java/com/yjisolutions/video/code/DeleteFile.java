@@ -8,6 +8,8 @@ import android.os.Handler;
 import android.provider.MediaStore;
 import android.widget.Toast;
 
+import com.yjisolutions.video.Modal.Video;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;

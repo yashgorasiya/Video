@@ -23,7 +23,7 @@ import com.yjisolutions.video.Adapters.VideoAdapter;
 import com.yjisolutions.video.Interfaces.OnPlayerActivityDestroy;
 import com.yjisolutions.video.R;
 import com.yjisolutions.video.code.Utils;
-import com.yjisolutions.video.code.Video;
+import com.yjisolutions.video.Modal.Video;
 import com.yjisolutions.video.code.VideoRead;
 
 import java.util.ArrayList;
@@ -39,6 +39,8 @@ public class VideosFragment extends Fragment implements OnPlayerActivityDestroy 
     private SearchView searchView;
     private String folderName;
     private TextView toolBarSubTitle;
+    @SuppressLint("StaticFieldLeak")
+    public static View parentView;
 
     @SuppressLint({"SetTextI18n", "UseCompatLoadingForDrawables"})
     @Override
@@ -47,6 +49,7 @@ public class VideosFragment extends Fragment implements OnPlayerActivityDestroy 
 
         View v = inflater.inflate(R.layout.fragment_videos, container, false);
 
+        parentView = v;
         MainActivity.setOnPlayerActivityDestroyIF(this);
         ImageView backButton = v.findViewById(R.id.videoFragmentBack);
         ImageView viewGrid = v.findViewById(R.id.videoFragmentGrid);

@@ -17,10 +17,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.yjisolutions.video.Activities.PlayerActivity;
 import com.yjisolutions.video.Adapters.FolderAdapter;
 import com.yjisolutions.video.Interfaces.OnPermissionGranted;
+import com.yjisolutions.video.Modal.Folder;
 import com.yjisolutions.video.R;
 import com.yjisolutions.video.code.Permissions;
 import com.yjisolutions.video.code.Utils;
@@ -30,7 +32,7 @@ import java.util.ArrayList;
 
 
 public class FolderFragment extends Fragment implements OnPermissionGranted {
-    private ArrayList<VideoRead.Folder> folder = new ArrayList<>();
+    private static ArrayList<Folder> folder = new ArrayList<>();
     private FolderAdapter adapter;
     private RecyclerView recyclerView;
     private ImageView more;
@@ -43,7 +45,7 @@ public class FolderFragment extends Fragment implements OnPermissionGranted {
     }
 
 
-    @SuppressLint("NonConstantResourceId")
+    @SuppressLint({"NonConstantResourceId", "UseCompatLoadingForDrawables"})
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -157,9 +159,9 @@ public class FolderFragment extends Fragment implements OnPermissionGranted {
         super.onConfigurationChanged(newConfig);
     }
 
-    void filter(String text) {
-        ArrayList<VideoRead.Folder> temp = new ArrayList<>();
-        for (VideoRead.Folder d : folder) {
+    public void filter(String text) {
+        ArrayList<Folder> temp = new ArrayList<>();
+        for (Folder d : folder) {
             if (d.getName().toLowerCase().contains(text)) {
                 temp.add(d);
             }

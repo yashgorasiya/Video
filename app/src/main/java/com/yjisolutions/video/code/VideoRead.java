@@ -7,6 +7,9 @@ import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
 
+import com.yjisolutions.video.Modal.Folder;
+import com.yjisolutions.video.Modal.Video;
+
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
@@ -122,8 +125,6 @@ public class VideoRead {
         };
         String selection = MediaStore.Video.Media.DATA + " like?";
         String[] selectionArgs = new String[]{"%" + folderName + "%"};
-        String sortOrder = sortBy[Utils.SORT_BY_VIDEOS] + order[Utils.SORT_ORDER_VIDEOS];
-
         try (
                 Cursor cursor = context.getContentResolver().query(
                         collection,
@@ -132,10 +133,6 @@ public class VideoRead {
                         selectionArgs,
                         null
                 )) {
-            // Cache column indices.
-            int idColumn = cursor.getColumnIndexOrThrow(MediaStore.Video.Media._ID);
-
-
             String FName1 = folderName.substring(folderName.lastIndexOf("/") + 1);
             if (FName1.equals("0")) {
                 while (cursor.moveToNext()) {
@@ -159,23 +156,6 @@ public class VideoRead {
         return numOfVideosInFolder;
     }
 
-    public static class Folder{
-        public String getName() {
-            return Name;
-        }
-
-        public int getCount() {
-            return count;
-        }
-
-        private String Name;
-        private int count;
-
-        public Folder(String name, int count) {
-            Name = name;
-            this.count = count;
-        }
-    }
     public static ArrayList<Folder> getFolders(Context context) {
 
         ArrayList<String> folderList = new ArrayList<>();

@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.yjisolutions.video.Modal.Folder;
 import com.yjisolutions.video.R;
 import com.yjisolutions.video.code.VideoRead;
 
@@ -19,9 +20,9 @@ import java.util.List;
 import java.util.Objects;
 
 public class FolderAdapter extends RecyclerView.Adapter<FolderViewHolder>{
-    private List<VideoRead.Folder> listOfFolders;
+    private List<Folder> listOfFolders;
     protected Context c;
-    public FolderAdapter(ArrayList<VideoRead.Folder> Folders, Context c){
+    public FolderAdapter(ArrayList<Folder> Folders, Context c){
         this.listOfFolders = Folders;
         this.c = c;
     }
@@ -34,7 +35,7 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderViewHolder>{
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull FolderViewHolder holder, @SuppressLint("RecyclerView") int position) {
-        VideoRead.Folder temp = listOfFolders.get(position);
+        Folder temp = listOfFolders.get(position);
 
         if (temp.getCount()==1) holder.vCount.setText(temp.getCount()+" Video");
         else holder.vCount.setText(temp.getCount()+" Videos");
@@ -58,7 +59,7 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderViewHolder>{
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    public void updateList(ArrayList<VideoRead.Folder> temp) {
+    public void updateList(ArrayList<Folder> temp) {
         listOfFolders = temp;
         notifyDataSetChanged();
     }

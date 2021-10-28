@@ -136,7 +136,24 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/black_overlay"
+            android:id="@+id/selectedIndicator"
+            android:visibility="gone"
+            >
 
+            <ImageView
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_gravity="center"
+                android:padding="10dp"
+                android:src="@drawable/ic_baseline_done_24"
+                android:background="@drawable/home_tab_indicator"
+                app:tint="@color/white" />
+
+        </FrameLayout>
     </com.google.android.material.card.MaterialCardView>
 
 
