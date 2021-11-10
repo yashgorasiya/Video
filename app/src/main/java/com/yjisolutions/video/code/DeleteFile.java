@@ -10,13 +10,14 @@ import android.widget.Toast;
 
 import com.yjisolutions.video.Modal.Video;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
 public class DeleteFile {
     private static final int DELETE_REQUEST_CODE = 7;
-    private Video bin;
+    private ArrayList<Video> bin;
     private final Activity activity;
     private boolean deletecheck = true;
 
@@ -24,18 +25,22 @@ public class DeleteFile {
         this.activity = activity;
     }
 
-    public void moveToBin(Video bin) {
+    public void moveToBin(ArrayList<Video> bin) {
         this.bin = bin;
         final Handler handler = new Handler();
         handler.postDelayed(() -> {
             // Do something after 5s = 5000ms
             if (deletecheck) {
                 try {
-                    activity.getBaseContext().getContentResolver().delete(bin.getUri(), null, null);
+                    for (Video v:bin) {
+                        activity.getBaseContext().getContentResolver().delete(v.getUri(), null, null);
+                    }
+
                 } catch (SecurityException securityException) {
-
-                    List<Uri> urisToModify = Collections.singletonList(bin.getUri());
-
+                    List<Uri> urisToModify = new ArrayList<>();
+                    for (Video video :bin) {
+                        urisToModify.add(video.getUri());
+                    }
                     PendingIntent editPendingIntent = null;
 
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
@@ -52,10 +57,10 @@ public class DeleteFile {
             } else {
                 Toast.makeText(activity, "Restored", Toast.LENGTH_SHORT).show();
             }
-        }, 5000);
+        }, 3000);
     }
 
-    public Video getFromBin() {
+    public ArrayList<Video> getFromBin() {
         this.deletecheck = false;
         return bin;
     }

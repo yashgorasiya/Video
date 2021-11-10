@@ -10,7 +10,7 @@ public class Utils {
     public static SharedPreferences sp = MainActivity.sharedPreferences;
     public static SharedPreferences.Editor spe = sp.edit();
 
-    public static boolean VIEW_STYLE = true;
+    public static boolean VIEW_STYLE = sp.getBoolean("homeScreenLayoutType",true);
     public static int SORT_BY = sp.getInt("sortBy",0);
     public static int SORT_ORDER = sp.getInt("sortOrder",0);
     public static int SORT_BY_VIDEOS = sp.getInt("sortByVideos",0);

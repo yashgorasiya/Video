@@ -4,9 +4,9 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,10 +31,10 @@ import com.yjisolutions.video.Modal.Video;
 import com.yjisolutions.video.R;
 import com.yjisolutions.video.code.Conversion;
 import com.yjisolutions.video.code.DeleteFile;
+import com.yjisolutions.video.code.Share;
 import com.yjisolutions.video.code.Utils;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
@@ -99,7 +99,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoViewHolder> {
             if (Objects.requireNonNull(selectedItems).contains(videos.get(position)))
                 holder.selectedIndicator.setVisibility(View.VISIBLE);
             else holder.selectedIndicator.setVisibility(View.GONE);
-        }else holder.selectedIndicator.setVisibility(View.GONE);
+        } else holder.selectedIndicator.setVisibility(View.GONE);
 
         view.setOnClickListener(v -> {
                     if (isSelected) {
@@ -129,9 +129,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoViewHolder> {
         );
 
 
-        holder.more.setOnClickListener(v ->
-
-        {
+        holder.more.setOnClickListener(v -> {
             if (!isSelected) showBottomSheetMore(video.getUri(), position);
         });
 
@@ -157,42 +155,76 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoViewHolder> {
     }
 
     @SuppressLint("SetTextI18n")
-    public void setSelectedCount(int num){
+    public void setSelectedCount(int num) {
         TextView textView = view.findViewById(R.id.videoFragmentNumOfSelected);
-        textView.setText(num+" Selected");
+        textView.setText(num + " Selected");
     }
-    public void changeToolbar(){
+
+    public void changeToolbar() {
         ConstraintLayout defaultToolbar = view.findViewById(R.id.conLayoutToolbarVideos);
         ConstraintLayout selectionToolbar = view.findViewById(R.id.conLayoutToolbarVideosSelection);
-        if (isSelected){
+        if (isSelected) {
             defaultToolbar.setVisibility(View.GONE);
             selectionToolbar.setVisibility(View.VISIBLE);
             setSelectionLis();
-        }else{
+        } else {
             defaultToolbar.setVisibility(View.VISIBLE);
             selectionToolbar.setVisibility(View.GONE);
         }
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    public void setSelectionLis(){
+    @SuppressLint({"NotifyDataSetChanged", "UseCompatLoadingForDrawables"})
+    public void setSelectionLis() {
 
-        ImageView delete,selectAll,share,back;
+        ImageView delete, selectAll, share, back;
 
         delete = view.findViewById(R.id.videoFragmentDelete);
         selectAll = view.findViewById(R.id.videoFragmentSelectAll);
         share = view.findViewById(R.id.videoFragmentShare);
         back = view.findViewById(R.id.videoFragmentExitSelectionMode);
 
-        delete.setOnClickListener(v -> Toast.makeText(activity, "Available Soon", Toast.LENGTH_SHORT).show());
-
-        selectAll.setOnClickListener(v -> {
-            selectedItems = videos;
-            setSelectedCount(selectedItems.size());
-            notifyDataSetChanged();
+        delete.setOnClickListener(v -> {
+            ArrayList<Integer> selectedPositions = new ArrayList<>();
+            int i = 0;
+            for (Video video:videos) {
+                if (selectedItems.contains(video)) selectedPositions.add(i-selectedPositions.size());
+                i++;
+            }
+            int[] position = new int[selectedPositions.size()];
+            int y=0 ;
+            for (int k:selectedPositions) {
+                position[y] = k;
+                y++;
+            }
+            CustomDeleteDialog(position);
         });
 
-        share.setOnClickListener(v -> Toast.makeText(activity, "Available Soon", Toast.LENGTH_SHORT).show());
+        selectAll.setOnClickListener(v -> {
+
+            if (selectedItems.size() == videos.size()) {
+                selectAll.setImageDrawable(activity.getDrawable(R.drawable.ic_baseline_select_all_24));
+                selectedItems = new ArrayList<>();
+                isSelected = false;
+                changeToolbar();
+                notifyDataSetChanged();
+            } else {
+                for (Video video : videos) {
+                    if (!selectedItems.contains(video)) selectedItems.add(video);
+                }
+                setSelectedCount(selectedItems.size());
+                selectAll.setImageDrawable(activity.getDrawable(R.drawable.ic_baseline_deselect_all_24));
+                notifyDataSetChanged();
+            }
+
+        });
+
+        share.setOnClickListener(v -> {
+            ArrayList<Uri> uris = new ArrayList<>();
+            for (Video video : selectedItems) {
+                uris.add(video.getUri());
+            }
+            Share.videos(uris, activity);
+        });
 
         back.setOnClickListener(v -> {
             selectedItems = new ArrayList<>();
@@ -223,16 +255,41 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoViewHolder> {
             bottomSheetDialog.cancel();
         });
 
+
+        // Click on Share
+        Objects.requireNonNull(share).setOnClickListener(v -> {
+            ArrayList<Uri> uris = new ArrayList<>();
+            uris.add(uri);
+            Share.videos(uris, activity);
+            bottomSheetDialog.cancel();
+        });
+
         // Click on Delete
         Objects.requireNonNull(delete).setOnClickListener(v -> {
             bottomSheetDialog.cancel();
+            CustomDeleteDialog(new int[]{position});
+        });
+        bottomSheetDialog.show();
+
+    }
+
+    private void CustomDeleteDialog(int[] position){
+
+        ArrayList<Video> toDelete = new ArrayList<>();
+        for (int i:position) {
+            toDelete.add(videos.get(i));
+        }
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+            SetRestorableDelete(toDelete,position);
+        } else {
 
             LayoutInflater factory = LayoutInflater.from(activity);
             final View deleteDialogView = factory.inflate(R.layout.delete_dialog, null);
             final AlertDialog deleteDialog = new AlertDialog.Builder(activity, R.style.Theme_Dialog).create();
             deleteDialog.setView(deleteDialogView);
 
-            Video video = videos.get(position);
+            Video video = videos.get(position[0]);
 
             Glide.with(activity)
                     .load(video.getUri())
@@ -253,20 +310,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoViewHolder> {
 
             deleteDialogView.findViewById(R.id.DialogDeleteBtn).setOnClickListener(v13 -> {
                 //your delete logic
-                DeleteFile delete1 = new DeleteFile(activity);
-                delete1.moveToBin(videos.get(position));
-                videos.remove(videos.get(position));
-                notifyItemRemoved(position);
-
-                Snackbar.make(activity.findViewById(android.R.id.content), "Video will be deleted", Snackbar.LENGTH_LONG)
-                        .setAction("Undo", v1 -> {
-                            videos.add(position, delete1.getFromBin());
-                            notifyItemInserted(position);
-                        })
-                        .setActionTextColor(Color.RED)
-                        .show();
-
-
+                SetRestorableDelete(toDelete,position);
                 deleteDialog.dismiss();
             });
 
@@ -274,26 +318,29 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoViewHolder> {
 
             deleteDialog.show();
 
-        });
-
-        // Click on Share
-        Objects.requireNonNull(share).setOnClickListener(v -> {
-            activity.startActivity(
-                    Intent.createChooser(
-                            new Intent().setAction(Intent.ACTION_SEND)
-                                    .setType("video/*")
-                                    .setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                                    .putExtra(
-                                            Intent.EXTRA_STREAM,
-                                            uri
-                                    ),
-                            "Share Video"));
-            bottomSheetDialog.cancel();
-        });
-
-        bottomSheetDialog.show();
+        }
     }
 
+    private void SetRestorableDelete(ArrayList<Video> videosToDelete,int[] position) {
+        DeleteFile delete1 = new DeleteFile(activity);
+        delete1.moveToBin(videosToDelete);
+        for (int i:position) {
+            videos.remove(i);
+            notifyItemRemoved(i);
+        }
+
+        Snackbar.make(activity.findViewById(android.R.id.content), "Video will be deleted", 3000)
+                .setAction("Undo", v1 -> {
+                    int j = 0;
+                    for (Video v:delete1.getFromBin()) {
+                        videos.add(position[j]+j,v);
+                        notifyItemInserted(position[j]+j);
+                        j++;
+                    }
+                })
+                .setActionTextColor(Color.RED)
+                .show();
+    }
 
     // Shows Video Information
     @SuppressLint("SetTextI18n")
@@ -303,8 +350,8 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoViewHolder> {
         bottomSheetDialog.setContentView(R.layout.bottom_sheet_video_information);
 
         Video video = videos.get(position);
-        String w = "0", h = "0";
-        long l = 0;
+        String w, h;
+        long l;
 
         try (MediaMetadataRetriever mmr = new MediaMetadataRetriever()) {
             mmr.setDataSource(activity, video.getUri());
