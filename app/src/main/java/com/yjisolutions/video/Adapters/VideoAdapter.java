@@ -3,8 +3,6 @@ package com.yjisolutions.video.Adapters;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.view.LayoutInflater;
@@ -14,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -24,7 +21,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.android.material.snackbar.Snackbar;
 import com.yjisolutions.video.Activities.PlayerActivity;
 import com.yjisolutions.video.Fragments.VideosFragment;
 import com.yjisolutions.video.Modal.Video;
@@ -45,7 +41,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoViewHolder> {
     boolean viewStyle;
     private boolean isSelected = false;
     private boolean firstLongPress = false;
-    List<Video> selectedItems;
+    ArrayList<Video> selectedItems;
     private final View view = VideosFragment.parentView;
 
     public VideoAdapter(List<Video> videos, Activity activity, boolean viewStyle) {
@@ -183,21 +179,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoViewHolder> {
         share = view.findViewById(R.id.videoFragmentShare);
         back = view.findViewById(R.id.videoFragmentExitSelectionMode);
 
-        delete.setOnClickListener(v -> {
-            ArrayList<Integer> selectedPositions = new ArrayList<>();
-            int i = 0;
-            for (Video video:videos) {
-                if (selectedItems.contains(video)) selectedPositions.add(i-selectedPositions.size());
-                i++;
-            }
-            int[] position = new int[selectedPositions.size()];
-            int y=0 ;
-            for (int k:selectedPositions) {
-                position[y] = k;
-                y++;
-            }
-            CustomDeleteDialog(position);
-        });
+        delete.setOnClickListener(v -> CustomDeleteDialog(selectedItems));
 
         selectAll.setOnClickListener(v -> {
 
@@ -206,15 +188,14 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoViewHolder> {
                 selectedItems = new ArrayList<>();
                 isSelected = false;
                 changeToolbar();
-                notifyDataSetChanged();
             } else {
                 for (Video video : videos) {
                     if (!selectedItems.contains(video)) selectedItems.add(video);
                 }
                 setSelectedCount(selectedItems.size());
                 selectAll.setImageDrawable(activity.getDrawable(R.drawable.ic_baseline_deselect_all_24));
-                notifyDataSetChanged();
             }
+            notifyDataSetChanged();
 
         });
 
@@ -267,21 +248,21 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoViewHolder> {
         // Click on Delete
         Objects.requireNonNull(delete).setOnClickListener(v -> {
             bottomSheetDialog.cancel();
-            CustomDeleteDialog(new int[]{position});
+            ArrayList<Video> toDelete = new ArrayList<>();
+            toDelete.add(videos.get(position));
+            CustomDeleteDialog(toDelete);
         });
         bottomSheetDialog.show();
 
     }
 
-    private void CustomDeleteDialog(int[] position){
-
-        ArrayList<Video> toDelete = new ArrayList<>();
-        for (int i:position) {
-            toDelete.add(videos.get(i));
-        }
+    @SuppressLint("NotifyDataSetChanged")
+    private void CustomDeleteDialog(ArrayList<Video> toDelete) {
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
-            SetRestorableDelete(toDelete,position);
+            DeleteFile delete1 = new DeleteFile(activity);
+            delete1.moveToBin(toDelete);
+            videos.removeAll(toDelete);
         } else {
 
             LayoutInflater factory = LayoutInflater.from(activity);
@@ -289,13 +270,12 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoViewHolder> {
             final AlertDialog deleteDialog = new AlertDialog.Builder(activity, R.style.Theme_Dialog).create();
             deleteDialog.setView(deleteDialogView);
 
-            Video video = videos.get(position[0]);
+            Video video = toDelete.get(0);
 
             Glide.with(activity)
                     .load(video.getUri())
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .into((ImageView) deleteDialogView.findViewById(R.id.thumbnailDelete));
-
 
             TextView deleteSize = deleteDialogView.findViewById(R.id.sizeDelete);
             TextView deleteTille = deleteDialogView.findViewById(R.id.DeleteDialogTitle);
@@ -310,7 +290,9 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoViewHolder> {
 
             deleteDialogView.findViewById(R.id.DialogDeleteBtn).setOnClickListener(v13 -> {
                 //your delete logic
-                SetRestorableDelete(toDelete,position);
+                DeleteFile delete1 = new DeleteFile(activity);
+                delete1.moveToBin(toDelete);
+                videos.removeAll(toDelete);
                 deleteDialog.dismiss();
             });
 
@@ -319,27 +301,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoViewHolder> {
             deleteDialog.show();
 
         }
-    }
-
-    private void SetRestorableDelete(ArrayList<Video> videosToDelete,int[] position) {
-        DeleteFile delete1 = new DeleteFile(activity);
-        delete1.moveToBin(videosToDelete);
-        for (int i:position) {
-            videos.remove(i);
-            notifyItemRemoved(i);
-        }
-
-        Snackbar.make(activity.findViewById(android.R.id.content), "Video will be deleted", 3000)
-                .setAction("Undo", v1 -> {
-                    int j = 0;
-                    for (Video v:delete1.getFromBin()) {
-                        videos.add(position[j]+j,v);
-                        notifyItemInserted(position[j]+j);
-                        j++;
-                    }
-                })
-                .setActionTextColor(Color.RED)
-                .show();
+        notifyDataSetChanged();
     }
 
     // Shows Video Information
