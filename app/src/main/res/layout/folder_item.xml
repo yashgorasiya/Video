@@ -22,7 +22,7 @@
 
     <LinearLayout
         android:id="@+id/linearLayout4"
-        android:layout_marginStart="70dp"
+        android:layout_marginStart="62dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
@@ -41,7 +41,7 @@
             android:fontFamily="@font/not_sans"
             android:maxLines="1"
             android:text="@string/dummyFolderName"
-            android:textSize="14sp"
+            android:textSize="13sp"
             android:textStyle="bold" />
 
         <TextView
@@ -54,7 +54,7 @@
             android:fontFamily="@font/not_sans"
             android:maxLines="1"
             android:text="@string/dummyVideoCount8_videos"
-            android:textSize="12sp" />
+            android:textSize="11sp" />
     </LinearLayout>
 
 <!--    <TextView-->

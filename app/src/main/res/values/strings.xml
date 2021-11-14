@@ -43,5 +43,6 @@
     <string name="descending">Descending</string>
     <string name="seekbarPreviewImage">SeekbarPreviewImage</string>
     <string name="bitrate">Bitrate :</string>
+    <string name="the_beginning">The Beginning</string>
 
 </resources>

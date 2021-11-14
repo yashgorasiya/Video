@@ -29,8 +29,8 @@
         app:layout_constraintTop_toTopOf="parent">
 
 
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/materialToolbarFolders"
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/materialToolbarLayoutFolders"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/statusBar"
@@ -40,31 +40,25 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="MissingConstraints">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
             <ImageView
                 android:layout_width="56dp"
                 android:layout_height="56dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginEnd="8dp"
                 android:contentDescription="@string/app_name"
                 android:padding="8dp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_logo_icon" />
 
-            <ImageView
-                android:id="@+id/homeScreenMore"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_gravity="right"
-                android:alpha="0.6"
-                android:contentDescription="@string/more"
-                android:padding="12dp"
-                android:src="@drawable/ic_baseline_more_vert_24"
-                app:tint="@color/homePreviewMore"
-                tools:ignore="RtlHardcoded" />
-
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:orientation="vertical">
 
                 <TextView
@@ -82,31 +76,61 @@
                     android:layout_height="wrap_content"
                     android:alpha="0.6"
                     android:fontFamily="@font/not_sans"
-                    android:text="The Beginning"
+                    android:text="@string/the_beginning"
                     android:textColor="@color/homePreviewMore"
                     android:textSize="12sp"
                     android:textStyle="bold" />
 
 
             </LinearLayout>
+            </LinearLayout>
 
-            <androidx.appcompat.widget.SearchView
-                android:id="@+id/searchFolder"
-                android:layout_width="wrap_content"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:backgroundTint="@color/white"
-                android:foregroundTint="@color/white"
-                android:foregroundTintMode="add"
-                tools:ignore="RtlHardcoded" />
+                android:layout_gravity="center_vertical">
 
-        </com.google.android.material.appbar.MaterialToolbar>
+                <ImageView
+                    android:id="@+id/homeScreenMore"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="right"
+                    android:alpha="0.6"
+                    android:contentDescription="@string/more"
+                    android:padding="12dp"
+                    android:src="@drawable/ic_baseline_more_vert_24"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@color/homePreviewMore"
+                    tools:ignore="RtlHardcoded" />
+
+                <androidx.appcompat.widget.SearchView
+                    android:id="@+id/searchFolder"
+                    android:background="@color/statusBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:backgroundTint="@color/white"
+                    android:foregroundTint="@color/white"
+                    android:foregroundTintMode="add"
+                    android:paddingStart="24dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/homeScreenMore"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintHorizontal_bias="1"
+                    tools:ignore="RtlHardcoded,RtlSymmetry" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/folderRecView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingTop="5dp"
+            android:paddingTop="3dp"
             tools:listitem="@layout/folder_item" />
 
     </LinearLayout>

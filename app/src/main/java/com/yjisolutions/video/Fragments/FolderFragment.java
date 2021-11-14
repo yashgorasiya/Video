@@ -3,10 +3,13 @@ package com.yjisolutions.video.Fragments;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.Toast;
@@ -17,7 +20,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.yjisolutions.video.Activities.PlayerActivity;
 import com.yjisolutions.video.Adapters.FolderAdapter;
@@ -37,6 +40,7 @@ public class FolderFragment extends Fragment implements OnPermissionGranted {
     private RecyclerView recyclerView;
     private ImageView more;
     private SearchView searchView;
+    private FloatingActionButton recentPlayed;
 
     @Override
     public void onStart() {
@@ -52,9 +56,7 @@ public class FolderFragment extends Fragment implements OnPermissionGranted {
 
         View v = inflater.inflate(R.layout.fragment_folder, container, false);
 
-        FloatingActionButton recentPlayed = v.findViewById(R.id.recentPlayResume);
-        recentPlayed.setOnClickListener(v1 -> recentPlayedResume());
-
+        recentPlayed = v.findViewById(R.id.recentPlayResume);
         recyclerView = v.findViewById(R.id.folderRecView);
         recyclerView.setHasFixedSize(true);
         more = v.findViewById(R.id.homeScreenMore);
@@ -66,6 +68,7 @@ public class FolderFragment extends Fragment implements OnPermissionGranted {
 
     @SuppressLint("NonConstantResourceId")
     private void initListeners(){
+        recentPlayed.setOnClickListener(v1 -> recentPlayedResume());
         more.setOnClickListener(v1 -> {
             PopupMenu popupMenu = new PopupMenu(getContext(),more);
             popupMenu.inflate(R.menu.menu);
@@ -126,15 +129,23 @@ public class FolderFragment extends Fragment implements OnPermissionGranted {
         adapter = new FolderAdapter(folder, getContext());
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), grid));
         recyclerView.setAdapter(adapter);
-//        recyclerView.setOnFlingListener(new RecyclerView.OnFlingListener() {
-//            @Override
-//            public boolean onFling(int velocityX, int velocityY) {
-//                MaterialToolbar t = requireView().findViewById(R.id.materialToolbarFolders);
-//                if (velocityY>0) t.setVisibility(View.GONE);
-//                else t.setVisibility(View.VISIBLE);
-//                return false;
-//            }
-//        });
+        recyclerView.setOnFlingListener(new RecyclerView.OnFlingListener() {
+            @Override
+            public boolean onFling(int velocityX, int velocityY) {
+                CollapsingToolbarLayout t = requireView().findViewById(R.id.materialToolbarLayoutFolders);
+                if (velocityY>0) {
+                    t.animate().translationY(-t.getBottom()).setInterpolator(new AccelerateInterpolator()).start();
+                    recentPlayed.animate().translationY(recentPlayed.getBottom()).setInterpolator(new AccelerateInterpolator()).start();
+                    t.setVisibility(View.GONE);
+                }
+                else {
+                    t.animate().translationY(0).setInterpolator(new DecelerateInterpolator()).start();
+                    recentPlayed.animate().translationY(0).setInterpolator(new DecelerateInterpolator()).start();
+                    t.setVisibility(View.VISIBLE);
+                }
+                return false;
+            }
+        });
     }
 
     private void recentPlayedResume() {
