@@ -263,6 +263,10 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoViewHolder> {
             DeleteFile delete1 = new DeleteFile(activity);
             delete1.moveToBin(toDelete);
             videos.removeAll(toDelete);
+            selectedItems = new ArrayList<>();
+            isSelected = false;
+            changeToolbar();
+            notifyDataSetChanged();
         } else {
 
             LayoutInflater factory = LayoutInflater.from(activity);
@@ -293,6 +297,10 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoViewHolder> {
                 DeleteFile delete1 = new DeleteFile(activity);
                 delete1.moveToBin(toDelete);
                 videos.removeAll(toDelete);
+                selectedItems = new ArrayList<>();
+                isSelected = false;
+                changeToolbar();
+                notifyDataSetChanged();
                 deleteDialog.dismiss();
             });
 
@@ -301,7 +309,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoViewHolder> {
             deleteDialog.show();
 
         }
-        notifyDataSetChanged();
+
     }
 
     // Shows Video Information
