@@ -31,7 +31,7 @@ import java.util.ArrayList;
 
 public class VideosFragment extends Fragment implements OnPlayerActivityDestroy {
 
-    private ArrayList<Video> videos = new ArrayList<>();
+    public static ArrayList<Video> videos = new ArrayList<>();
     private final boolean viewStyle = Utils.VIEW_STYLE;
     private RecyclerView recyclerView;
     private VideoAdapter adapter;

@@ -4,20 +4,12 @@ package com.yjisolutions.video.Activities;
 https://github.com/google/ExoPlayer/blob/r2.11.7/demos/main/src/main/java/com/google/android/exoplayer2/demo/TrackSelectionDialog.java#L115
  */
 
-import static android.view.WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS;
-import static android.view.WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN;
-import static android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN;
-import static android.view.WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS;
-import static android.view.WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
-import static com.google.android.exoplayer2.C.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.media.AudioManager;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -38,6 +30,8 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.view.GestureDetectorCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -58,11 +52,13 @@ import com.google.android.exoplayer2.source.DefaultMediaSourceFactory;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 import com.google.android.exoplayer2.ui.PlayerView;
-import com.google.android.exoplayer2.video.VideoSize;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
+import com.yjisolutions.video.Adapters.PlayerVideoAdapter;
+import com.yjisolutions.video.Fragments.VideosFragment;
+import com.yjisolutions.video.Modal.Video;
 import com.yjisolutions.video.R;
 import com.yjisolutions.video.code.Conversion;
 import com.yjisolutions.video.code.SetupFullDialog;
@@ -70,6 +66,13 @@ import com.yjisolutions.video.code.TrackSelectionDialog;
 import com.yjisolutions.video.code.Utils;
 
 import java.util.Objects;
+
+import static android.view.WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS;
+import static android.view.WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN;
+import static android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN;
+import static android.view.WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS;
+import static android.view.WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
+import static com.google.android.exoplayer2.C.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING;
 
 public class PlayerActivity extends AppCompatActivity {
 
@@ -85,12 +88,11 @@ public class PlayerActivity extends AppCompatActivity {
     private ConstraintLayout BIndicator, VIndicator;
     private LinearLayout SeekGesturePreviewLayout;
     private int getWidth, getHeight;
-    private int cPotion;
-    private String videoTitle;
-    private MediaItem mediaItem;
-    private Uri videoURL;
+    private int cPotion, position;
     private float PlayBackSpeed = 1.00f;
     private float NightIntensity = 0.0f;
+    private Video video;
+    private View PlayListView;
 
     @SuppressLint({"ClickableViewAccessibility", "UseCompatLoadingForDrawables", "SourceLockedOrientationActivity", "SetTextI18n"})
     @RequiresApi(api = Build.VERSION_CODES.R)
@@ -99,13 +101,13 @@ public class PlayerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
 
+        position = getIntent().getIntExtra("position", 0);
+        video = VideosFragment.videos.get(position);
 
-        videoURL = Uri.parse(getIntent().getStringExtra("url"));
-        videoTitle = getIntent().getStringExtra("title");
-        mediaItem = MediaItem.fromUri(videoURL);
+        PlayListView = findViewById(R.id.playerActivityList);
 
         ImageView fitToScreen = findViewById(R.id.fitToScreen);
-        TextView playerTitle = findViewById(R.id.titlePlayer);
+
         ImageView backArrow = findViewById(R.id.controllerBackArrow);
         ImageView moreControls = findViewById(R.id.moreControls);
         ImageView playerNight = findViewById(R.id.playerNight);
@@ -132,13 +134,18 @@ public class PlayerActivity extends AppCompatActivity {
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
 
-        playerTitle.setText(videoTitle);
         backArrow.setOnClickListener(v -> onBackPressed());
         speedControl.setOnClickListener(v -> PlayBackSpeedDialog());
         playerNight.setOnClickListener(v -> setNightIntensity());
         subTitleToggle.setOnClickListener(view -> SubTitleToggle(subTitleToggle));
         moreControls.setOnClickListener(v -> {
             // Do something in three dot Click
+            PlayListView.setVisibility(View.VISIBLE);
+            RecyclerView rc = PlayListView.findViewById(R.id.playerActivityList);
+            PlayerVideoAdapter playerVideoAdapter = new PlayerVideoAdapter(this);
+            rc.setLayoutManager(new LinearLayoutManager(this));
+            rc.setAdapter(playerVideoAdapter);
+            rc.setHasFixedSize(true);
         });
 
 
@@ -166,10 +173,10 @@ public class PlayerActivity extends AppCompatActivity {
     @SuppressLint("UseCompatLoadingForDrawables")
     private void SubTitleToggle(ImageView btn) {
         int s = Objects.requireNonNull(playerView.getSubtitleView()).getVisibility();
-        if (s==View.VISIBLE){
+        if (s == View.VISIBLE) {
             playerView.getSubtitleView().setVisibility(View.INVISIBLE);
             btn.setImageDrawable(getDrawable(R.drawable.subtitles_off));
-        }else{
+        } else {
             playerView.getSubtitleView().setVisibility(View.VISIBLE);
             btn.setImageDrawable(getDrawable(R.drawable.subtitles));
         }
@@ -249,7 +256,7 @@ public class PlayerActivity extends AppCompatActivity {
             Glide.with(getBaseContext())
                     .asDrawable()
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .load(videoURL)
+                    .load(video.getUri())
                     .apply(options)
                     .override(160, 90)
                     .into(imageView);
@@ -319,9 +326,14 @@ public class PlayerActivity extends AppCompatActivity {
     @SuppressLint({"ClickableViewAccessibility"})
     public void init() {
 
-
         if (!FfmpegLibrary.isAvailable())
             Toast.makeText(getApplicationContext(), "FFmpegLibrary not found", Toast.LENGTH_SHORT).show();
+
+        //    private String videoTitle;
+        MediaItem mediaItem = MediaItem.fromUri(video.getUri());
+
+        TextView playerTitle = findViewById(R.id.titlePlayer);
+        playerTitle.setText(video.getName());
 
         gestureDetectorCompat = new GestureDetectorCompat(getApplicationContext(), new MyGestureDetector());
         playerView = findViewById(R.id.idExoPlayerVIew);
@@ -351,7 +363,7 @@ public class PlayerActivity extends AppCompatActivity {
         simpleExoPlayer.setMediaItem(mediaItem);
         simpleExoPlayer.prepare();
 
-        long lastPlayed = Utils.sp.getLong(videoTitle, 0);
+        long lastPlayed = Utils.sp.getLong(video.getName(), 0);
         if (lastPlayed > 0) {
             if (lastPlayed >= simpleExoPlayer.getDuration()) {
                 Snackbar.make(this.findViewById(android.R.id.content), "Play From Start", Snackbar.LENGTH_LONG)
@@ -402,8 +414,15 @@ public class PlayerActivity extends AppCompatActivity {
             @Override
             public void onPlaybackStateChanged(int playbackState) {
                 if (playbackState == ExoPlayer.STATE_ENDED) {
-                    finish();
-                    releasePlayer();
+                    position++;
+                    if (VideosFragment.videos.size() > position) {
+                        video = VideosFragment.videos.get(position);
+                        releasePlayer();
+                        init();
+                    } else {
+                        releasePlayer();
+                        finish();
+                    }
                 }
             }
 
@@ -418,8 +437,8 @@ public class PlayerActivity extends AppCompatActivity {
     }
 
     void saveLastPosition() {
-        if (!Utils.setRecentlyPlayed(videoTitle,
-                videoURL.toString(),
+        if (!Utils.setRecentlyPlayed(video.getName(),
+                video.getUri().toString(),
                 simpleExoPlayer.getCurrentPosition()))
             Toast.makeText(getApplicationContext(), "Failed To Save Last Position", Toast.LENGTH_SHORT).show();
     }
@@ -589,7 +608,7 @@ public class PlayerActivity extends AppCompatActivity {
             float distanceXSinceTouchbegin = e1.getX() - e2.getX();
             maxHorizontalMovement = Math.max(maxHorizontalMovement, Math.abs(distanceXSinceTouchbegin));
             boolean enoughHorizontalMovement = maxHorizontalMovement > 100;
-            boolean SafeAreaBackBtn = e2.getX()<(getWidth-300);
+            boolean SafeAreaBackBtn = e2.getX() < (getWidth - 300);
 
 
             float distanceYSinceTouchbegin = e1.getY() - e2.getY();

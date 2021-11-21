@@ -119,6 +119,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoViewHolder> {
                                 new Intent(activity.getBaseContext(), PlayerActivity.class)
                                         .putExtra("url", video.getUri().toString())
                                         .putExtra("title", video.getName())
+                                        .putExtra("position", position)
                                 , 1);
                     }
                 }
