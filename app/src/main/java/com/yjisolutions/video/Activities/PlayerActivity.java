@@ -82,7 +82,7 @@ public class PlayerActivity extends AppCompatActivity {
     private GestureDetectorCompat gestureDetectorCompat;
     DisplayMetrics metrics = new DisplayMetrics();
     private int INDICATOR_WIDTH = 600;
-    private ConstraintLayout BIndicator,VIndicator;
+    private ConstraintLayout BIndicator, VIndicator;
     private LinearLayout SeekGesturePreviewLayout;
     private int getWidth, getHeight;
     private int cPotion;
@@ -109,6 +109,7 @@ public class PlayerActivity extends AppCompatActivity {
         ImageView backArrow = findViewById(R.id.controllerBackArrow);
         ImageView moreControls = findViewById(R.id.moreControls);
         ImageView playerNight = findViewById(R.id.playerNight);
+        ImageView subTitleToggle = findViewById(R.id.subTitleToggle);
 
         ImageView speedControl = findViewById(R.id.playback_speed);
         ImageView orientation = findViewById(R.id.exo_fullscreen);
@@ -128,7 +129,6 @@ public class PlayerActivity extends AppCompatActivity {
                 FLAG_LAYOUT_NO_LIMITS);
 
 
-
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
 
@@ -136,11 +136,10 @@ public class PlayerActivity extends AppCompatActivity {
         backArrow.setOnClickListener(v -> onBackPressed());
         speedControl.setOnClickListener(v -> PlayBackSpeedDialog());
         playerNight.setOnClickListener(v -> setNightIntensity());
-
+        subTitleToggle.setOnClickListener(view -> SubTitleToggle(subTitleToggle));
         moreControls.setOnClickListener(v -> {
             // Do something in three dot Click
         });
-
 
 
         orientation.setOnClickListener(v -> {
@@ -164,19 +163,31 @@ public class PlayerActivity extends AppCompatActivity {
 
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
+    private void SubTitleToggle(ImageView btn) {
+        int s = Objects.requireNonNull(playerView.getSubtitleView()).getVisibility();
+        if (s==View.VISIBLE){
+            playerView.getSubtitleView().setVisibility(View.INVISIBLE);
+            btn.setImageDrawable(getDrawable(R.drawable.subtitles_off));
+        }else{
+            playerView.getSubtitleView().setVisibility(View.VISIBLE);
+            btn.setImageDrawable(getDrawable(R.drawable.subtitles));
+        }
+    }
+
     private void setNightIntensity() {
-        final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this,R.style.BottomSheetSpeed);
+        final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this, R.style.BottomSheetSpeed);
         bottomSheetDialog.setContentView(R.layout.bottom_night_dialog);
-        SetupFullDialog.setupFullHeight(bottomSheetDialog,270);
+        SetupFullDialog.setupFullHeight(bottomSheetDialog, 270);
         ImageView imageView = bottomSheetDialog.findViewById(R.id.doneImgNDialog);
         Objects.requireNonNull(imageView).setOnClickListener(v -> bottomSheetDialog.cancel());
 
-        final float[] intensities = {0f,0.1f,0.2f,0.3f,0.4f,0.5f,0.6f,0.7f,0.8f,0.9f,1f};
+        final float[] intensities = {0f, 0.1f, 0.2f, 0.3f, 0.4f, 0.5f, 0.6f, 0.7f, 0.8f, 0.9f, 1f};
         SeekBar seekBar = bottomSheetDialog.findViewById(R.id.nightSeekbar);
         Objects.requireNonNull(seekBar).setMax(10);
         int c = 0;
-        for (float f:intensities) {
-            if (NightIntensity==f)break;
+        for (float f : intensities) {
+            if (NightIntensity == f) break;
             c++;
         }
         seekBar.setProgress(c);
@@ -205,26 +216,26 @@ public class PlayerActivity extends AppCompatActivity {
 
     @SuppressLint("DefaultLocale")
     private void PlayBackSpeedDialog() {
-        final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this,R.style.BottomSheetSpeed);
+        final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this, R.style.BottomSheetSpeed);
         bottomSheetDialog.setContentView(R.layout.playback_speed_dialog);
-        SetupFullDialog.setupFullHeight(bottomSheetDialog,370);
+        SetupFullDialog.setupFullHeight(bottomSheetDialog, 370);
 
         FloatingActionButton add = bottomSheetDialog.findViewById(R.id.speedIncreaseButton);
         FloatingActionButton remove = bottomSheetDialog.findViewById(R.id.speedDecreaseButton);
         TextView textView = bottomSheetDialog.findViewById(R.id.playBack_Speed_text);
         ImageView imageView = bottomSheetDialog.findViewById(R.id.doneImgPSDialog);
         Objects.requireNonNull(imageView).setOnClickListener(v -> bottomSheetDialog.cancel());
-        Objects.requireNonNull(textView).setText(String.format("%.2f",PlayBackSpeed));
+        Objects.requireNonNull(textView).setText(String.format("%.2f", PlayBackSpeed));
 
         Objects.requireNonNull(add).setOnClickListener(v -> {
             PlayBackSpeed = PlayBackSpeed + 0.05f;
-            Objects.requireNonNull(textView).setText(String.format("%.2f",PlayBackSpeed));
+            Objects.requireNonNull(textView).setText(String.format("%.2f", PlayBackSpeed));
             simpleExoPlayer.setPlaybackSpeed(PlayBackSpeed);
         });
 
         Objects.requireNonNull(remove).setOnClickListener(v -> {
-            if (PlayBackSpeed>0.10) PlayBackSpeed = PlayBackSpeed - 0.05f;
-            Objects.requireNonNull(textView).setText(String.format("%.2f",PlayBackSpeed));
+            if (PlayBackSpeed > 0.10) PlayBackSpeed = PlayBackSpeed - 0.05f;
+            Objects.requireNonNull(textView).setText(String.format("%.2f", PlayBackSpeed));
             simpleExoPlayer.setPlaybackSpeed(PlayBackSpeed);
         });
 
@@ -486,7 +497,7 @@ public class PlayerActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
-        if (simpleExoPlayer.isPlaying())simpleExoPlayer.pause();
+        if (simpleExoPlayer.isPlaying()) simpleExoPlayer.pause();
         super.onPause();
     }
 
@@ -523,7 +534,8 @@ public class PlayerActivity extends AppCompatActivity {
         seekBar.setProgress(val);
         BVText.setText(String.format("%02d", val) + "%");
     }
-  @SuppressLint({"SetTextI18n", "DefaultLocale"})
+
+    @SuppressLint({"SetTextI18n", "DefaultLocale"})
     private void VIndicator(float p) {
         float temp = 100 * p;
         int val = (int) temp;
@@ -577,13 +589,14 @@ public class PlayerActivity extends AppCompatActivity {
             float distanceXSinceTouchbegin = e1.getX() - e2.getX();
             maxHorizontalMovement = Math.max(maxHorizontalMovement, Math.abs(distanceXSinceTouchbegin));
             boolean enoughHorizontalMovement = maxHorizontalMovement > 100;
+            boolean SafeAreaBackBtn = e2.getX()<(getWidth-300);
 
 
             float distanceYSinceTouchbegin = e1.getY() - e2.getY();
             maxVerticalMovement = Math.max(maxVerticalMovement, Math.abs(distanceYSinceTouchbegin));
             boolean enoughVerticalMovement = maxVerticalMovement > 100;
 
-            if (enoughHorizontalMovement && !enoughVerticalMovement) {
+            if (enoughHorizontalMovement && !enoughVerticalMovement && SafeAreaBackBtn) {
                 String ctime = Conversion.timerConversion(cPotion);
 
                 // right to left

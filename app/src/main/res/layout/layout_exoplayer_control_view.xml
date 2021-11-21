@@ -46,6 +46,19 @@
             app:layout_constraintTop_toTopOf="@+id/playback_speed"
             app:tint="@color/white" />
 
+        <ImageView
+            android:id="@+id/subTitleToggle"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:background="@drawable/player_buttons_bg"
+            android:padding="10dp"
+            android:layout_marginEnd="12dp"
+            android:src="@drawable/subtitles"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/playerNight"
+            app:layout_constraintTop_toTopOf="@+id/playerNight"
+            app:tint="@color/white" />
+
 
         <TextView
             android:id="@+id/titlePlayer"
@@ -205,7 +218,8 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp">
 
 
                 <ImageButton
@@ -239,13 +253,11 @@
 
                     <ImageButton
                         android:id="@+id/exo_play"
-                        style="@style/ExoMediaButton.Play"
-                        android:layout_width="56dp"
-                        android:layout_height="56dp"
-                        android:backgroundTint="@color/purple_500"
-                        android:background="?attr/selectableItemBackground"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:background="@drawable/play_pause_button_bg"
                         android:contentDescription="@string/exo_controls_play_description"
-                        android:src="@drawable/exo_controls_play"
+                        android:src="@drawable/ic_play_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.498"
@@ -253,10 +265,9 @@
 
                     <ImageButton
                         android:id="@+id/exo_pause"
-                        style="@style/ExoMediaButton.Pause"
-                        android:layout_width="56dp"
-                        android:layout_height="56dp"
-                        android:background="?attr/selectableItemBackground"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:background="@drawable/play_pause_button_bg"
                         android:contentDescription="@string/exo_controls_pause_description"
                         android:src="@drawable/exo_controls_pause"
                         app:layout_constraintBottom_toBottomOf="parent"
