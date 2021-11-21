@@ -48,12 +48,13 @@ public class VideosFragment extends Fragment implements OnPlayerActivityDestroy 
                              Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fragment_videos, container, false);
-
         parentView = v;
+
         MainActivity.setOnPlayerActivityDestroyIF(this);
         ImageView backButton = v.findViewById(R.id.videoFragmentBack);
         ImageView viewGrid = v.findViewById(R.id.videoFragmentGrid);
         TextView toolBarTitle = v.findViewById(R.id.videoFragmentTitle);
+
         toolBarSubTitle = v.findViewById(R.id.videoFragmentSubTitle);
         searchView = v.findViewById(R.id.searchVideos);
         videoFragmentMore = v.findViewById(R.id.videoFragmentMore);
@@ -78,8 +79,6 @@ public class VideosFragment extends Fragment implements OnPlayerActivityDestroy 
             folderName = getArguments().getString("folderName");
             toolBarTitle.setText(folderName.substring(folderName.lastIndexOf("/") + 1));
         }
-
-
 
         initRecViewVideos();
         initListeners();

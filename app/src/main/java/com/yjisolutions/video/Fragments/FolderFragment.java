@@ -3,7 +3,6 @@ package com.yjisolutions.video.Fragments;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,6 +40,7 @@ public class FolderFragment extends Fragment implements OnPermissionGranted {
     private ImageView more;
     private SearchView searchView;
     private FloatingActionButton recentPlayed;
+    private boolean recViewInitiated = false;
 
     @Override
     public void onStart() {
@@ -170,6 +170,12 @@ public class FolderFragment extends Fragment implements OnPermissionGranted {
         super.onConfigurationChanged(newConfig);
     }
 
+    @Override
+    public void onGranted() {
+        initRecViewFolders();
+        recViewInitiated = true;
+    }
+
     public void filter(String text) {
         ArrayList<Folder> temp = new ArrayList<>();
         for (Folder d : folder) {
@@ -177,12 +183,7 @@ public class FolderFragment extends Fragment implements OnPermissionGranted {
                 temp.add(d);
             }
         }
-        adapter.updateList(temp);
+        if (recViewInitiated) adapter.updateList(temp);
     }
 
-
-    @Override
-    public void onGranted() {
-        initRecViewFolders();
-    }
 }

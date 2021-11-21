@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static SharedPreferences sharedPreferences;
     private static OnPlayerActivityDestroy onPlayerActivityDestroy;
+    public int oldConfig;
 
     public static void setOnPlayerActivityDestroyIF(OnPlayerActivityDestroy onPlayerActivityDestroy) {
         MainActivity.onPlayerActivityDestroy = onPlayerActivityDestroy;
@@ -33,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        oldConfig = getResources().getConfiguration().uiMode;
         sharedPreferences = getSharedPreferences("UserData", Context.MODE_PRIVATE);
 
         if ((getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_NO) {
@@ -64,18 +66,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
+
         int currentNightMode = newConfig.uiMode & Configuration.UI_MODE_NIGHT_MASK;
-        switch (currentNightMode) {
-            case Configuration.UI_MODE_NIGHT_NO:
-                // Night mode is not active, we're using the light theme
-                onDestroy();
-                startActivity(new Intent(this, MainActivity.class));
-                break;
-            case Configuration.UI_MODE_NIGHT_YES:
-                // Night mode is active, we're using dark theme
-                onDestroy();
-                startActivity(new Intent(this, MainActivity.class));
-                break;
+
+        if (oldConfig != currentNightMode) {
+            this.recreate();
+            oldConfig=currentNightMode;
         }
 
 
