@@ -58,16 +58,16 @@ public class Utils {
         }
     }
 
-    public static String RECENTLY_PLAYED_VIDEO_TITLE = sp.getString("recentVideoTitle", "0");
-    public static String RECENTLY_PLAYED_VIDEO_URL = sp.getString("recentVideoUrl", "0");
+    public static int RECENTLY_PLAYED_VIDEO_POSITION = sp.getInt("recentVideoPosition", 0);
+    public static String RECENTLY_PLAYED_VIDEO_FOLDER = sp.getString("recentVideoFolder", "0");
 
-    public static boolean setRecentlyPlayed(String videoTitle,String videoUrl,long duration){
-        spe.putString("recentVideoTitle", videoTitle);
-        spe.putString("recentVideoUrl", videoUrl);
+    public static boolean setRecentlyPlayed(int videoPosition,String videoFolder,String videoTitle,long duration){
+        spe.putInt("recentVideoPosition", videoPosition);
+        spe.putString("recentVideoFolder", videoFolder);
         spe.putLong(videoTitle,duration);
         boolean commit = spe.commit();
-        RECENTLY_PLAYED_VIDEO_TITLE = sp.getString("recentVideoTitle", "0");
-        RECENTLY_PLAYED_VIDEO_URL = sp.getString("recentVideoUrl", "0");
+        RECENTLY_PLAYED_VIDEO_POSITION = sp.getInt("recentVideoPosition", 0);
+        RECENTLY_PLAYED_VIDEO_FOLDER = sp.getString("recentVideoFolder", "0");
         return commit;
     }
 

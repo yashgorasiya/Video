@@ -12,12 +12,14 @@ import android.graphics.Color;
 import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -58,6 +60,7 @@ import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.yjisolutions.video.Adapters.PlayerVideoAdapter;
 import com.yjisolutions.video.Fragments.VideosFragment;
+import com.yjisolutions.video.Interfaces.OnPlayListItemClicked;
 import com.yjisolutions.video.Modal.Video;
 import com.yjisolutions.video.R;
 import com.yjisolutions.video.code.Conversion;
@@ -74,7 +77,7 @@ import static android.view.WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS;
 import static android.view.WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
 import static com.google.android.exoplayer2.C.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING;
 
-public class PlayerActivity extends AppCompatActivity {
+public class PlayerActivity extends AppCompatActivity implements OnPlayListItemClicked {
 
     // Experimental
     private boolean isShowingTrackSelectionDialog;
@@ -88,11 +91,12 @@ public class PlayerActivity extends AppCompatActivity {
     private ConstraintLayout BIndicator, VIndicator;
     private LinearLayout SeekGesturePreviewLayout;
     private int getWidth, getHeight;
-    private int cPotion, position;
+    private int cPotion;
+    public static int position;
     private float PlayBackSpeed = 1.00f;
     private float NightIntensity = 0.0f;
     private Video video;
-    private View PlayListView;
+//    private FrameLayout PlayListView;
 
     @SuppressLint({"ClickableViewAccessibility", "UseCompatLoadingForDrawables", "SourceLockedOrientationActivity", "SetTextI18n"})
     @RequiresApi(api = Build.VERSION_CODES.R)
@@ -102,9 +106,8 @@ public class PlayerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_player);
 
         position = getIntent().getIntExtra("position", 0);
-        video = VideosFragment.videos.get(position);
 
-        PlayListView = findViewById(R.id.playerActivityList);
+        View playListView = findViewById(R.id.playListLayout);
 
         ImageView fitToScreen = findViewById(R.id.fitToScreen);
 
@@ -112,11 +115,10 @@ public class PlayerActivity extends AppCompatActivity {
         ImageView moreControls = findViewById(R.id.moreControls);
         ImageView playerNight = findViewById(R.id.playerNight);
         ImageView subTitleToggle = findViewById(R.id.subTitleToggle);
-
+        ImageView listClose = playListView.findViewById(R.id.playListClose);
         ImageView speedControl = findViewById(R.id.playback_speed);
-        ImageView orientation = findViewById(R.id.exo_fullscreen);
+        ImageView orientation = findViewById(R.id.screenRotation);
         ImageButton trackSelection = findViewById(R.id.exo_track_selection_view);
-
         ImageView seekbarPreview = findViewById(R.id.seekbarPreview);
         PreviewTimeBar previewSeekBar = findViewById(R.id.exo_progress);
         PreviewLoader imagePreviewLoader = ImagePreviewLoader(seekbarPreview);
@@ -139,10 +141,11 @@ public class PlayerActivity extends AppCompatActivity {
         playerNight.setOnClickListener(v -> setNightIntensity());
         subTitleToggle.setOnClickListener(view -> SubTitleToggle(subTitleToggle));
         moreControls.setOnClickListener(v -> {
-            // Do something in three dot Click
-            PlayListView.setVisibility(View.VISIBLE);
-            RecyclerView rc = PlayListView.findViewById(R.id.playerActivityList);
-            PlayerVideoAdapter playerVideoAdapter = new PlayerVideoAdapter(this);
+            if (playerView.isControllerVisible())playerView.hideController();
+            playListView.setVisibility(View.VISIBLE);
+            listClose.setOnClickListener(view -> playListView.setVisibility(View.INVISIBLE));
+            RecyclerView rc = playListView.findViewById(R.id.playListRV);
+            PlayerVideoAdapter playerVideoAdapter = new PlayerVideoAdapter(this,this,playListView);
             rc.setLayoutManager(new LinearLayoutManager(this));
             rc.setAdapter(playerVideoAdapter);
             rc.setHasFixedSize(true);
@@ -330,10 +333,7 @@ public class PlayerActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "FFmpegLibrary not found", Toast.LENGTH_SHORT).show();
 
         //    private String videoTitle;
-        MediaItem mediaItem = MediaItem.fromUri(video.getUri());
 
-        TextView playerTitle = findViewById(R.id.titlePlayer);
-        playerTitle.setText(video.getName());
 
         gestureDetectorCompat = new GestureDetectorCompat(getApplicationContext(), new MyGestureDetector());
         playerView = findViewById(R.id.idExoPlayerVIew);
@@ -360,13 +360,28 @@ public class PlayerActivity extends AppCompatActivity {
 
         playerView.setPlayer(simpleExoPlayer);
 
+        playExo();
+
+       setExoListener();
+
+    }
+
+    void playExo(){
+        video = VideosFragment.videos.get(position);
+        MediaItem mediaItem = MediaItem.fromUri(video.getUri());
+
+        TextView playerTitle = findViewById(R.id.titlePlayer);
+        playerTitle.setText(video.getName());
+
+        if (simpleExoPlayer.isPlaying())simpleExoPlayer.stop();
+
         simpleExoPlayer.setMediaItem(mediaItem);
         simpleExoPlayer.prepare();
 
         long lastPlayed = Utils.sp.getLong(video.getName(), 0);
         if (lastPlayed > 0) {
             if (lastPlayed >= simpleExoPlayer.getDuration()) {
-                Snackbar.make(this.findViewById(android.R.id.content), "Play From Start", Snackbar.LENGTH_LONG)
+                Snackbar.make(this.findViewById(android.R.id.content), "Play From Start", Snackbar.LENGTH_SHORT)
                         .setAction("START", v1 -> simpleExoPlayer.seekTo(0))
                         .setActionTextColor(Color.RED)
                         .setBackgroundTint(Color.BLACK)
@@ -379,6 +394,9 @@ public class PlayerActivity extends AppCompatActivity {
 
         simpleExoPlayer.play();
 
+    }
+    @SuppressLint("ClickableViewAccessibility")
+    void setExoListener(){
         playerView.setControllerShowTimeoutMs(2000);
 
         playerView.setControllerVisibilityListener(visibility -> {
@@ -389,7 +407,7 @@ public class PlayerActivity extends AppCompatActivity {
             }
         });
 
-        playerView.setOnTouchListener((v, event) -> {
+        playerView.setOnTouchListener((@SuppressLint("ClickableViewAccessibility") View v, @SuppressLint("ClickableViewAccessibility") MotionEvent event) -> {
 
             gestureDetectorCompat.onTouchEvent(event);
             switch (event.getAction()) {
@@ -417,8 +435,8 @@ public class PlayerActivity extends AppCompatActivity {
                     position++;
                     if (VideosFragment.videos.size() > position) {
                         video = VideosFragment.videos.get(position);
-                        releasePlayer();
-                        init();
+                        new Handler().postDelayed(() -> playExo(),2000);
+
                     } else {
                         releasePlayer();
                         finish();
@@ -433,12 +451,12 @@ public class PlayerActivity extends AppCompatActivity {
 //                }
 //            }
         });
-
     }
 
     void saveLastPosition() {
-        if (!Utils.setRecentlyPlayed(video.getName(),
-                video.getUri().toString(),
+        if (!Utils.setRecentlyPlayed(position,
+                VideosFragment.folderName,
+                video.getName(),
                 simpleExoPlayer.getCurrentPosition()))
             Toast.makeText(getApplicationContext(), "Failed To Save Last Position", Toast.LENGTH_SHORT).show();
     }
@@ -593,6 +611,11 @@ public class PlayerActivity extends AppCompatActivity {
         BIndicator.setVisibility(View.INVISIBLE);
         VIndicator.setVisibility(View.INVISIBLE);
         SeekGesturePreviewLayout.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void PlayFromPlayList() {
+        playExo();
     }
 
 

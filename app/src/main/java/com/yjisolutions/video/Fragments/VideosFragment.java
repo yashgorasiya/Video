@@ -37,7 +37,7 @@ public class VideosFragment extends Fragment implements OnPlayerActivityDestroy 
     private VideoAdapter adapter;
     private ImageView videoFragmentMore;
     private SearchView searchView;
-    private String folderName;
+    public static String folderName;
     private TextView toolBarSubTitle;
     @SuppressLint("StaticFieldLeak")
     public static View parentView;

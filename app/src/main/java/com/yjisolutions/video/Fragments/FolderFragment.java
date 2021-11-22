@@ -16,6 +16,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -31,6 +32,7 @@ import com.yjisolutions.video.code.Utils;
 import com.yjisolutions.video.code.VideoRead;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 
 public class FolderFragment extends Fragment implements OnPermissionGranted {
@@ -150,11 +152,15 @@ public class FolderFragment extends Fragment implements OnPermissionGranted {
 
     private void recentPlayedResume() {
 
-        if (!Utils.RECENTLY_PLAYED_VIDEO_URL.equals("0")) {
-            requireActivity().startActivity(
-                    new Intent(getContext(), PlayerActivity.class)
-                            .putExtra("url", Utils.RECENTLY_PLAYED_VIDEO_URL)
-                            .putExtra("title", Utils.RECENTLY_PLAYED_VIDEO_TITLE));
+        if (!Utils.RECENTLY_PLAYED_VIDEO_FOLDER.equals("0")) {
+            Bundle bundle = new Bundle();
+            bundle.putString("folderName", Utils.RECENTLY_PLAYED_VIDEO_FOLDER);
+            Navigation.findNavController(requireView()).navigate(R.id.folder_to_videos, bundle);
+
+            requireActivity().startActivityForResult(
+                    new Intent(requireActivity().getBaseContext(), PlayerActivity.class)
+                            .putExtra("position", Utils.RECENTLY_PLAYED_VIDEO_POSITION)
+                    , 1);
         }
         else Toast.makeText(getContext(), "Not Played any Video yet", Toast.LENGTH_SHORT).show();
     }
