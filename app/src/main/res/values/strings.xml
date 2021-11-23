@@ -44,5 +44,7 @@
     <string name="seekbarPreviewImage">SeekbarPreviewImage</string>
     <string name="bitrate">Bitrate :</string>
     <string name="the_beginning">The Beginning</string>
+    <string name="subTitleToggleButton">SubTitleToggleButton</string>
+    <string name="nightModeButton">NightModeButton</string>
 
 </resources>
