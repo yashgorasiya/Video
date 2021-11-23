@@ -100,6 +100,7 @@ public class PlayerActivity extends AppCompatActivity implements OnPlayListItemC
     private float PlayBackSpeed = 1.00f;
     private float NightIntensity = 0.0f;
     private Video video;
+    private boolean fromExternal = false;
 //    private FrameLayout PlayListView;
 
     @SuppressLint({"ClickableViewAccessibility", "UseCompatLoadingForDrawables", "SourceLockedOrientationActivity", "SetTextI18n"})
@@ -374,6 +375,7 @@ public class PlayerActivity extends AppCompatActivity implements OnPlayListItemC
         try {
             video = VideosFragment.videos.get(position);
         }catch (Exception e){
+            fromExternal = true;
             MediaMetadataRetriever mmr = new MediaMetadataRetriever();
             mmr.setDataSource(this, getIntent().getData());
             String title = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
@@ -387,18 +389,20 @@ public class PlayerActivity extends AppCompatActivity implements OnPlayListItemC
         simpleExoPlayer.setMediaItem(mediaItem);
         simpleExoPlayer.prepare();
 
-        long lastPlayed = Utils.sp.getLong(video.getName(), 0);
-        if (lastPlayed > 0) {
-            if (lastPlayed >= simpleExoPlayer.getDuration()) {
-                Snackbar.make(this.findViewById(android.R.id.content), "Play From Start", Snackbar.LENGTH_SHORT)
-                        .setAction("START", v1 -> simpleExoPlayer.seekTo(0))
-                        .setActionTextColor(Color.RED)
-                        .setBackgroundTint(Color.BLACK)
-                        .setTextColor(Color.WHITE)
-                        .setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_SLIDE)
-                        .show();
+        if (!fromExternal){
+            long lastPlayed = Utils.sp.getLong(video.getName(), 0);
+            if (lastPlayed > 0) {
+                if (lastPlayed >= simpleExoPlayer.getDuration()) {
+                    Snackbar.make(this.findViewById(android.R.id.content), "Play From Start", Snackbar.LENGTH_SHORT)
+                            .setAction("START", v1 -> simpleExoPlayer.seekTo(0))
+                            .setActionTextColor(Color.RED)
+                            .setBackgroundTint(Color.BLACK)
+                            .setTextColor(Color.WHITE)
+                            .setAnimationMode(BaseTransientBottomBar.ANIMATION_MODE_SLIDE)
+                            .show();
+                }
+                simpleExoPlayer.seekTo(lastPlayed - 3000);
             }
-            simpleExoPlayer.seekTo(lastPlayed - 3000);
         }
 
         TextView playerTitle = findViewById(R.id.titlePlayer);
@@ -466,11 +470,13 @@ public class PlayerActivity extends AppCompatActivity implements OnPlayListItemC
     }
 
     void saveLastPosition() {
-        if (!Utils.setRecentlyPlayed(position,
-                VideosFragment.folderName,
-                video.getName(),
-                simpleExoPlayer.getCurrentPosition()))
-            Toast.makeText(getApplicationContext(), "Failed To Save Last Position", Toast.LENGTH_SHORT).show();
+        if (!fromExternal){
+            if (!Utils.setRecentlyPlayed(position,
+                    VideosFragment.folderName,
+                    video.getName(),
+                    simpleExoPlayer.getCurrentPosition()))
+                Toast.makeText(getApplicationContext(), "Failed To Save Last Position", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void hideSystemUi() {
