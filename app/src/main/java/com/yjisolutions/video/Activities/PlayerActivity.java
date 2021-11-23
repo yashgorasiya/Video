@@ -6,10 +6,12 @@ https://github.com/google/ExoPlayer/blob/r2.11.7/demos/main/src/main/java/com/go
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.media.AudioManager;
+import android.media.MediaMetadataRetriever;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -44,6 +46,7 @@ import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.MediaItem;
+import com.google.android.exoplayer2.MediaMetadata;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.RenderersFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -68,6 +71,7 @@ import com.yjisolutions.video.code.SetupFullDialog;
 import com.yjisolutions.video.code.TrackSelectionDialog;
 import com.yjisolutions.video.code.Utils;
 
+import java.io.File;
 import java.util.Objects;
 
 import static android.view.WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS;
@@ -367,11 +371,16 @@ public class PlayerActivity extends AppCompatActivity implements OnPlayListItemC
     }
 
     void playExo(){
-        video = VideosFragment.videos.get(position);
-        MediaItem mediaItem = MediaItem.fromUri(video.getUri());
+        try {
+            video = VideosFragment.videos.get(position);
+        }catch (Exception e){
+            MediaMetadataRetriever mmr = new MediaMetadataRetriever();
+            mmr.setDataSource(this, getIntent().getData());
+            String title = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
+            video= new Video(getIntent().getData(),title,0,0);
+        }
 
-        TextView playerTitle = findViewById(R.id.titlePlayer);
-        playerTitle.setText(video.getName());
+        MediaItem mediaItem = MediaItem.fromUri(video.getUri());
 
         if (simpleExoPlayer.isPlaying())simpleExoPlayer.stop();
 
@@ -391,6 +400,9 @@ public class PlayerActivity extends AppCompatActivity implements OnPlayListItemC
             }
             simpleExoPlayer.seekTo(lastPlayed - 3000);
         }
+
+        TextView playerTitle = findViewById(R.id.titlePlayer);
+        playerTitle.setText(video.getName());
 
         simpleExoPlayer.play();
 
@@ -444,7 +456,7 @@ public class PlayerActivity extends AppCompatActivity implements OnPlayListItemC
                 }
             }
 
-//            @Override
+            //            @Override
 //            public void onVideoSizeChanged(@NonNull VideoSize videoSize) {
 //                if (videoSize.height < videoSize.width) {
 //                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);

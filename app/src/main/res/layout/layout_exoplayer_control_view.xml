@@ -18,8 +18,8 @@
 
         <ImageView
             android:id="@+id/playback_speed"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_marginTop="24dp"
             android:layout_marginEnd="16dp"
             android:background="@drawable/player_buttons_bg"
@@ -34,8 +34,8 @@
 
         <ImageView
             android:id="@+id/playerNight"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_marginEnd="12dp"
             android:background="@drawable/player_buttons_bg"
             android:padding="10dp"
@@ -47,8 +47,8 @@
 
         <ImageView
             android:id="@+id/subTitleToggle"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:background="@drawable/player_buttons_bg"
             android:padding="10dp"
             android:layout_marginEnd="12dp"
@@ -63,19 +63,18 @@
             android:id="@+id/titlePlayer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_marginTop="28dp"
-            android:layout_marginBottom="28dp"
-            android:layout_marginEnd="70dp"
             android:layout_marginStart="70dp"
+            android:layout_marginEnd="70dp"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="2"
             android:text="@string/dummyVideoTitle"
             android:textColor="@color/white"
-            android:textSize="14sp"
-            android:maxLines="2"
-            android:ellipsize="end"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@+id/controllerBackArrow"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/controllerBackArrow"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/controllerBackArrow"
+            app:layout_constraintTop_toTopOf="@+id/controllerBackArrow"
             tool:ignore="RtlSymmetry" />
 
             <ImageView
@@ -83,7 +82,8 @@
                 android:id="@+id/moreControls"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:layout_marginEnd="10dp"
+                android:padding="3dp"
+                android:layout_marginEnd="16dp"
                 android:layout_marginTop="24dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -111,7 +111,7 @@
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="12dp"
+        android:paddingBottom="8dp"
         android:background="@drawable/controller_bg"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -155,7 +155,7 @@
                 android:layout_marginStart="24dp"
                 android:layout_marginEnd="24dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="2dp"
                 android:orientation="horizontal"
                 app:layout_constraintBottom_toTopOf="@+id/exo_rew"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -217,7 +217,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp">
+                >
 
 
                 <ImageButton
@@ -251,8 +251,8 @@
 
                     <ImageButton
                         android:id="@+id/exo_play"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
                         android:background="@drawable/play_pause_button_bg"
                         android:contentDescription="@string/exo_controls_play_description"
                         android:src="@drawable/ic_play_icon"
@@ -263,8 +263,8 @@
 
                     <ImageButton
                         android:id="@+id/exo_pause"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
                         android:background="@drawable/play_pause_button_bg"
                         android:contentDescription="@string/exo_controls_pause_description"
                         android:src="@drawable/exo_controls_pause"
@@ -305,8 +305,8 @@
 
     <ImageView
         android:id="@+id/screenRotation"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_marginEnd="16dp"
         android:padding="10dp"
         android:contentDescription="@string/exo_controls_fullscreen_enter_description"
