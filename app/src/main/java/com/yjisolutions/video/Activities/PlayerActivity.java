@@ -6,7 +6,6 @@ https://github.com/google/ExoPlayer/blob/r2.11.7/demos/main/src/main/java/com/go
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -14,14 +13,12 @@ import android.media.AudioManager;
 import android.media.MediaMetadataRetriever;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -46,7 +43,6 @@ import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.MediaItem;
-import com.google.android.exoplayer2.MediaMetadata;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.RenderersFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -63,7 +59,6 @@ import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.yjisolutions.video.Adapters.PlayerVideoAdapter;
 import com.yjisolutions.video.Fragments.VideosFragment;
-import com.yjisolutions.video.Interfaces.OnPlayListItemClicked;
 import com.yjisolutions.video.Modal.Video;
 import com.yjisolutions.video.R;
 import com.yjisolutions.video.code.Conversion;
@@ -71,7 +66,6 @@ import com.yjisolutions.video.code.SetupFullDialog;
 import com.yjisolutions.video.code.TrackSelectionDialog;
 import com.yjisolutions.video.code.Utils;
 
-import java.io.File;
 import java.util.Objects;
 
 import static android.view.WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS;
@@ -81,7 +75,7 @@ import static android.view.WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS;
 import static android.view.WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
 import static com.google.android.exoplayer2.C.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING;
 
-public class PlayerActivity extends AppCompatActivity implements OnPlayListItemClicked {
+public class PlayerActivity extends AppCompatActivity{
 
     // Experimental
     private boolean isShowingTrackSelectionDialog;
@@ -96,11 +90,12 @@ public class PlayerActivity extends AppCompatActivity implements OnPlayListItemC
     private LinearLayout SeekGesturePreviewLayout;
     private int getWidth, getHeight;
     private int cPotion;
-    public static int position;
+    private int position;
     private float PlayBackSpeed = 1.00f;
     private float NightIntensity = 0.0f;
     private Video video;
     private boolean fromExternal = false;
+    private View playListView;
 //    private FrameLayout PlayListView;
 
     @SuppressLint({"ClickableViewAccessibility", "UseCompatLoadingForDrawables", "SourceLockedOrientationActivity", "SetTextI18n"})
@@ -112,7 +107,8 @@ public class PlayerActivity extends AppCompatActivity implements OnPlayListItemC
 
         position = getIntent().getIntExtra("position", 0);
 
-        View playListView = findViewById(R.id.playListLayout);
+        playListView = findViewById(R.id.playListLayout);
+        playListView.animate().translationXBy(1000).setDuration(0);
 
         ImageView fitToScreen = findViewById(R.id.fitToScreen);
 
@@ -120,7 +116,6 @@ public class PlayerActivity extends AppCompatActivity implements OnPlayListItemC
         ImageView moreControls = findViewById(R.id.moreControls);
         ImageView playerNight = findViewById(R.id.playerNight);
         ImageView subTitleToggle = findViewById(R.id.subTitleToggle);
-        ImageView listClose = playListView.findViewById(R.id.playListClose);
         ImageView speedControl = findViewById(R.id.playback_speed);
         ImageView orientation = findViewById(R.id.screenRotation);
         ImageButton trackSelection = findViewById(R.id.exo_track_selection_view);
@@ -145,16 +140,7 @@ public class PlayerActivity extends AppCompatActivity implements OnPlayListItemC
         speedControl.setOnClickListener(v -> PlayBackSpeedDialog());
         playerNight.setOnClickListener(v -> setNightIntensity());
         subTitleToggle.setOnClickListener(view -> SubTitleToggle(subTitleToggle));
-        moreControls.setOnClickListener(v -> {
-            if (playerView.isControllerVisible())playerView.hideController();
-            playListView.setVisibility(View.VISIBLE);
-            listClose.setOnClickListener(view -> playListView.setVisibility(View.INVISIBLE));
-            RecyclerView rc = playListView.findViewById(R.id.playListRV);
-            PlayerVideoAdapter playerVideoAdapter = new PlayerVideoAdapter(this,this,playListView);
-            rc.setLayoutManager(new LinearLayoutManager(this));
-            rc.setAdapter(playerVideoAdapter);
-            rc.setHasFixedSize(true);
-        });
+        moreControls.setOnClickListener(v -> ShowPlayList());
 
 
         orientation.setOnClickListener(v -> {
@@ -176,6 +162,21 @@ public class PlayerActivity extends AppCompatActivity implements OnPlayListItemC
         hideSystemUi();
 
 
+    }
+
+    private void ShowPlayList() {
+        if (playerView.isControllerVisible()) playerView.hideController();
+        playListView.setVisibility(View.VISIBLE);
+        playListView.animate().translationX(0).setDuration(400);
+
+        ImageView listClose = playListView.findViewById(R.id.playListClose);
+        listClose.setOnClickListener(view -> playListView.animate().translationXBy(1000).setDuration(400));
+
+        RecyclerView rc = playListView.findViewById(R.id.playListRV);
+        PlayerVideoAdapter playerVideoAdapter = new PlayerVideoAdapter(this,playListView);
+        rc.setLayoutManager(new LinearLayoutManager(this));
+        rc.setAdapter(playerVideoAdapter);
+        rc.setHasFixedSize(true);
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
@@ -367,29 +368,29 @@ public class PlayerActivity extends AppCompatActivity implements OnPlayListItemC
 
         playExo();
 
-       setExoListener();
+        setExoListener();
 
     }
 
-    void playExo(){
+    private void playExo() {
         try {
             video = VideosFragment.videos.get(position);
-        }catch (Exception e){
+        } catch (Exception e) {
             fromExternal = true;
             MediaMetadataRetriever mmr = new MediaMetadataRetriever();
             mmr.setDataSource(this, getIntent().getData());
             String title = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
-            video= new Video(getIntent().getData(),title,0,0);
+            video = new Video(getIntent().getData(), title, 0, 0);
         }
 
         MediaItem mediaItem = MediaItem.fromUri(video.getUri());
 
-        if (simpleExoPlayer.isPlaying())simpleExoPlayer.stop();
+        if (simpleExoPlayer.isPlaying()) simpleExoPlayer.stop();
 
         simpleExoPlayer.setMediaItem(mediaItem);
         simpleExoPlayer.prepare();
 
-        if (!fromExternal){
+        if (!fromExternal) {
             long lastPlayed = Utils.sp.getLong(video.getName(), 0);
             if (lastPlayed > 0) {
                 if (lastPlayed >= simpleExoPlayer.getDuration()) {
@@ -411,8 +412,9 @@ public class PlayerActivity extends AppCompatActivity implements OnPlayListItemC
         simpleExoPlayer.play();
 
     }
+
     @SuppressLint("ClickableViewAccessibility")
-    void setExoListener(){
+    private void setExoListener() {
         playerView.setControllerShowTimeoutMs(2000);
 
         playerView.setControllerVisibilityListener(visibility -> {
@@ -448,15 +450,8 @@ public class PlayerActivity extends AppCompatActivity implements OnPlayListItemC
             @Override
             public void onPlaybackStateChanged(int playbackState) {
                 if (playbackState == ExoPlayer.STATE_ENDED) {
-                    position++;
-                    if (VideosFragment.videos.size() > position) {
-                        video = VideosFragment.videos.get(position);
-                        new Handler().postDelayed(() -> playExo(),2000);
-
-                    } else {
-                        releasePlayer();
-                        finish();
-                    }
+                    saveLastPosition();
+                    ShowPlayList();
                 }
             }
 
@@ -470,7 +465,7 @@ public class PlayerActivity extends AppCompatActivity implements OnPlayListItemC
     }
 
     void saveLastPosition() {
-        if (!fromExternal){
+        if (!fromExternal) {
             if (!Utils.setRecentlyPlayed(position,
                     VideosFragment.folderName,
                     video.getName(),
@@ -506,7 +501,7 @@ public class PlayerActivity extends AppCompatActivity implements OnPlayListItemC
                         | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
+
     @Override
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -631,14 +626,8 @@ public class PlayerActivity extends AppCompatActivity implements OnPlayListItemC
         SeekGesturePreviewLayout.setVisibility(View.INVISIBLE);
     }
 
-    @Override
-    public void PlayFromPlayList() {
-        playExo();
-    }
-
-
     private class MyGestureDetector extends GestureDetector.SimpleOnGestureListener {
-        private boolean canUseWipeControls = true;
+        private final boolean canUseWipeControls = true;
         private float maxVerticalMovement;
         private float maxHorizontalMovement;
 
@@ -708,6 +697,9 @@ public class PlayerActivity extends AppCompatActivity implements OnPlayListItemC
         @Override
         public boolean onSingleTapUp(MotionEvent e) {
             performClick();
+            if (playListView.getVisibility() == View.VISIBLE) {
+                playListView.animate().translationXBy(1000).setDuration(400);
+            }
             return true;
         }
 

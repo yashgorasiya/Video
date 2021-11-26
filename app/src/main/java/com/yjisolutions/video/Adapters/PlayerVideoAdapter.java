@@ -1,7 +1,9 @@
 package com.yjisolutions.video.Adapters;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,24 +23,22 @@ import com.yjisolutions.video.code.Utils;
 
 public class PlayerVideoAdapter extends RecyclerView.Adapter<PlayerVideoViewHolder> {
 
-    Context context;
-    OnPlayListItemClicked onPlayListItemClicked;
+    Activity activity;
     View playListView;
-    public PlayerVideoAdapter(Context context,OnPlayListItemClicked onPlayListItemClicked,View v) {
-        this.context = context;
-        this.onPlayListItemClicked = onPlayListItemClicked;
+    public PlayerVideoAdapter(Activity activity,View v) {
+        this.activity = activity;
         this.playListView = v;
     }
 
     @NonNull
     @Override
     public PlayerVideoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new PlayerVideoViewHolder(LayoutInflater.from(context).inflate(R.layout.player_activity_list_preview_item,parent,false));
+        return new PlayerVideoViewHolder(LayoutInflater.from(activity).inflate(R.layout.player_activity_list_preview_item,parent,false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull PlayerVideoViewHolder holder, @SuppressLint("RecyclerView") int position1) {
-        Video video = VideosFragment.videos.get(position1);
+    public void onBindViewHolder(@NonNull PlayerVideoViewHolder holder, @SuppressLint("RecyclerView") int position) {
+        Video video = VideosFragment.videos.get(position);
 
         holder.title.setText(video.getName());
         holder.duration.setText(Conversion.timerConversion(video.getDuration()));
@@ -53,12 +53,14 @@ public class PlayerVideoAdapter extends RecyclerView.Adapter<PlayerVideoViewHold
 
         holder.previewTile.setOnClickListener(view -> {
             // PLay Video
-            PlayerActivity.position = position1;
-            onPlayListItemClicked.PlayFromPlayList();
-            playListView.setVisibility(View.INVISIBLE);
+            activity.startActivityForResult(
+                    new Intent(activity.getBaseContext(), PlayerActivity.class)
+                            .putExtra("position", position)
+                    , 1);
+            activity.finish();
         });
 
-        Glide.with(context)
+        Glide.with(activity)
                 .load(video.getUri())
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .override(250, 200)
