@@ -5,7 +5,9 @@ https://github.com/google/ExoPlayer/blob/r2.11.7/demos/main/src/main/java/com/go
  */
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -13,15 +15,18 @@ import android.media.AudioManager;
 import android.media.MediaMetadataRetriever;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -177,6 +182,11 @@ public class PlayerActivity extends AppCompatActivity{
         rc.setLayoutManager(new LinearLayoutManager(this));
         rc.setAdapter(playerVideoAdapter);
         rc.setHasFixedSize(true);
+        rc.post(() -> {
+            if (position+2<playerVideoAdapter.getItemCount())rc.smoothScrollToPosition(position+2);
+            else if (position+1<playerVideoAdapter.getItemCount())rc.smoothScrollToPosition(position+1);
+            else rc.smoothScrollToPosition(position);
+        });
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
@@ -451,6 +461,7 @@ public class PlayerActivity extends AppCompatActivity{
             public void onPlaybackStateChanged(int playbackState) {
                 if (playbackState == ExoPlayer.STATE_ENDED) {
                     saveLastPosition();
+//                    ShowTimerToPlayNextVideo();
                     ShowPlayList();
                 }
             }
@@ -463,6 +474,69 @@ public class PlayerActivity extends AppCompatActivity{
 //            }
         });
     }
+
+    // TODO
+    // Not Functioning Well
+    private void ShowTimerToPlayNextVideo() {
+
+        if (position++<VideosFragment.videos.size()){
+            View v = findViewById(R.id.nextVideoSuggestion);
+            v.setVisibility(View.VISIBLE);
+            playerView.hideController();
+
+            Video video = VideosFragment.videos.get(position);
+
+            TextView duration = v.findViewById(R.id.durationV);
+            TextView title = v.findViewById(R.id.titleV);
+            ProgressBar progressBar = v.findViewById(R.id.ProgressBar);
+            progressBar.setMax(500);
+            progressBar.setProgress(0);
+
+            final Handler mHandler = new Handler();
+            this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                            if (progressBar.getProgress()==500) {
+                                startActivityForResult(
+                                        new Intent(getBaseContext(), PlayerActivity.class)
+                                                .putExtra("position", position)
+                                        , 1);
+                                finish();
+                            }
+                            else progressBar.setProgress(progressBar.getProgress()+1);
+                            mHandler.postDelayed(this,10);
+                }
+            });
+
+
+
+            Button cancelButton = v.findViewById(R.id.NextPlayCancelButton);
+            cancelButton.setOnClickListener(view -> {
+                v.setVisibility(View.INVISIBLE);
+                ShowPlayList();
+            });
+
+            title.setText(video.getName());
+            duration.setText(Conversion.timerConversion(video.getDuration()));
+
+            SeekBar seekBar  = v.findViewById(R.id.home_preview_seekbar);
+            seekBar.setClickable(false);
+            seekBar.setPadding(0, 0, 0, 0);
+            long lastPlayed = Utils.sp.getLong(video.getName(), 0);
+
+            if (lastPlayed > 0) {
+                seekBar.setMax(video.getDuration());
+                seekBar.setProgress((int) lastPlayed);
+            }
+
+            Glide.with(this)
+                    .load(video.getUri())
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .override(250, 200)
+                    .into((ImageView) v.findViewById(R.id.thumbnail));
+        }
+    }
+
 
     void saveLastPosition() {
         if (!fromExternal) {

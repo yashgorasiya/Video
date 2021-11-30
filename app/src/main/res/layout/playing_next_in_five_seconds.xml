@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/previewTileLayout"
+    android:background="@drawable/controller_bg"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/previewMaterialCard"
+        android:layout_width="280dp"
+        android:layout_height="160dp"
+        android:layout_marginStart="32dp"
+        app:cardCornerRadius="6dp"
+        app:layout_constraintVertical_bias="0.8"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:contentDescription="@string/videoThumbnail"
+            android:id="@+id/thumbnail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/preview_thumbnail_bg"
+            android:scaleType="centerCrop"
+            tools:ignore="MissingConstraints" />
+
+        <SeekBar
+            android:id="@+id/home_preview_seekbar"
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:padding="0dp"
+            android:layout_gravity="bottom"
+            android:progressDrawable="@drawable/home_preview_seekbar_process"
+            android:thumb="@color/black" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="3dp"
+            android:background="@drawable/duration_size_bg">
+
+            <TextView
+                android:id="@+id/durationV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/not_sans"
+                android:paddingStart="4dp"
+                android:paddingTop="1dp"
+                android:paddingEnd="5dp"
+                android:gravity="center"
+                android:text="@string/dummyDuration10_12_01"
+                android:textColor="@color/white"
+                android:textSize="9sp"
+                android:textStyle="bold"
+                tools:ignore="SmallSp" />
+
+        </LinearLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="8dp"
+            android:background="@drawable/tranceperent_gradiant_center_dark"
+            >
+
+            <ProgressBar
+                android:id="@+id/ProgressBar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@drawable/circle_shape"
+                android:indeterminate="false"
+                android:max="100"
+                android:progress="75"
+                android:progressDrawable="@drawable/progressbar_bg"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:id="@+id/processbarOverlayButtonToPlay"
+                android:padding="24dp"
+                android:src="@drawable/ic_play_icon"
+                app:layout_constraintBottom_toBottomOf="@+id/ProgressBar"
+                app:layout_constraintEnd_toEndOf="@+id/ProgressBar"
+                app:layout_constraintStart_toStartOf="@+id/ProgressBar"
+                app:layout_constraintTop_toTopOf="@+id/ProgressBar" />
+
+            <Button
+                android:id="@+id/NextPlayCancelButton"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:background="@drawable/player_buttons_bg"
+                android:text="@string/cancel"
+                android:textColor="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ProgressBar" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:id="@+id/titleV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="32dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/not_sans"
+        android:gravity="center_vertical"
+        android:maxWidth="200dp"
+        android:maxLines="5"
+        android:padding="8dp"
+        android:text="@string/dummy_content"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/previewMaterialCard"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toEndOf="@+id/previewMaterialCard"
+        app:layout_constraintTop_toTopOf="@+id/previewMaterialCard" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,7 +5,7 @@
     android:id="@+id/previewTileLayout"
     android:background="?attr/selectableItemBackground"
     android:layout_width="wrap_content"
-    android:layout_height="85dp">
+    android:layout_height="90dp">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/previewMaterialCard"
@@ -62,13 +62,13 @@
 
     <TextView
         android:id="@+id/titleV"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:fontFamily="@font/not_sans"
         android:padding="8dp"
         android:ellipsize="end"
         android:maxLines="5"
-        android:maxWidth="150dp"
+        android:maxWidth="160dp"
         android:gravity="center_vertical"
         android:textSize="12sp"
         android:textStyle="bold"
