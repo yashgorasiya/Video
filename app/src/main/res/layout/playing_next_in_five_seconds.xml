@@ -1,45 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/previewTileLayout"
     android:background="@drawable/controller_bg"
-    android:columnCount="2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/previewMaterialCard"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginBottom="32dp"
         android:layout_gravity="bottom"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="16dp"
         app:cardCornerRadius="6dp"
-        android:layout_columnWeight="1"
-        app:layout_constraintVertical_bias="0.8"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintBottom_toTopOf="@+id/titleV"
+        app:layout_constraintStart_toStartOf="parent">
 
         <ImageView
-            android:contentDescription="@string/videoThumbnail"
             android:id="@+id/thumbnail"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/preview_thumbnail_bg"
+            android:contentDescription="@string/videoThumbnail"
             android:scaleType="centerCrop"
             tools:ignore="MissingConstraints" />
-
-        <SeekBar
-            android:id="@+id/home_preview_seekbar"
-            android:layout_width="match_parent"
-            android:layout_height="3dp"
-            android:padding="0dp"
-            android:layout_gravity="bottom"
-            android:progressDrawable="@drawable/home_preview_seekbar_process"
-            android:thumb="@color/black" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -52,30 +40,60 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/not_sans"
+                android:gravity="center"
                 android:paddingStart="4dp"
                 android:paddingTop="1dp"
                 android:paddingEnd="5dp"
-                android:gravity="center"
                 android:text="@string/dummyDuration10_12_01"
                 android:textColor="@color/white"
-                android:textSize="9sp"
+                android:textSize="14sp"
                 android:textStyle="bold"
                 tools:ignore="SmallSp" />
 
         </LinearLayout>
 
+        <SeekBar
+            android:id="@+id/home_preview_seekbar"
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:layout_gravity="bottom"
+            android:padding="0dp"
+            android:progressDrawable="@drawable/home_preview_seekbar_process"
+            android:thumb="@color/black" />
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="8dp"
-            android:background="@drawable/tranceperent_gradiant_center_dark"
-            >
+            android:layout_margin="16dp"
+            android:background="@drawable/tranceperent_gradiant_center_dark">
+
+            <Button
+                android:id="@+id/NextPlayCancelButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@string/cancel"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ProgressBar" />
+
+            <ImageView
+                android:id="@+id/processbarOverlayButtonToPlay"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:padding="24dp"
+                android:src="@drawable/ic_play_icon"
+                app:layout_constraintBottom_toBottomOf="@+id/ProgressBar"
+                app:layout_constraintEnd_toEndOf="@+id/ProgressBar"
+                app:layout_constraintStart_toStartOf="@+id/ProgressBar"
+                app:layout_constraintTop_toTopOf="@+id/ProgressBar"
+                android:contentDescription="@string/processbaroverlaybuttontoplay" />
 
             <ProgressBar
                 android:id="@+id/ProgressBar"
                 style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
                 android:background="@drawable/circle_shape"
                 android:indeterminate="false"
                 android:max="100"
@@ -84,55 +102,31 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageView
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:id="@+id/processbarOverlayButtonToPlay"
-                android:padding="24dp"
-                android:src="@drawable/ic_play_icon"
-                app:layout_constraintBottom_toBottomOf="@+id/ProgressBar"
-                app:layout_constraintEnd_toEndOf="@+id/ProgressBar"
-                app:layout_constraintStart_toStartOf="@+id/ProgressBar"
-                app:layout_constraintTop_toTopOf="@+id/ProgressBar" />
-
-            <Button
-                android:id="@+id/NextPlayCancelButton"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:background="@drawable/player_buttons_bg"
-                android:text="@string/cancel"
-                android:textColor="@color/white"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ProgressBar" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.card.MaterialCardView>
 
     <TextView
         android:id="@+id/titleV"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_columnWeight="0.1"
-        android:layout_marginStart="16dp"
+        android:layout_marginBottom="32dp"
+        android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
-        android:layout_marginBottom="80dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_columnWeight="1"
+        android:layout_gravity="bottom"
         android:ellipsize="end"
         android:fontFamily="@font/not_sans"
-        android:layout_gravity="bottom"
-        android:maxWidth="200dp"
-        android:maxLines="5"
+        android:maxLines="2"
         android:padding="8dp"
         android:text="@string/dummy_content"
         android:textColor="@color/white"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/previewMaterialCard"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0"
-        app:layout_constraintStart_toEndOf="@+id/previewMaterialCard"
-        app:layout_constraintTop_toTopOf="@+id/previewMaterialCard" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 
-</GridLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

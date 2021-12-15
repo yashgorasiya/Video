@@ -47,5 +47,6 @@
     <string name="subTitleToggleButton">SubTitleToggleButton</string>
     <string name="nightModeButton">NightModeButton</string>
     <string name="playListCloseButton">PlayListCloseButton</string>
+    <string name="processbaroverlaybuttontoplay">processbarOverlayButtonToPlay</string>
 
 </resources>

@@ -85,6 +85,7 @@ public class PlayerActivity extends AppCompatActivity{
     // Experimental
     private boolean isShowingTrackSelectionDialog;
     private DefaultTrackSelector trackSelector;
+    private boolean FiveSecondTimer = false;
 
     private PlayerView playerView;
     private SimpleExoPlayer simpleExoPlayer;
@@ -461,8 +462,8 @@ public class PlayerActivity extends AppCompatActivity{
             public void onPlaybackStateChanged(int playbackState) {
                 if (playbackState == ExoPlayer.STATE_ENDED) {
                     saveLastPosition();
-//                    ShowTimerToPlayNextVideo();
-                    ShowPlayList();
+                    ShowTimerToPlayNextVideo();
+//                    ShowPlayList();
                 }
             }
 
@@ -491,28 +492,28 @@ public class PlayerActivity extends AppCompatActivity{
             ProgressBar progressBar = v.findViewById(R.id.ProgressBar);
             progressBar.setMax(500);
             progressBar.setProgress(0);
+            FiveSecondTimer  = true;
 
             final Handler mHandler = new Handler();
             this.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                            if (progressBar.getProgress()==500) {
-                                startActivityForResult(
-                                        new Intent(getBaseContext(), PlayerActivity.class)
-                                                .putExtra("position", position)
-                                        , 1);
-                                finish();
-                            }
-                            else progressBar.setProgress(progressBar.getProgress()+1);
-                            mHandler.postDelayed(this,10);
+                    if (FiveSecondTimer) {
+                        if (progressBar.getProgress() == 500) {
+                            FiveSecondTimer = false;
+                            v.setVisibility(View.GONE);
+                            playExo();
+                        } else progressBar.setProgress(progressBar.getProgress() + 1);
+                        mHandler.postDelayed(this, 10);
+                    }
                 }
             });
-
 
 
             Button cancelButton = v.findViewById(R.id.NextPlayCancelButton);
             cancelButton.setOnClickListener(view -> {
                 v.setVisibility(View.INVISIBLE);
+                FiveSecondTimer = false;
                 ShowPlayList();
             });
 

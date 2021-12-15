@@ -164,8 +164,8 @@
     <include
         android:id="@+id/nextVideoSuggestion"
         layout="@layout/playing_next_in_five_seconds"
-        android:layout_width="match_parent"
         android:visibility="invisible"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
     <include
