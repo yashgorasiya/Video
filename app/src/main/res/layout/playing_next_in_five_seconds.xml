@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/previewTileLayout"
     android:background="@drawable/controller_bg"
+    android:columnCount="2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/previewMaterialCard"
-        android:layout_width="280dp"
-        android:layout_height="160dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
+        android:layout_marginBottom="32dp"
+        android:layout_gravity="bottom"
         app:cardCornerRadius="6dp"
+        android:layout_columnWeight="1"
         app:layout_constraintVertical_bias="0.8"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -110,11 +114,13 @@
         android:id="@+id/titleV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_columnWeight="0.1"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="32dp"
+        android:layout_marginBottom="80dp"
         android:ellipsize="end"
         android:fontFamily="@font/not_sans"
-        android:gravity="center_vertical"
+        android:layout_gravity="bottom"
         android:maxWidth="200dp"
         android:maxLines="5"
         android:padding="8dp"
@@ -129,4 +135,4 @@
         app:layout_constraintTop_toTopOf="@+id/previewMaterialCard" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</GridLayout>

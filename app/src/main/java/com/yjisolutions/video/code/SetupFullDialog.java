@@ -11,7 +11,7 @@ import java.util.Objects;
 
 public class SetupFullDialog {
     public static void setupFullHeight(BottomSheetDialog bottomSheetDialog, int height) {
-        FrameLayout bottomSheet = (FrameLayout) bottomSheetDialog.findViewById(R.id.design_bottom_sheet);
+        FrameLayout bottomSheet = bottomSheetDialog.findViewById(R.id.design_bottom_sheet);
         BottomSheetBehavior<FrameLayout> behavior = BottomSheetBehavior.from(Objects.requireNonNull(bottomSheet));
         ViewGroup.LayoutParams layoutParams = bottomSheet.getLayoutParams();
         if (layoutParams != null) layoutParams.height = height;
