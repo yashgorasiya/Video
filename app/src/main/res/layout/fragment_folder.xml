@@ -30,22 +30,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/materialToolbarLayoutFolders"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="12dp"
-            android:background="@color/statusBar"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="MissingConstraints">
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/ToolbarConstraintLayoutFolders"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:foregroundGravity="top">
+                android:paddingStart="16dp"
+                android:paddingTop="12dp"
+                android:foregroundGravity="top"
+                tools:ignore="RtlSymmetry">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -109,7 +102,8 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:tint="@color/homePreviewMore"
-                    tools:ignore="RtlHardcoded" />
+                    tools:ignore="RtlHardcoded"
+                    />
 
                 <androidx.appcompat.widget.SearchView
                     android:id="@+id/searchFolder"
@@ -127,8 +121,6 @@
                     tools:ignore="RtlHardcoded,RtlSymmetry" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </com.google.android.material.appbar.MaterialToolbar>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/folderRecView"

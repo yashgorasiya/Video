@@ -17,6 +17,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.SearchView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -128,6 +129,7 @@ public class FolderFragment extends Fragment implements OnPermissionGranted {
         });
     }
 
+    @SuppressLint("NewApi")
     private void initRecViewFolders() {
         Configuration configuration = requireActivity().getResources().getConfiguration();
         int grid = 1;
@@ -136,10 +138,11 @@ public class FolderFragment extends Fragment implements OnPermissionGranted {
         adapter = new FolderAdapter(folder, getContext());
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), grid));
         recyclerView.setAdapter(adapter);
+
         recyclerView.setOnFlingListener(new RecyclerView.OnFlingListener() {
             @Override
             public boolean onFling(int velocityX, int velocityY) {
-                MaterialToolbar t = requireView().findViewById(R.id.materialToolbarLayoutFolders);
+                ConstraintLayout t = requireView().findViewById(R.id.ToolbarConstraintLayoutFolders);
                 if (velocityY>0) {
                     t.animate().translationY(-t.getBottom()).setInterpolator(new AccelerateInterpolator()).start();
                     recentPlayed.animate().translationY(recentPlayed.getBottom()).setInterpolator(new AccelerateInterpolator()).start();
