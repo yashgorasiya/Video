@@ -67,7 +67,7 @@
         android:fontFamily="@font/not_sans"
         android:padding="8dp"
         android:ellipsize="end"
-        android:maxLines="5"
+        android:maxLines="4"
         android:maxWidth="160dp"
         android:gravity="center_vertical"
         android:textSize="12sp"

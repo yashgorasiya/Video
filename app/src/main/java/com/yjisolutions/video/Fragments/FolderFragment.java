@@ -3,6 +3,7 @@ package com.yjisolutions.video.Fragments;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
@@ -21,6 +23,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.appbar.CollapsingToolbarLayout;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.yjisolutions.video.Activities.PlayerActivity;
 import com.yjisolutions.video.Adapters.FolderAdapter;
@@ -33,6 +36,7 @@ import com.yjisolutions.video.code.VideoRead;
 
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.function.ToDoubleBiFunction;
 
 
 public class FolderFragment extends Fragment implements OnPermissionGranted {
@@ -123,6 +127,7 @@ public class FolderFragment extends Fragment implements OnPermissionGranted {
             }
         });
     }
+
     private void initRecViewFolders() {
         Configuration configuration = requireActivity().getResources().getConfiguration();
         int grid = 1;
@@ -134,7 +139,7 @@ public class FolderFragment extends Fragment implements OnPermissionGranted {
         recyclerView.setOnFlingListener(new RecyclerView.OnFlingListener() {
             @Override
             public boolean onFling(int velocityX, int velocityY) {
-                CollapsingToolbarLayout t = requireView().findViewById(R.id.materialToolbarLayoutFolders);
+                MaterialToolbar t = requireView().findViewById(R.id.materialToolbarLayoutFolders);
                 if (velocityY>0) {
                     t.animate().translationY(-t.getBottom()).setInterpolator(new AccelerateInterpolator()).start();
                     recentPlayed.animate().translationY(recentPlayed.getBottom()).setInterpolator(new AccelerateInterpolator()).start();

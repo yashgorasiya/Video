@@ -13,8 +13,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:layout_marginBottom="32dp"
-        android:layout_marginStart="32dp"
+        android:layout_marginBottom="24dp"
+        android:layout_marginStart="16dp"
         app:cardCornerRadius="6dp"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -113,7 +113,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:layout_marginStart="8dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginEnd="16dp"
         android:ellipsize="end"
         android:fontFamily="@font/not_sans"
         android:gravity="center_vertical"
@@ -127,6 +127,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/previewMaterialCard"
         app:layout_constraintTop_toTopOf="@+id/previewMaterialCard" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
