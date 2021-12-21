@@ -2,8 +2,8 @@ package com.yjisolutions.video.Fragments;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.content.res.Configuration;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +15,6 @@ import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.SearchView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
@@ -23,21 +22,18 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.appbar.CollapsingToolbarLayout;
-import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.yjisolutions.video.Activities.PlayerActivity;
 import com.yjisolutions.video.Adapters.FolderAdapter;
 import com.yjisolutions.video.Interfaces.OnPermissionGranted;
 import com.yjisolutions.video.Modal.Folder;
 import com.yjisolutions.video.R;
+import com.yjisolutions.video.code.ColorPellet;
 import com.yjisolutions.video.code.Permissions;
 import com.yjisolutions.video.code.Utils;
 import com.yjisolutions.video.code.VideoRead;
 
 import java.util.ArrayList;
-import java.util.Objects;
-import java.util.function.ToDoubleBiFunction;
 
 
 public class FolderFragment extends Fragment implements OnPermissionGranted {
@@ -74,39 +70,41 @@ public class FolderFragment extends Fragment implements OnPermissionGranted {
     }
 
     @SuppressLint("NonConstantResourceId")
-    private void initListeners(){
+    private void initListeners() {
         recentPlayed.setOnClickListener(v1 -> recentPlayedResume());
+        ColorPellet cp = new ColorPellet(requireActivity());
+        recentPlayed.setBackgroundTintList(ColorStateList.valueOf(cp.getLight()));
         more.setOnClickListener(v1 -> {
-            PopupMenu popupMenu = new PopupMenu(getContext(),more);
+            PopupMenu popupMenu = new PopupMenu(getContext(), more);
             popupMenu.inflate(R.menu.menu);
             popupMenu.setOnMenuItemClickListener(item -> {
                 switch (item.getItemId()) {
                     case R.id.Name:
-                        Utils.SortBy(Utils.NAME,Utils.FOLDERS);
+                        Utils.SortBy(Utils.NAME, Utils.FOLDERS);
                         initRecViewFolders();
                         return true;
                     case R.id.DateAdded:
-                        Utils.SortBy(Utils.DATE_ADDED,Utils.FOLDERS);
+                        Utils.SortBy(Utils.DATE_ADDED, Utils.FOLDERS);
                         initRecViewFolders();
                         return true;
                     case R.id.DateModified:
-                        Utils.SortBy(Utils.DATE_MODIFIED,Utils.FOLDERS);
+                        Utils.SortBy(Utils.DATE_MODIFIED, Utils.FOLDERS);
                         initRecViewFolders();
                         return true;
                     case R.id.Size:
-                        Utils.SortBy(Utils.SIZE,Utils.FOLDERS);
+                        Utils.SortBy(Utils.SIZE, Utils.FOLDERS);
                         initRecViewFolders();
                         return true;
                     case R.id.Duration:
-                        Utils.SortBy(Utils.DURATION,Utils.FOLDERS);
+                        Utils.SortBy(Utils.DURATION, Utils.FOLDERS);
                         initRecViewFolders();
                         return true;
                     case R.id.Ascending:
-                        Utils.setSortOrder(Utils.ASCENDING,Utils.FOLDERS);
+                        Utils.setSortOrder(Utils.ASCENDING, Utils.FOLDERS);
                         initRecViewFolders();
                         return true;
                     case R.id.Descending:
-                        Utils.setSortOrder(Utils.DESCENDING,Utils.FOLDERS);
+                        Utils.setSortOrder(Utils.DESCENDING, Utils.FOLDERS);
                         initRecViewFolders();
                         return true;
                     default:
@@ -159,16 +157,20 @@ public class FolderFragment extends Fragment implements OnPermissionGranted {
     }
 
     private void recentPlayedResume() {
-
         if (!Utils.RECENTLY_PLAYED_VIDEO_FOLDER.equals("0")) {
-            Bundle bundle = new Bundle();
-            bundle.putString("folderName", Utils.RECENTLY_PLAYED_VIDEO_FOLDER);
-            Navigation.findNavController(requireView()).navigate(R.id.folder_to_videos, bundle);
+            try {
+                Bundle bundle = new Bundle();
+                bundle.putString("folderName", Utils.RECENTLY_PLAYED_VIDEO_FOLDER);
+                Navigation.findNavController(requireView()).navigate(R.id.folder_to_videos, bundle);
 
-            requireActivity().startActivityForResult(
-                    new Intent(requireActivity().getBaseContext(), PlayerActivity.class)
-                            .putExtra("position", Utils.RECENTLY_PLAYED_VIDEO_POSITION)
-                    , 1);
+                requireActivity().startActivityForResult(
+                        new Intent(requireActivity().getBaseContext(), PlayerActivity.class)
+                                .putExtra("position", Utils.RECENTLY_PLAYED_VIDEO_POSITION)
+                        , 1);
+            }finally {
+                Toast.makeText(getContext(), "File may be Deleted", Toast.LENGTH_SHORT).show();
+            }
+
         }
         else Toast.makeText(getContext(), "Not Played any Video yet", Toast.LENGTH_SHORT).show();
     }

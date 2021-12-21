@@ -15,10 +15,10 @@
         android:id="@+id/recentPlayResume"
         android:src="@drawable/ic_play_icon"
         android:tooltipText="@string/resumeLastPlayed"
-        style="@style/Widget.Material3.ExtendedFloatingActionButton.Primary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:contentDescription="@string/resumeLastPlayed"/>
+        android:contentDescription="@string/resumeLastPlayed"
+        tools:targetApi="o" />
 
 
     <LinearLayout

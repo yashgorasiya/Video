@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
         oldConfig = getResources().getConfiguration().uiMode;
         sharedPreferences = getSharedPreferences("UserData", Context.MODE_PRIVATE);
 
+
         if ((getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_NO) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
