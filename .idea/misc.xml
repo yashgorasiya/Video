@@ -43,7 +43,7 @@
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable/ic_logo_circle.xml" value="0.17195945945945945" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable/ic_logo_icon.xml" value="0.23564814814814813" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable/ic_play_icon.xml" value="0.23564814814814813" />
-        <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable/play_pause_button_bg.xml" value="0.23657407407407408" />
+        <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable/play_pause_button_bg.xml" value="0.176" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable/player_buttons_bg.xml" value="0.23564814814814813" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable/player_playlist_bg.xml" value="0.23657407407407408" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable/preview_thumbnail_bg.xml" value="0.21157407407407408" />
@@ -57,6 +57,7 @@
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable/tranceperent_gradiant_center_dark.xml" value="0.23657407407407408" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/font/NotSans.xml" value="0.27487179487179486" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/layout-land/playing_next_in_five_seconds.xml" value="0.2" />
+        <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/layout-port/layout_exoplayer_control_view.xml" value="0.15789473684210525" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/layout-v26/fragment_folder.xml" value="0.25" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/layout/activity_fullscreen.xml" value="0.1766304347826087" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/layout/activity_main.xml" value="0.2" />
@@ -74,7 +75,7 @@
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/layout/fragment_fullscreen.xml" value="0.22864583333333333" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/layout/fragment_splash_screen.xml" value="0.24895833333333334" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/layout/fragment_videos.xml" value="0.152" />
-        <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/layout/layout_exoplayer_control_view.xml" value="0.4" />
+        <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/layout/layout_exoplayer_control_view.xml" value="0.2276595744680851" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/layout/list_track_item.xml" value="0.24427083333333333" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/layout/playback_speed_dialog.xml" value="0.4" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/layout/player_activity_list.xml" value="0.2222222222222222" />
