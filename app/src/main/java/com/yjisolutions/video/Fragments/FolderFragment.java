@@ -167,8 +167,8 @@ public class FolderFragment extends Fragment implements OnPermissionGranted {
                         new Intent(requireActivity().getBaseContext(), PlayerActivity.class)
                                 .putExtra("position", Utils.RECENTLY_PLAYED_VIDEO_POSITION)
                         , 1);
-            }finally {
-                Toast.makeText(getContext(), "File may be Deleted", Toast.LENGTH_SHORT).show();
+            } catch (Exception E) {
+                Toast.makeText(getContext(), "File may be Deleted " + E, Toast.LENGTH_SHORT).show();
             }
 
         }

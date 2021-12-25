@@ -23,6 +23,7 @@
             android:layout_marginTop="24dp"
             android:layout_marginEnd="16dp"
             android:background="@drawable/player_buttons_bg"
+            android:backgroundTintMode="src_over"
             android:contentDescription="@string/exo_controls_playback_speed"
             android:padding="10dp"
             android:src="@drawable/ic_baseline_speed"
@@ -38,6 +39,7 @@
             android:layout_height="40dp"
             android:layout_marginEnd="12dp"
             android:background="@drawable/player_buttons_bg"
+            android:backgroundTintMode="src_over"
             android:padding="10dp"
             android:src="@drawable/ic_baseline_nights_stay_24"
             app:layout_constraintBottom_toBottomOf="@+id/playback_speed"
@@ -51,6 +53,8 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:background="@drawable/player_buttons_bg"
+            android:backgroundTintMode="src_over"
+            android:backgroundTint="@color/purple_500"
             android:padding="10dp"
             android:layout_marginEnd="12dp"
             android:src="@drawable/subtitles"
@@ -219,6 +223,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 >
 
 
@@ -231,6 +236,15 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/play_pause_button_bg"
+                    app:layout_constraintBottom_toBottomOf="@+id/linearLayout3"
+                    app:layout_constraintEnd_toEndOf="@+id/linearLayout3"
+                    app:layout_constraintStart_toStartOf="@+id/linearLayout3"
+                    app:layout_constraintTop_toTopOf="@+id/linearLayout3" />
+
                 <LinearLayout
                     android:id="@+id/linearLayout3"
                     android:layout_width="wrap_content"
@@ -240,7 +254,6 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
-
 <!--                    <ImageButton-->
 <!--                        android:contentDescription="@string/exo_controls_rewind_description"-->
 <!--                        android:id="@+id/exo_rew"-->
@@ -253,9 +266,10 @@
 
                     <ImageButton
                         android:id="@+id/exo_play"
-                        android:layout_width="45dp"
-                        android:layout_height="45dp"
-                        android:background="@drawable/play_pause_button_bg"
+                        android:layout_width="120dp"
+                        android:layout_height="60dp"
+                        android:hapticFeedbackEnabled="true"
+                        android:background="?android:attr/selectableItemBackground"
                         android:contentDescription="@string/exo_controls_play_description"
                         android:src="@drawable/ic_play_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -265,9 +279,10 @@
 
                     <ImageButton
                         android:id="@+id/exo_pause"
-                        android:layout_width="45dp"
-                        android:layout_height="45dp"
-                        android:background="@drawable/play_pause_button_bg"
+                        android:layout_width="120dp"
+                        android:layout_height="60dp"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:hapticFeedbackEnabled="true"
                         android:contentDescription="@string/exo_controls_pause_description"
                         android:src="@drawable/exo_controls_pause"
                         app:layout_constraintBottom_toBottomOf="parent"

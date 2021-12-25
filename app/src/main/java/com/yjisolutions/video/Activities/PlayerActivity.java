@@ -7,6 +7,7 @@ https://github.com/google/ExoPlayer/blob/r2.11.7/demos/main/src/main/java/com/go
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
+import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.media.AudioManager;
@@ -48,7 +49,6 @@ import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.RenderersFactory;
-import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.ext.ffmpeg.FfmpegLibrary;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.extractor.ts.DefaultTsPayloadReaderFactory;
@@ -86,7 +86,7 @@ public class PlayerActivity extends AppCompatActivity {
     private boolean FiveSecondTimer = false;
 
     private PlayerView playerView;
-    private SimpleExoPlayer simpleExoPlayer;
+    private ExoPlayer simpleExoPlayer;
     private GestureDetectorCompat gestureDetectorCompat;
     DisplayMetrics metrics = new DisplayMetrics();
     private int INDICATOR_WIDTH = 600;
@@ -100,7 +100,6 @@ public class PlayerActivity extends AppCompatActivity {
     private Video video;
     private boolean fromExternal = false;
     private View playListView;
-//    private FrameLayout PlayListView;
 
     @SuppressLint({"ClickableViewAccessibility", "UseCompatLoadingForDrawables", "SourceLockedOrientationActivity", "SetTextI18n"})
     @RequiresApi(api = Build.VERSION_CODES.R)
@@ -141,8 +140,8 @@ public class PlayerActivity extends AppCompatActivity {
 
 
         backArrow.setOnClickListener(v -> onBackPressed());
-        speedControl.setOnClickListener(v -> PlayBackSpeedDialog());
-        playerNight.setOnClickListener(v -> setNightIntensity());
+        speedControl.setOnClickListener(v -> PlayBackSpeedDialog(speedControl));
+        playerNight.setOnClickListener(v -> setNightIntensity(playerNight));
         subTitleToggle.setOnClickListener(view -> SubTitleToggle(subTitleToggle));
         moreControls.setOnClickListener(v -> ShowPlayList());
 
@@ -194,13 +193,16 @@ public class PlayerActivity extends AppCompatActivity {
         if (s == View.VISIBLE) {
             playerView.getSubtitleView().setVisibility(View.INVISIBLE);
             btn.setImageDrawable(getDrawable(R.drawable.subtitles_off));
+            btn.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.black_overlay)));
         } else {
             playerView.getSubtitleView().setVisibility(View.VISIBLE);
             btn.setImageDrawable(getDrawable(R.drawable.subtitles));
+            btn.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.purple_500)));
         }
     }
 
-    private void setNightIntensity() {
+
+    private void setNightIntensity(ImageView playNightView) {
         final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this, R.style.BottomSheetSpeed);
         bottomSheetDialog.setContentView(R.layout.bottom_night_dialog);
         SetupFullDialog.setupFullHeight(bottomSheetDialog, 270);
@@ -215,6 +217,7 @@ public class PlayerActivity extends AppCompatActivity {
             if (NightIntensity == f) break;
             c++;
         }
+
         seekBar.setProgress(c);
         LinearLayout l = findViewById(R.id.LLNightSurface);
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -222,6 +225,11 @@ public class PlayerActivity extends AppCompatActivity {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 NightIntensity = intensities[progress];
                 l.setAlpha(NightIntensity);
+                if (NightIntensity != 0f) {
+                    playNightView.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.purple_500)));
+                } else {
+                    playNightView.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.black_overlay)));
+                }
             }
 
             @Override
@@ -240,7 +248,7 @@ public class PlayerActivity extends AppCompatActivity {
 
 
     @SuppressLint("DefaultLocale")
-    private void PlayBackSpeedDialog() {
+    private void PlayBackSpeedDialog(ImageView speedControlBtn) {
         final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this, R.style.BottomSheetSpeed);
         bottomSheetDialog.setContentView(R.layout.playback_speed_dialog);
         SetupFullDialog.setupFullHeight(bottomSheetDialog, 370);
@@ -256,12 +264,20 @@ public class PlayerActivity extends AppCompatActivity {
             PlayBackSpeed = PlayBackSpeed + 0.05f;
             Objects.requireNonNull(textView).setText(String.format("%.2f", PlayBackSpeed));
             simpleExoPlayer.setPlaybackSpeed(PlayBackSpeed);
+            if (textView.getText().toString().equals("1.00"))
+                speedControlBtn.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.black_overlay)));
+            else
+                speedControlBtn.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.purple_500)));
         });
 
         Objects.requireNonNull(remove).setOnClickListener(v -> {
             if (PlayBackSpeed > 0.10) PlayBackSpeed = PlayBackSpeed - 0.05f;
             Objects.requireNonNull(textView).setText(String.format("%.2f", PlayBackSpeed));
             simpleExoPlayer.setPlaybackSpeed(PlayBackSpeed);
+            if (textView.getText().toString().equals("1.00"))
+                speedControlBtn.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.black_overlay)));
+            else
+                speedControlBtn.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.purple_500)));
         });
 
         bottomSheetDialog.show();
@@ -360,7 +376,7 @@ public class PlayerActivity extends AppCompatActivity {
         RenderersFactory renderersFactory = new DefaultRenderersFactory(this)
                 .setExtensionRendererMode(DefaultRenderersFactory.EXTENSION_RENDERER_MODE_PREFER);
 
-        simpleExoPlayer = new SimpleExoPlayer.Builder(this, renderersFactory)
+        simpleExoPlayer = new ExoPlayer.Builder(this, renderersFactory)
                 .setTrackSelector(trackSelector)
                 .setMediaSourceFactory(new DefaultMediaSourceFactory(this, extractorsFactory))
                 .build();
@@ -708,29 +724,29 @@ public class PlayerActivity extends AppCompatActivity {
         public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
             // Seek Gesture
             float xPercent = e1.getX() - e2.getX();
-            float distanceXSinceTouchbegin = e1.getX() - e2.getX();
-            maxHorizontalMovement = Math.max(maxHorizontalMovement, Math.abs(distanceXSinceTouchbegin));
+            float distanceXSinceTouchBegin = e1.getX() - e2.getX();
+            maxHorizontalMovement = Math.max(maxHorizontalMovement, Math.abs(distanceXSinceTouchBegin));
             boolean enoughHorizontalMovement = maxHorizontalMovement > 100;
             boolean SafeAreaBackBtn = e2.getX() < (getWidth - 300);
 
 
-            float distanceYSinceTouchbegin = e1.getY() - e2.getY();
-            maxVerticalMovement = Math.max(maxVerticalMovement, Math.abs(distanceYSinceTouchbegin));
+            float distanceYSinceTouchBegin = e1.getY() - e2.getY();
+            maxVerticalMovement = Math.max(maxVerticalMovement, Math.abs(distanceYSinceTouchBegin));
             boolean enoughVerticalMovement = maxVerticalMovement > 100;
 
             if (enoughHorizontalMovement && !enoughVerticalMovement && SafeAreaBackBtn) {
-                String ctime = Conversion.timerConversion(cPotion);
+                String cTime = Conversion.timerConversion(cPotion);
 
                 // right to left
                 if (xPercent > 0) {
                     simpleExoPlayer.seekTo((long) (cPotion - 10 * xPercent));
-                    SeekPreviewIndicator(Conversion.timerConversion((long) (cPotion - 10 * xPercent)) + "/" + ctime);
+                    SeekPreviewIndicator(Conversion.timerConversion((long) (cPotion - 10 * xPercent)) + "/" + cTime);
                     return true;
                 }
                 // left to right swipe
                 else if (xPercent <= 0) {
                     simpleExoPlayer.seekTo((long) (-10 * xPercent + cPotion));
-                    SeekPreviewIndicator(Conversion.timerConversion((long) (-10 * xPercent + cPotion)) + "/" + ctime);
+                    SeekPreviewIndicator(Conversion.timerConversion((long) (-10 * xPercent + cPotion)) + "/" + cTime);
                     return true;
                 } else {
                     endScroll();
