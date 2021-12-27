@@ -21,9 +21,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.yjisolutions.video.Activities.MainActivity;
 import com.yjisolutions.video.Adapters.VideoAdapter;
 import com.yjisolutions.video.Interfaces.OnPlayerActivityDestroy;
+import com.yjisolutions.video.Modal.Video;
 import com.yjisolutions.video.R;
 import com.yjisolutions.video.code.Utils;
-import com.yjisolutions.video.Modal.Video;
 import com.yjisolutions.video.code.VideoRead;
 
 import java.util.ArrayList;
@@ -37,7 +37,7 @@ public class VideosFragment extends Fragment implements OnPlayerActivityDestroy 
     private VideoAdapter adapter;
     private ImageView videoFragmentMore;
     private SearchView searchView;
-    public static String folderName;
+    public static String folderName = "";
     private TextView toolBarSubTitle;
     @SuppressLint("StaticFieldLeak")
     public static View parentView;
@@ -78,6 +78,8 @@ public class VideosFragment extends Fragment implements OnPlayerActivityDestroy 
         if (getArguments() != null) {
             folderName = getArguments().getString("folderName");
             toolBarTitle.setText(folderName.substring(folderName.lastIndexOf("/") + 1));
+        } else {
+            toolBarTitle.setText("All Videos");
         }
 
         initRecViewVideos();
@@ -99,8 +101,9 @@ public class VideosFragment extends Fragment implements OnPlayerActivityDestroy 
     }
 
     @SuppressLint("SetTextI18n")
-    private void initRecViewVideos(){
-        videos = VideoRead.getVideoFromFolder(getContext(), folderName);
+    private void initRecViewVideos() {
+        if (folderName.equals("")) videos = VideoRead.getVideo(getContext());
+        else videos = VideoRead.getVideoFromFolder(getContext(), folderName);
         int grid;
         if (viewStyle) grid = 1;
         else grid = 2;

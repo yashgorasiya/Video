@@ -8,13 +8,20 @@ import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
+import com.google.android.material.navigation.NavigationBarView;
+import com.yjisolutions.video.Fragments.FolderFragment;
+import com.yjisolutions.video.Fragments.VideosFragment;
 import com.yjisolutions.video.Interfaces.OnPlayerActivityDestroy;
 import com.yjisolutions.video.R;
 
@@ -36,6 +43,38 @@ public class MainActivity extends AppCompatActivity {
 
         oldConfig = getResources().getConfiguration().uiMode;
         sharedPreferences = getSharedPreferences("UserData", Context.MODE_PRIVATE);
+
+        switchToFragment1(new FolderFragment());
+
+        NavigationBarView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @SuppressLint("NonConstantResourceId")
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.folders:
+                        //do something
+                        switchToFragment1(new FolderFragment());
+                        return true;
+                    case R.id.videos:
+                        //do something
+                        switchToFragment1(new VideosFragment());
+                        return true;
+                    case R.id.feedback:
+                        //do something
+                        return true;
+                }
+                bottomNavigationView.setSelectedItemId(item.getItemId());
+                return false;
+            }
+        });
+        bottomNavigationView.animate().translationY(200).setDuration(0);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                bottomNavigationView.animate().translationY(0).setDuration(500);
+            }
+        }, 500);
 
 
         if ((getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_NO) {
@@ -61,6 +100,11 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+    }
+
+    public void switchToFragment1(Fragment fragment) {
+        FragmentManager manager = getSupportFragmentManager();
+        manager.beginTransaction().replace(R.id.homeScreenFrameLayout, fragment).commit();
     }
 
 
