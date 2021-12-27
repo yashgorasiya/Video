@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -272,6 +273,8 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoViewHolder> {
             final View deleteDialogView = factory.inflate(R.layout.delete_dialog, null);
             final AlertDialog deleteDialog = new AlertDialog.Builder(activity, R.style.Theme_Dialog).create();
             deleteDialog.setView(deleteDialogView);
+            deleteDialogView.setScaleX(-0.1f);
+            deleteDialogView.setScaleY(-0.1f);
 
             Video video = toDelete.get(0);
 
@@ -300,13 +303,40 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoViewHolder> {
                 isSelected = false;
                 changeToolbar();
                 notifyDataSetChanged();
-                deleteDialog.dismiss();
+                deleteDialogView
+                        .animate()
+                        .scaleXBy(-1f)
+                        .scaleYBy(-1f)
+                        .setDuration(200);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        deleteDialog.dismiss();
+                    }
+                }, 200);
             });
 
-            deleteDialogView.findViewById(R.id.DialogDeleteCancelTxt).setOnClickListener(v12 -> deleteDialog.dismiss());
+            deleteDialogView.findViewById(R.id.DialogDeleteCancelTxt).setOnClickListener(v12 -> {
+
+                deleteDialogView
+                        .animate()
+                        .scaleXBy(-1f)
+                        .scaleYBy(-1f)
+                        .setDuration(200);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        deleteDialog.dismiss();
+                    }
+                }, 200);
+            });
 
             deleteDialog.show();
-
+            deleteDialogView
+                    .animate()
+                    .scaleXBy(1.1f)
+                    .scaleYBy(1.1f)
+                    .setDuration(200);
         }
 
     }
