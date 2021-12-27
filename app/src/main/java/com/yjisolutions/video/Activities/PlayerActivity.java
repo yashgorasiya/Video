@@ -549,6 +549,8 @@ public class PlayerActivity extends AppCompatActivity {
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .override(250, 200)
                     .into((ImageView) v.findViewById(R.id.thumbnail));
+        } else {
+            ShowPlayList();
         }
     }
 

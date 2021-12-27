@@ -218,6 +218,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 app:previewAnimationEnabled="true"
+                app:scrubber_color="@color/purple_500"
                 app:previewFrameLayout="@id/previewFrameLayout"/>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -225,8 +226,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 >
-
-
                 <ImageButton
                     android:contentDescription="@string/trackSelectionButton"
                     android:id="@+id/exo_track_selection_view"
@@ -284,7 +283,7 @@
                         android:background="?android:attr/selectableItemBackground"
                         android:hapticFeedbackEnabled="true"
                         android:contentDescription="@string/exo_controls_pause_description"
-                        android:src="@drawable/exo_controls_pause"
+                        android:src="@drawable/ic_pause_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent" />
