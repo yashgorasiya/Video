@@ -2,8 +2,8 @@ package com.yjisolutions.video.Fragments;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,10 +15,8 @@ import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.SearchView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -28,7 +26,6 @@ import com.yjisolutions.video.Adapters.FolderAdapter;
 import com.yjisolutions.video.Interfaces.OnPermissionGranted;
 import com.yjisolutions.video.Modal.Folder;
 import com.yjisolutions.video.R;
-import com.yjisolutions.video.code.ColorPellet;
 import com.yjisolutions.video.code.Permissions;
 import com.yjisolutions.video.code.Utils;
 import com.yjisolutions.video.code.VideoRead;
@@ -41,7 +38,7 @@ public class FolderFragment extends Fragment implements OnPermissionGranted {
     private FolderAdapter adapter;
     private RecyclerView recyclerView;
     private ImageView more;
-    private SearchView searchView;
+    private android.widget.SearchView searchView;
     private FloatingActionButton recentPlayed;
     private boolean recViewInitiated = false;
 
@@ -69,11 +66,11 @@ public class FolderFragment extends Fragment implements OnPermissionGranted {
         return v;
     }
 
-    @SuppressLint("NonConstantResourceId")
+    @SuppressLint({"NonConstantResourceId", "UseCompatLoadingForDrawables"})
     private void initListeners() {
         recentPlayed.setOnClickListener(v1 -> recentPlayedResume());
-        ColorPellet cp = new ColorPellet(requireActivity());
-        recentPlayed.setBackgroundTintList(ColorStateList.valueOf(cp.getLight()));
+//        ColorPellet cp = new ColorPellet(requireActivity());
+//        recentPlayed.setBackgroundTintList(ColorStateList.valueOf(cp.getLight()));
         more.setOnClickListener(v1 -> {
             PopupMenu popupMenu = new PopupMenu(getContext(), more);
             popupMenu.inflate(R.menu.menu);
@@ -113,7 +110,9 @@ public class FolderFragment extends Fragment implements OnPermissionGranted {
             });
             popupMenu.show();
         });
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        searchView.setOnClickListener(v -> searchView.setBackgroundColor(Color.argb(255, 255, 55, 55)));
+
+        searchView.setOnQueryTextListener(new android.widget.SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 return false;
@@ -125,6 +124,11 @@ public class FolderFragment extends Fragment implements OnPermissionGranted {
                 return false;
             }
         });
+
+        searchView.setOnCloseListener(() -> {
+            searchView.setBackgroundColor(Color.argb(0, 0, 0, 0));
+            return false;
+        });
     }
 
     @SuppressLint("NewApi")
@@ -133,7 +137,7 @@ public class FolderFragment extends Fragment implements OnPermissionGranted {
         int grid = 1;
         if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) grid = 2;
         folder = VideoRead.getFolders(getContext());
-        adapter = new FolderAdapter(folder, getContext());
+        adapter = new FolderAdapter(folder, getActivity());
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), grid));
         recyclerView.setAdapter(adapter);
 
@@ -159,9 +163,9 @@ public class FolderFragment extends Fragment implements OnPermissionGranted {
     private void recentPlayedResume() {
         if (!Utils.RECENTLY_PLAYED_VIDEO_FOLDER.equals("0")) {
             try {
-                Bundle bundle = new Bundle();
-                bundle.putString("folderName", Utils.RECENTLY_PLAYED_VIDEO_FOLDER);
-                Navigation.findNavController(requireView()).navigate(R.id.folder_to_videos, bundle);
+//                Bundle bundle = new Bundle();
+//                bundle.putString("folderName", Utils.RECENTLY_PLAYED_VIDEO_FOLDER);
+//                Navigation.findNavController(requireView()).navigate(R.id.folder_to_videos, bundle);
 
                 requireActivity().startActivityForResult(
                         new Intent(requireActivity().getBaseContext(), PlayerActivity.class)

@@ -9,7 +9,6 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -35,7 +34,9 @@ public class MainActivity extends AppCompatActivity {
         MainActivity.onPlayerActivityDestroy = onPlayerActivityDestroy;
     }
 
-    @SuppressLint("NotifyDataSetChanged")
+    public static NavigationBarView bottomNavigationView;
+
+    @SuppressLint({"NotifyDataSetChanged", "NonConstantResourceId"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,27 +47,23 @@ public class MainActivity extends AppCompatActivity {
 
         switchToFragment1(new FolderFragment());
 
-        NavigationBarView bottomNavigationView = findViewById(R.id.bottom_navigation);
-        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-            @SuppressLint("NonConstantResourceId")
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.folders:
-                        //do something
-                        switchToFragment1(new FolderFragment());
-                        return true;
-                    case R.id.videos:
-                        //do something
-                        switchToFragment1(new VideosFragment());
-                        return true;
-                    case R.id.feedback:
-                        //do something
-                        return true;
-                }
-                bottomNavigationView.setSelectedItemId(item.getItemId());
-                return false;
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.folders:
+                    //do something
+                    switchToFragment1(new FolderFragment());
+                    return true;
+                case R.id.videos:
+                    //do something
+                    switchToFragment1(new VideosFragment(""));
+                    return true;
+                case R.id.feedback:
+                    //do something
+                    return true;
             }
+            bottomNavigationView.setSelectedItemId(item.getItemId());
+            return false;
         });
         bottomNavigationView.animate().translationY(200).setDuration(0);
         new Handler().postDelayed(new Runnable() {
@@ -75,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
                 bottomNavigationView.animate().translationY(0).setDuration(500);
             }
         }, 500);
+
 
 
         if ((getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_NO) {
@@ -116,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (oldConfig != currentNightMode) {
             this.recreate();
-            oldConfig=currentNightMode;
+            oldConfig = currentNightMode;
         }
 
 

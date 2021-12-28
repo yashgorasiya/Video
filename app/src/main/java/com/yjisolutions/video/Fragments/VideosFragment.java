@@ -14,7 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -42,6 +42,10 @@ public class VideosFragment extends Fragment implements OnPlayerActivityDestroy 
     @SuppressLint("StaticFieldLeak")
     public static View parentView;
 
+    public VideosFragment(String fName) {
+        folderName = fName;
+    }
+
     @SuppressLint({"SetTextI18n", "UseCompatLoadingForDrawables"})
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -62,25 +66,26 @@ public class VideosFragment extends Fragment implements OnPlayerActivityDestroy 
 
         recyclerView.setHasFixedSize(true);
 
-        if (viewStyle) viewGrid.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_grid_view_24));
-        else viewGrid.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_view_list_24));
+        if (viewStyle)
+            viewGrid.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_grid_view_24));
+        else
+            viewGrid.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_view_list_24));
 
-        backButton.setOnClickListener(v1 -> requireActivity().onBackPressed());
-
-        viewGrid.setOnClickListener(v1 -> {
-            if (!Utils.changeVideoTileStyle()) Toast.makeText(getContext(), "Failed to Save", Toast.LENGTH_SHORT).show();
-            requireActivity().onBackPressed();
-            Bundle bundle = new Bundle();
-            bundle.putString("folderName", requireArguments().getString("folderName"));
-            Navigation.findNavController(v).navigate(R.id.folder_to_videos, bundle);
+        backButton.setOnClickListener(v1 -> {
+            FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.homeScreenFrameLayout, new FolderFragment()).commit();
         });
 
-        if (getArguments() != null) {
-            folderName = getArguments().getString("folderName");
-            toolBarTitle.setText(folderName.substring(folderName.lastIndexOf("/") + 1));
-        } else {
-            toolBarTitle.setText("All Videos");
-        }
+        viewGrid.setOnClickListener(v1 -> {
+            if (!Utils.changeVideoTileStyle())
+                Toast.makeText(getContext(), "Failed to Save", Toast.LENGTH_SHORT).show();
+            FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.homeScreenFrameLayout, new VideosFragment(folderName)).commit();
+        });
+
+        if (folderName.equals("")) toolBarTitle.setText("All Videos");
+        else toolBarTitle.setText(folderName.substring(folderName.lastIndexOf("/") + 1));
+
 
         initRecViewVideos();
         initListeners();

@@ -1,31 +1,30 @@
 package com.yjisolutions.video.Adapters;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.navigation.Navigation;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.yjisolutions.video.Fragments.VideosFragment;
 import com.yjisolutions.video.Modal.Folder;
 import com.yjisolutions.video.R;
-import com.yjisolutions.video.code.VideoRead;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-public class FolderAdapter extends RecyclerView.Adapter<FolderViewHolder>{
+public class FolderAdapter extends RecyclerView.Adapter<FolderViewHolder> {
     private List<Folder> listOfFolders;
-    protected Context c;
-    public FolderAdapter(ArrayList<Folder> Folders, Context c){
+    protected FragmentActivity c;
+
+    public FolderAdapter(ArrayList<Folder> Folders, FragmentActivity c) {
         this.listOfFolders = Folders;
         this.c = c;
     }
+
     @NonNull
     @Override
     public FolderViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -44,10 +43,9 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderViewHolder>{
         holder.fName.setText(FName);
 
         holder.ly.setOnClickListener(v -> {
-            Bundle bundle = new Bundle();
-            bundle.putString("folderName", temp.getName());
-            Navigation.findNavController(v).navigate(R.id.folder_to_videos, bundle);
-
+            FragmentManager fm = c.getSupportFragmentManager();
+            VideosFragment videosFragment = new VideosFragment(temp.getName());
+            fm.beginTransaction().replace(R.id.homeScreenFrameLayout, videosFragment).commit();
         });
 
     }

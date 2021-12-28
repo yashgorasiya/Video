@@ -93,7 +93,6 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_gravity="right"
-                    android:alpha="0.6"
                     android:foregroundGravity="top"
                     android:contentDescription="@string/more"
                     android:padding="12dp"
@@ -105,9 +104,8 @@
                     tools:ignore="RtlHardcoded"
                     />
 
-                <androidx.appcompat.widget.SearchView
+                <SearchView
                     android:id="@+id/searchFolder"
-                    android:background="@color/statusBar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"

@@ -1,5 +1,6 @@
 package com.yjisolutions.video.code;
 
+import android.annotation.SuppressLint;
 import android.content.ContentUris;
 import android.content.Context;
 import android.database.Cursor;
@@ -81,7 +82,7 @@ public class VideoRead {
                     Uri contentUri = ContentUris.withAppendedId(
                             MediaStore.Video.Media.EXTERNAL_CONTENT_URI, id);
 
-                    String path = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.DATA));
+                    @SuppressLint("Range") String path = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.DATA));
                     int index = path.lastIndexOf("/");
                     String ss = path.substring(0, index);
                     String FName = ss.substring(ss.lastIndexOf("/") + 1);
@@ -137,7 +138,7 @@ public class VideoRead {
             if (FName1.equals("0")) {
                 while (cursor.moveToNext()) {
                     // Get values of columns for a given video
-                    String path = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.DATA));
+                    @SuppressLint("Range") String path = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.DATA));
                     int index = path.lastIndexOf("/");
                     String ss = path.substring(0, index);
                     String FName = ss.substring(ss.lastIndexOf("/") + 1);
@@ -192,7 +193,7 @@ public class VideoRead {
 
             while (cursor.moveToNext()) {
                 // Get values of columns for a given video.
-                String path = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.DATA));
+                @SuppressLint("Range") String path = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.DATA));
 
 
                 int index = path.lastIndexOf("/");
@@ -231,7 +232,7 @@ public class VideoRead {
         String[] selectionArgs = new String[]{
                 String.valueOf(TimeUnit.MILLISECONDS.convert(0, TimeUnit.MILLISECONDS))
         };
-        String sortOrder = MediaStore.Video.Media.DISPLAY_NAME + " ASC";
+        String sortOrder = sortBy[Utils.SORT_BY_VIDEOS] + order[Utils.SORT_ORDER_VIDEOS];
 
         try (
                 Cursor cursor = context.getContentResolver().query(
