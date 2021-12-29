@@ -23,7 +23,7 @@ public class FeedBackFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_feed_back, container, false);
 //        String urlString = "https://api.telegram.org/bot%s/sendMessage?chat_id=%s&text=%s";
 //
-//        String apiToken = "5018575062:AAEkEITAVuRBpUVI-ivRc0iVywBFwNnYZWY";
+
 //        String chatId = "@videoplayerreport";
 //        String text = "Hello world!";
 
