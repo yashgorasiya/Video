@@ -36,7 +36,7 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_gravity="right"
-            android:alpha="0.6"
+            android:alpha="0.8"
             android:contentDescription="@string/layoutSwitcher"
             android:paddingLeft="12dp"
             android:paddingTop="12dp"
@@ -47,13 +47,12 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="RtlHardcoded,RtlSymmetry" />
 
-
         <ImageView
             android:id="@+id/videoFragmentMore"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_gravity="right"
-            android:alpha="0.6"
+            android:alpha="0.8"
             android:contentDescription="@string/layoutSwitcher"
             android:padding="12dp"
             android:src="@drawable/ic_baseline_more_vert_24"
@@ -149,8 +148,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/videoFragmentDelete"
             app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/homePreviewMore" />
-
+            app:tint="@color/homePreviewMore"
+            android:contentDescription="@string/selectAll" />
 
         <ImageView
             android:id="@+id/videoFragmentDelete"
@@ -201,7 +200,8 @@
             app:layout_constraintEnd_toStartOf="@+id/videoFragmentSelectAll"
             app:layout_constraintTop_toTopOf="parent"
             app:tint="@color/homePreviewMore"
-            tools:ignore="RtlHardcoded,RtlSymmetry" />
+            tools:ignore="RtlHardcoded,RtlSymmetry"
+            android:contentDescription="@string/share" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -218,6 +218,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/preview" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

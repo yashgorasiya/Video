@@ -18,16 +18,13 @@
     </style>
 
     <style parent="ThemeOverlay.AppCompat.Dialog.Alert" name="TrackSelectionDialogThemeOverlay">
-
         <item name="windowNoTitle">false</item>
-
     </style>
 
 
     <style name="BottomSheetCustom" parent="Theme.Design.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/bottomSheetStyle</item>
     </style>
-
     <style name="bottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@drawable/delete_dialog_bg</item>
         <item name="android:layout_margin">16dp</item>
@@ -37,9 +34,10 @@
     <style name="BottomSheetSpeed" parent="Theme.Design.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/bottomSheetSpeed</item>
     </style>
-
     <style name="bottomSheetSpeed" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@android:color/transparent</item>
         <item name="android:layout_margin">16dp</item>
     </style>
+
+
 </resources>

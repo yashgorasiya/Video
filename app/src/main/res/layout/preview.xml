@@ -126,7 +126,7 @@
             android:id="@+id/previewHomeMore"
             android:layout_width="30dp"
             android:layout_height="match_parent"
-            android:alpha="0.6"
+            android:alpha="0.8"
             android:padding="3dp"
             android:foregroundGravity="top"
             android:src="@drawable/ic_baseline_more_vert_24"

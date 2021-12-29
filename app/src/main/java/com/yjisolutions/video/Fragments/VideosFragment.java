@@ -31,16 +31,16 @@ import java.util.ArrayList;
 
 public class VideosFragment extends Fragment implements OnPlayerActivityDestroy {
 
+    public static String folderName = "";
+
     public static ArrayList<Video> videos = new ArrayList<>();
     private final boolean viewStyle = Utils.VIEW_STYLE;
     private RecyclerView recyclerView;
     private VideoAdapter adapter;
     private ImageView videoFragmentMore;
     private SearchView searchView;
-    public static String folderName = "";
     private TextView toolBarSubTitle;
-    @SuppressLint("StaticFieldLeak")
-    public static View parentView;
+    private View v;
 
     public VideosFragment(String fName) {
         folderName = fName;
@@ -51,8 +51,7 @@ public class VideosFragment extends Fragment implements OnPlayerActivityDestroy 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.fragment_videos, container, false);
-        parentView = v;
+        v = inflater.inflate(R.layout.fragment_videos, container, false);
 
         MainActivity.setOnPlayerActivityDestroyIF(this);
         ImageView backButton = v.findViewById(R.id.videoFragmentBack);
@@ -72,43 +71,50 @@ public class VideosFragment extends Fragment implements OnPlayerActivityDestroy 
             viewGrid.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_view_list_24));
 
         backButton.setOnClickListener(v1 -> {
-            FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.homeScreenFrameLayout, new FolderFragment()).commit();
+            if (!folderName.equals("")) {
+                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.homeScreenFrameLayout, new FolderFragment()).commit();
+            } else requireActivity().onBackPressed();
         });
 
         viewGrid.setOnClickListener(v1 -> {
             if (!Utils.changeVideoTileStyle())
                 Toast.makeText(getContext(), "Failed to Save", Toast.LENGTH_SHORT).show();
             FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+            if (!folderName.equals("")) MainActivity.videoFisOpen = true;
             fragmentManager.beginTransaction().replace(R.id.homeScreenFrameLayout, new VideosFragment(folderName)).commit();
         });
 
         if (folderName.equals("")) toolBarTitle.setText("All Videos");
         else toolBarTitle.setText(folderName.substring(folderName.lastIndexOf("/") + 1));
 
-
         initRecViewVideos();
         initListeners();
+
         return v;
     }
 
     @Override
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
+
         int grid;
         if (viewStyle) grid = 1;
         else grid = 2;
+
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             recyclerView.setLayoutManager(new GridLayoutManager(getContext(), grid * 2));
         } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
             recyclerView.setLayoutManager(new GridLayoutManager(getContext(), grid));
+            super.onConfigurationChanged(newConfig);
         }
-        super.onConfigurationChanged(newConfig);
     }
 
     @SuppressLint("SetTextI18n")
     private void initRecViewVideos() {
+
         if (folderName.equals("")) videos = VideoRead.getVideo(getContext());
         else videos = VideoRead.getVideoFromFolder(getContext(), folderName);
+
         int grid;
         if (viewStyle) grid = 1;
         else grid = 2;
@@ -117,7 +123,8 @@ public class VideosFragment extends Fragment implements OnPlayerActivityDestroy 
         if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) grid = grid * 2;
 
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), grid));
-        adapter = new VideoAdapter(videos, getActivity(), viewStyle);
+        adapter = new VideoAdapter(videos, getActivity(), viewStyle, v);
+
         recyclerView.setAdapter(adapter);
 
         if (videos.size() == 1) toolBarSubTitle.setText(videos.size() + " Video");

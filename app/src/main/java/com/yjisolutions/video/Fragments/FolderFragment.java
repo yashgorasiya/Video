@@ -3,7 +3,6 @@ package com.yjisolutions.video.Fragments;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,10 +16,13 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.animation.MotionSpec;
+import com.google.android.material.animation.MotionTiming;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.yjisolutions.video.Activities.PlayerActivity;
 import com.yjisolutions.video.Adapters.FolderAdapter;
 import com.yjisolutions.video.Interfaces.OnPermissionGranted;
@@ -39,7 +41,7 @@ public class FolderFragment extends Fragment implements OnPermissionGranted {
     private RecyclerView recyclerView;
     private ImageView more;
     private android.widget.SearchView searchView;
-    private FloatingActionButton recentPlayed;
+    private ExtendedFloatingActionButton recentPlayed;
     private boolean recViewInitiated = false;
 
     @Override
@@ -61,6 +63,10 @@ public class FolderFragment extends Fragment implements OnPermissionGranted {
         recyclerView.setHasFixedSize(true);
         more = v.findViewById(R.id.homeScreenMore);
         searchView = v.findViewById(R.id.searchFolder);
+
+        MotionSpec motionSpec = new MotionSpec();
+        motionSpec.setTiming("Anim", new MotionTiming(100, 5000));
+        recentPlayed.setExtendMotionSpec(motionSpec);
 
         initListeners();
         return v;
@@ -110,7 +116,7 @@ public class FolderFragment extends Fragment implements OnPermissionGranted {
             });
             popupMenu.show();
         });
-        searchView.setOnClickListener(v -> searchView.setBackgroundColor(Color.argb(255, 255, 55, 55)));
+//        searchView.setOnClickListener(v -> searchView.setBackgroundColor(Color.argb(255, 255, 55, 55)));
 
         searchView.setOnQueryTextListener(new android.widget.SearchView.OnQueryTextListener() {
             @Override
@@ -125,10 +131,10 @@ public class FolderFragment extends Fragment implements OnPermissionGranted {
             }
         });
 
-        searchView.setOnCloseListener(() -> {
-            searchView.setBackgroundColor(Color.argb(0, 0, 0, 0));
-            return false;
-        });
+//        searchView.setOnCloseListener(() -> {
+//            searchView.setBackgroundColor(Color.argb(0, 0, 0, 0));
+//            return false;
+//        });
     }
 
     @SuppressLint("NewApi")
@@ -147,12 +153,14 @@ public class FolderFragment extends Fragment implements OnPermissionGranted {
                 ConstraintLayout t = requireView().findViewById(R.id.ToolbarConstraintLayoutFolders);
                 if (velocityY>0) {
                     t.animate().translationY(-t.getBottom()).setInterpolator(new AccelerateInterpolator()).start();
-                    recentPlayed.animate().translationY(recentPlayed.getBottom()).setInterpolator(new AccelerateInterpolator()).start();
+//                    recentPlayed.animate().translationY(recentPlayed.getBottom()).setInterpolator(new AccelerateInterpolator()).start();
+                    recentPlayed.setExtended(false);
                     t.setVisibility(View.GONE);
                 }
                 else {
                     t.animate().translationY(0).setInterpolator(new DecelerateInterpolator()).start();
-                    recentPlayed.animate().translationY(0).setInterpolator(new DecelerateInterpolator()).start();
+//                    recentPlayed.animate().translationY(0).setInterpolator(new DecelerateInterpolator()).start();
+                    recentPlayed.setExtended(true);
                     t.setVisibility(View.VISIBLE);
                 }
                 return false;
@@ -163,10 +171,9 @@ public class FolderFragment extends Fragment implements OnPermissionGranted {
     private void recentPlayedResume() {
         if (!Utils.RECENTLY_PLAYED_VIDEO_FOLDER.equals("0")) {
             try {
-//                Bundle bundle = new Bundle();
-//                bundle.putString("folderName", Utils.RECENTLY_PLAYED_VIDEO_FOLDER);
-//                Navigation.findNavController(requireView()).navigate(R.id.folder_to_videos, bundle);
-
+                FragmentManager fm = requireActivity().getSupportFragmentManager();
+                VideosFragment videosFragment = new VideosFragment(Utils.RECENTLY_PLAYED_VIDEO_FOLDER);
+                fm.beginTransaction().replace(R.id.homeScreenFrameLayout, videosFragment).commit();
                 requireActivity().startActivityForResult(
                         new Intent(requireActivity().getBaseContext(), PlayerActivity.class)
                                 .putExtra("position", Utils.RECENTLY_PLAYED_VIDEO_POSITION)

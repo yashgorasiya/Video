@@ -13,7 +13,6 @@
     <string name="shareIon">ShareIon</string>
     <string name="delete_file">Delete File</string>
     <string name="video_information">Video information</string>
-    <string name="share">Share</string>
     <string name="deleteIcon">DeleteIcon</string>
     <string name="infoIcon">InfoIcon</string>
     <string name="title">Title</string>
@@ -48,5 +47,9 @@
     <string name="nightModeButton">NightModeButton</string>
     <string name="playListCloseButton">PlayListCloseButton</string>
     <string name="processbaroverlaybuttontoplay">processbarOverlayButtonToPlay</string>
+    <string name="selectAll">SelectAll</string>
+    <string name="share">Share</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

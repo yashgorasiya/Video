@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.yjisolutions.video.Activities.MainActivity;
 import com.yjisolutions.video.Fragments.VideosFragment;
 import com.yjisolutions.video.Modal.Folder;
 import com.yjisolutions.video.R;
@@ -45,6 +46,7 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderViewHolder> {
         holder.ly.setOnClickListener(v -> {
             FragmentManager fm = c.getSupportFragmentManager();
             VideosFragment videosFragment = new VideosFragment(temp.getName());
+            MainActivity.videoFisOpen = true;
             fm.beginTransaction().replace(R.id.homeScreenFrameLayout, videosFragment).commit();
         });
 

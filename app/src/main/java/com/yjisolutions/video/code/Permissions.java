@@ -6,8 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.provider.Settings;
 
-import androidx.appcompat.app.AlertDialog;
-
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
@@ -31,7 +30,7 @@ public class Permissions {
                 if (multiplePermissionsReport.areAllPermissionsGranted()) {
                     onPermissionGranted.onGranted();
                 } else {
-                    requestDialog(context);
+                    requestDialog(context, onPermissionGranted);
                 }
 
             }
@@ -41,27 +40,35 @@ public class Permissions {
                     permissionToken) {
                 permissionToken.continuePermissionRequest();
             }
-        }).withErrorListener(error -> requestDialog(context))
+        }).withErrorListener(error -> requestDialog(context, onPermissionGranted))
                 .onSameThread()
                 .check();
 
     }
 
-    static void requestDialog(Activity context){
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+    static void requestDialog(Activity context, OnPermissionGranted onPermissionGranted) {
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context);
+
         builder.setTitle("Alert");
         builder.setMessage("This app needs storage permission to play videos");
-        builder.setPositiveButton("GOTO SETTINGS", (dialog, which) -> {
+
+        builder.setPositiveButton("Retry", (dialog, which) -> {
+            request(context, onPermissionGranted);
+        });
+
+        builder.setNegativeButton("Setting", (dialog, which) -> {
             dialog.cancel();
             Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
             Uri uri = Uri.fromParts("package", context.getPackageName(), null);
             intent.setData(uri);
             context.startActivityIfNeeded(intent, 101);
         });
-        builder.setNegativeButton("Cancel", (dialog, which) -> {
+
+        builder.setNeutralButton("Close", (dialog, which) -> {
             dialog.cancel();
             context.finish();
         });
+
         builder.show();
     }
 }

@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.navigation.NavigationBarView;
+import com.yjisolutions.video.Fragments.FeedBackFragment;
 import com.yjisolutions.video.Fragments.FolderFragment;
 import com.yjisolutions.video.Fragments.VideosFragment;
 import com.yjisolutions.video.Interfaces.OnPlayerActivityDestroy;
@@ -28,13 +29,14 @@ public class MainActivity extends AppCompatActivity {
 
     public static SharedPreferences sharedPreferences;
     private static OnPlayerActivityDestroy onPlayerActivityDestroy;
-    public int oldConfig;
+    public static NavigationBarView bottomNavigationView;
 
     public static void setOnPlayerActivityDestroyIF(OnPlayerActivityDestroy onPlayerActivityDestroy) {
         MainActivity.onPlayerActivityDestroy = onPlayerActivityDestroy;
     }
 
-    public static NavigationBarView bottomNavigationView;
+    public int oldConfig;
+    public static boolean videoFisOpen = false;
 
     @SuppressLint({"NotifyDataSetChanged", "NonConstantResourceId"})
     @Override
@@ -60,18 +62,14 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 case R.id.feedback:
                     //do something
+                    switchToFragment1(new FeedBackFragment());
                     return true;
             }
             bottomNavigationView.setSelectedItemId(item.getItemId());
             return false;
         });
         bottomNavigationView.animate().translationY(200).setDuration(0);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                bottomNavigationView.animate().translationY(0).setDuration(500);
-            }
-        }, 500);
+        new Handler().postDelayed(() -> bottomNavigationView.animate().translationY(0).setDuration(500), 500);
 
 
 
@@ -116,9 +114,13 @@ public class MainActivity extends AppCompatActivity {
             this.recreate();
             oldConfig = currentNightMode;
         }
-
-
     }
 
-
+    @Override
+    public void onBackPressed() {
+        if (videoFisOpen) {
+            bottomNavigationView.setSelectedItemId(R.id.folders);
+            videoFisOpen = false;
+        } else super.onBackPressed();
+    }
 }

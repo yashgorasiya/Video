@@ -23,7 +23,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.yjisolutions.video.Activities.PlayerActivity;
-import com.yjisolutions.video.Fragments.VideosFragment;
 import com.yjisolutions.video.Modal.Video;
 import com.yjisolutions.video.R;
 import com.yjisolutions.video.code.Conversion;
@@ -37,18 +36,19 @@ import java.util.Objects;
 
 public class VideoAdapter extends RecyclerView.Adapter<VideoViewHolder> {
 
-    List<Video> videos;
-    Activity activity;
-    boolean viewStyle;
+    private List<Video> videos;
+    public Activity activity;
+    public boolean viewStyle;
     private boolean isSelected = false;
     private boolean firstLongPress = false;
-    ArrayList<Video> selectedItems;
-    private final View view = VideosFragment.parentView;
+    private ArrayList<Video> selectedItems;
+    private final View view;
 
-    public VideoAdapter(List<Video> videos, Activity activity, boolean viewStyle) {
+    public VideoAdapter(List<Video> videos, Activity activity, boolean viewStyle, View view) {
         this.videos = videos;
         this.activity = activity;
         this.viewStyle = viewStyle;
+        this.view = view;
     }
 
     @NonNull
@@ -162,7 +162,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoViewHolder> {
         if (isSelected) {
             defaultToolbar.setVisibility(View.GONE);
             selectionToolbar.setVisibility(View.VISIBLE);
-            setSelectionLis();
+            setSelectionList();
         } else {
             defaultToolbar.setVisibility(View.VISIBLE);
             selectionToolbar.setVisibility(View.GONE);
@@ -170,7 +170,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoViewHolder> {
     }
 
     @SuppressLint({"NotifyDataSetChanged", "UseCompatLoadingForDrawables"})
-    public void setSelectionLis() {
+    public void setSelectionList() {
 
         ImageView delete, selectAll, share, back;
 
@@ -267,6 +267,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoViewHolder> {
             isSelected = false;
             changeToolbar();
             notifyDataSetChanged();
+
         } else {
 
             LayoutInflater factory = LayoutInflater.from(activity);
@@ -294,7 +295,8 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoViewHolder> {
             deleteSize.setText(Conversion.sizeConversion(video.getSize()));
             deleteTille.setText(video.getName());
 
-            deleteDialogView.findViewById(R.id.DialogDeleteBtn).setOnClickListener(v13 -> {
+            deleteDialogView.findViewById(R.id.DialogDeleteBtn);
+            deleteDialogView.setOnClickListener(v13 -> {
                 //your delete logic
                 DeleteFile delete1 = new DeleteFile(activity);
                 delete1.moveToBin(toDelete);
@@ -308,12 +310,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoViewHolder> {
                         .scaleXBy(-1f)
                         .scaleYBy(-1f)
                         .setDuration(200);
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        deleteDialog.dismiss();
-                    }
-                }, 200);
+                new Handler().postDelayed(deleteDialog::dismiss, 200);
             });
 
             deleteDialogView.findViewById(R.id.DialogDeleteCancelTxt).setOnClickListener(v12 -> {
@@ -323,12 +320,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoViewHolder> {
                         .scaleXBy(-1f)
                         .scaleYBy(-1f)
                         .setDuration(200);
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        deleteDialog.dismiss();
-                    }
-                }, 200);
+                new Handler().postDelayed(deleteDialog::dismiss, 200);
             });
 
             deleteDialog.show();
