@@ -295,8 +295,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoViewHolder> {
             deleteSize.setText(Conversion.sizeConversion(video.getSize()));
             deleteTille.setText(video.getName());
 
-            deleteDialogView.findViewById(R.id.DialogDeleteBtn);
-            deleteDialogView.setOnClickListener(v13 -> {
+            deleteDialogView.findViewById(R.id.DialogDeleteBtn).setOnClickListener(v13 -> {
                 //your delete logic
                 DeleteFile delete1 = new DeleteFile(activity);
                 delete1.moveToBin(toDelete);
