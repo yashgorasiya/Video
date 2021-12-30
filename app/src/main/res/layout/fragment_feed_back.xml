@@ -1,16 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Fragments.FeedBackFragment">
 
+        <EditText
+            android:id="@+id/editText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="128dp"
+            android:layout_marginEnd="80dp"
+            android:background="@drawable/delete_dialog_bg"
+            android:backgroundTint="@color/PrimaryLight"
+            android:focusable="true"
+            android:fontFamily="@font/not_sans"
+            android:hapticFeedbackEnabled="true"
+            android:hint="Write Your Message Here"
+            android:inputType="text"
+            android:minHeight="50dp"
+            android:padding="16dp"
+            android:selectAllOnFocus="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/helloWorld" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:id="@+id/helloWorld"
-        android:text="@string/hello_blank_fragment" />
+        <ImageButton
+            android:id="@+id/sendButton"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/play_pause_button_bg"
+            android:backgroundTint="@color/purple_500"
+            android:gravity="top"
+            android:src="@drawable/ic_baseline_send_24"
+            android:textColor="@color/white"
+            android:tooltipText="Send"
+            app:layout_constraintBottom_toBottomOf="@+id/editText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1"
+            app:layout_constraintStart_toEndOf="@+id/editText"
+            android:contentDescription="SEND" />
 
-</FrameLayout>
+        <TextView
+            android:id="@+id/helloWorld"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="32dp"
+            android:fontFamily="@font/not_sans"
+            android:text="FeedBack"
+            android:textSize="24dp"
+            android:layout_marginEnd="32dp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
