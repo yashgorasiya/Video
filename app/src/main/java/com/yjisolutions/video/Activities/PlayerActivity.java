@@ -451,8 +451,8 @@ public class PlayerActivity extends AppCompatActivity {
         });
 
         playerView.setOnTouchListener((@SuppressLint("ClickableViewAccessibility") View v, @SuppressLint("ClickableViewAccessibility") MotionEvent event) -> {
-
             gestureDetectorCompat.onTouchEvent(event);
+
             switch (event.getAction()) {
                 case MotionEvent.ACTION_UP:
                     endScroll();
@@ -717,10 +717,12 @@ public class PlayerActivity extends AppCompatActivity {
         SeekGesturePreviewLayout.setVisibility(View.INVISIBLE);
     }
 
+
     private class MyGestureDetector extends GestureDetector.SimpleOnGestureListener {
         private final boolean canUseWipeControls = true;
         private float maxVerticalMovement;
         private float maxHorizontalMovement;
+
 
         @Override
         public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
@@ -736,7 +738,7 @@ public class PlayerActivity extends AppCompatActivity {
             maxVerticalMovement = Math.max(maxVerticalMovement, Math.abs(distanceYSinceTouchBegin));
             boolean enoughVerticalMovement = maxVerticalMovement > 100;
 
-            if (enoughHorizontalMovement && !enoughVerticalMovement && SafeAreaBackBtn) {
+            if (enoughHorizontalMovement && !enoughVerticalMovement && SafeAreaBackBtn && canUseWipeControls) {
                 String cTime = Conversion.timerConversion(cPotion);
 
                 // right to left
@@ -786,6 +788,16 @@ public class PlayerActivity extends AppCompatActivity {
         }
 
         @Override
+        public void onLongPress(MotionEvent e) {
+
+        }
+
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            return false;
+        }
+
+        @Override
         public boolean onSingleTapUp(MotionEvent e) {
             performClick();
             if (playListView.getVisibility() == View.VISIBLE) {
@@ -803,8 +815,13 @@ public class PlayerActivity extends AppCompatActivity {
             return super.onDown(e);
         }
 
-
         @Override
+        public void onShowPress(MotionEvent e) {
+
+        }
+
+
+        //        @Override
         public boolean onDoubleTap(MotionEvent e) {
             // divided double tap gestures to three part of screen
 

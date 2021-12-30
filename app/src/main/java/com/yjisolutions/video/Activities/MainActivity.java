@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         oldConfig = getResources().getConfiguration().uiMode;
         sharedPreferences = getSharedPreferences("UserData", Context.MODE_PRIVATE);
 
@@ -123,4 +124,6 @@ public class MainActivity extends AppCompatActivity {
             videoFisOpen = false;
         } else super.onBackPressed();
     }
+
+
 }
