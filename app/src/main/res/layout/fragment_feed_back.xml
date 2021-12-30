@@ -49,7 +49,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="32dp"
+            android:layout_margin="16dp"
             android:fontFamily="@font/not_sans"
             android:text="FeedBack"
             android:textSize="24dp"
@@ -59,6 +59,20 @@
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="16dp"
+            android:fontFamily="@font/not_sans"
+            android:text="This help us to improve your experience, Remember : Your Requirements is our Goal.Write down your suggession below "
+            android:textSize="14dp"
+            android:alpha="0.7"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/helloWorld" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
