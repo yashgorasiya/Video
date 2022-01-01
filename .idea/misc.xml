@@ -50,6 +50,7 @@
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable/preview_thumbnail_bg.xml" value="0.21157407407407408" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable/progressbar_bg.xml" value="0.23657407407407408" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable/splash_background.xml" value="0.26510416666666664" />
+        <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable/splash_screen_bg.xml" value="0.1680921052631579" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable/subtitles.xml" value="0.2598958333333333" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable/subtitles_off.xml" value="0.23564814814814813" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable/tab_layout_bg.xml" value="0.23564814814814813" />
@@ -79,7 +80,7 @@
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/layout/fragment_videos.xml" value="0.2" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/layout/layout_exoplayer_control_view.xml" value="0.2276595744680851" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/layout/list_track_item.xml" value="0.24427083333333333" />
-        <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/layout/playback_speed_dialog.xml" value="0.4" />
+        <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/layout/playback_speed_dialog.xml" value="0.264" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/layout/player_activity_list.xml" value="0.2222222222222222" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/layout/player_activity_list_preview_item.xml" value="0.4" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/layout/player_more_control_bottom_sheet.xml" value="0.24375" />

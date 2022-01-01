@@ -34,10 +34,16 @@
     <style name="BottomSheetSpeed" parent="Theme.Design.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/bottomSheetSpeed</item>
     </style>
+
     <style name="bottomSheetSpeed" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@android:color/transparent</item>
         <item name="android:layout_margin">16dp</item>
     </style>
 
+
+    <!--    SPlashScreen-->
+    <style name="SplashScreen" parent="Theme.Video">
+        <item name="android:windowBackground">@drawable/splash_screen_bg</item>
+    </style>
 
 </resources>

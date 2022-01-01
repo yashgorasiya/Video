@@ -61,6 +61,10 @@ public class MainActivity extends AppCompatActivity {
                     //do something
                     switchToFragment1(new VideosFragment(""));
                     return true;
+                case R.id.setting:
+                    //do something
+                    Toast.makeText(getApplicationContext(), "Setting", Toast.LENGTH_SHORT).show();
+                    return true;
                 case R.id.feedback:
                     //do something
                     switchToFragment1(new FeedBackFragment());

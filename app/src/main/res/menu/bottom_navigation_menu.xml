@@ -11,6 +11,11 @@
         android:icon="@drawable/ic_baseline_video_library_24"
         android:title="Videos" />
     <item
+        android:id="@+id/setting"
+        android:enabled="true"
+        android:icon="@drawable/ic_baseline_settings_24"
+        android:title="Setting" />
+    <item
         android:id="@+id/feedback"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_feedback_24"

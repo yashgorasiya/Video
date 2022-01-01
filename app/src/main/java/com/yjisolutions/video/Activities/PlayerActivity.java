@@ -205,7 +205,7 @@ public class PlayerActivity extends AppCompatActivity {
     private void setNightIntensity(ImageView playNightView) {
         final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this, R.style.BottomSheetSpeed);
         bottomSheetDialog.setContentView(R.layout.bottom_night_dialog);
-        SetupFullDialog.setupFullHeight(bottomSheetDialog, 270);
+        SetupFullDialog.setupFullHeight(bottomSheetDialog, 340);
         ImageView imageView = bottomSheetDialog.findViewById(R.id.doneImgNDialog);
         Objects.requireNonNull(imageView).setOnClickListener(v -> bottomSheetDialog.cancel());
 
@@ -251,7 +251,7 @@ public class PlayerActivity extends AppCompatActivity {
     private void PlayBackSpeedDialog(ImageView speedControlBtn) {
         final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this, R.style.BottomSheetSpeed);
         bottomSheetDialog.setContentView(R.layout.playback_speed_dialog);
-        SetupFullDialog.setupFullHeight(bottomSheetDialog, 370);
+        SetupFullDialog.setupFullHeight(bottomSheetDialog, 470);
 
         FloatingActionButton add = bottomSheetDialog.findViewById(R.id.speedIncreaseButton);
         FloatingActionButton remove = bottomSheetDialog.findViewById(R.id.speedDecreaseButton);
