@@ -16,8 +16,13 @@ import com.yjisolutions.video.R;
 
 public class ColorPellet {
     private Palette p;
+    private int Light = 0;
+    private int Dark = 0 ;
+    private int LightMuted = 0;
+    private int DarkMuted = 0;
 
 
+    @SuppressLint("ResourceAsColor")
     public ColorPellet(Activity activity) {
         final WallpaperManager wallpaperManager = WallpaperManager.getInstance(activity);
 
@@ -25,25 +30,25 @@ public class ColorPellet {
             Drawable wallpaperDrawable = wallpaperManager.getDrawable();
             Bitmap bitmap = ((BitmapDrawable) wallpaperDrawable).getBitmap();
             p = Palette.from(bitmap).generate();
+            Light = p.getLightVibrantColor(R.color.PrimaryLight);
+            Dark = p.getDarkVibrantColor(R.color.PrimaryLight);
+            LightMuted = p.getLightMutedColor(R.color.PrimaryLight);
+            DarkMuted = p.getDarkMutedColor(R.color.PrimaryLight);
         }
 
     }
 
 
-    @SuppressLint("ResourceAsColor")
     public int getLight() {
-        return p.getLightVibrantColor(R.color.PrimaryLight);
+        return Light;
     }
-    @SuppressLint("ResourceAsColor")
     public int getDark() {
-        return p.getDarkVibrantColor(R.color.PrimaryLight);
+        return Dark;
     }
-    @SuppressLint("ResourceAsColor")
     public int getLightMuted() {
-        return p.getLightMutedColor(R.color.PrimaryLight);
+        return LightMuted;
     }
-    @SuppressLint("ResourceAsColor")
     public int getDarkMuted() {
-        return p.getDarkMutedColor(R.color.PrimaryLight);
+        return DarkMuted;
     }
 }
