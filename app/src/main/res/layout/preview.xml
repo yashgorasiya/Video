@@ -121,13 +121,14 @@
             app:layout_constraintStart_toEndOf="@+id/previewMaterialCard"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
+        <ImageButton
             android:contentDescription="@string/more"
             android:id="@+id/previewHomeMore"
             android:layout_width="30dp"
             android:layout_height="match_parent"
             android:alpha="0.8"
             android:padding="3dp"
+            android:background="?attr/selectableItemBackground"
             android:foregroundGravity="top"
             android:src="@drawable/ic_baseline_more_vert_24"
             app:layout_constraintBottom_toBottomOf="parent"

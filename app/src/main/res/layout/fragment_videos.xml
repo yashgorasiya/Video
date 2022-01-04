@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:context=".Activities.MainActivity">
 
-        <ImageView
+        <ImageButton
             android:id="@+id/videoFragmentBack"
             android:layout_width="50dp"
             android:layout_height="50dp"
@@ -25,13 +25,14 @@
             android:alpha="0.6"
             android:contentDescription="@string/backArrow"
             android:padding="12dp"
+            android:background="?attr/selectableItemBackground"
             android:src="@drawable/ic_baseline_arrow_back_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:tint="@color/homePreviewMore" />
 
-        <ImageView
+        <ImageButton
             android:id="@+id/videoFragmentGrid"
             android:layout_width="50dp"
             android:layout_height="50dp"
@@ -41,13 +42,14 @@
             android:paddingLeft="12dp"
             android:paddingTop="12dp"
             android:paddingBottom="12dp"
+            android:background="?attr/selectableItemBackground"
             android:src="@drawable/ic_baseline_grid_view_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/videoFragmentMore"
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="RtlHardcoded,RtlSymmetry" />
 
-        <ImageView
+        <ImageButton
             android:id="@+id/videoFragmentMore"
             android:layout_width="50dp"
             android:layout_height="50dp"
@@ -55,6 +57,7 @@
             android:alpha="0.8"
             android:contentDescription="@string/layoutSwitcher"
             android:padding="12dp"
+            android:background="?attr/selectableItemBackground"
             android:src="@drawable/ic_baseline_more_vert_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -99,14 +102,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
-            android:maxWidth="200dp"
             android:foregroundGravity="right"
             android:gravity="right"
-            android:paddingStart="8dp"
+            android:maxWidth="250dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/videoFragmentGrid"
             app:layout_constraintHorizontal_bias="1"
-            app:layout_constraintStart_toEndOf="@+id/videoFragmentBack"
+            app:layout_constraintStart_toStartOf="@+id/videoFragmentBack"
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="RtlHardcoded,RtlSymmetry" />
 
@@ -124,7 +126,7 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:context=".Activities.MainActivity">
 
-        <ImageView
+        <ImageButton
             android:id="@+id/videoFragmentExitSelectionMode"
             android:layout_width="50dp"
             android:layout_height="50dp"
@@ -132,18 +134,20 @@
             android:alpha="0.6"
             android:contentDescription="@string/backArrow"
             android:padding="12dp"
+            android:background="?attr/selectableItemBackground"
             android:src="@drawable/ic_baseline_arrow_back_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:tint="@color/homePreviewMore" />
 
-        <ImageView
+        <ImageButton
             android:id="@+id/videoFragmentSelectAll"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:padding="12dp"
             android:alpha="0.6"
+            android:background="?attr/selectableItemBackground"
             android:src="@drawable/ic_baseline_select_all_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/videoFragmentDelete"
@@ -151,7 +155,7 @@
             app:tint="@color/homePreviewMore"
             android:contentDescription="@string/selectAll" />
 
-        <ImageView
+        <ImageButton
             android:id="@+id/videoFragmentDelete"
             android:layout_width="50dp"
             android:layout_height="50dp"
@@ -159,6 +163,7 @@
             android:alpha="0.6"
             android:contentDescription="@string/delete_file"
             android:padding="12dp"
+            android:background="?attr/selectableItemBackground"
             android:src="@drawable/ic_baseline_delete_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -188,13 +193,14 @@
                 android:textStyle="bold" />
         </LinearLayout>
 
-        <ImageView
+        <ImageButton
             android:id="@+id/videoFragmentShare"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_gravity="right"
             android:src="@drawable/ic_baseline_share_24"
             android:padding="12dp"
+            android:background="?attr/selectableItemBackground"
             android:alpha="0.6"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/videoFragmentSelectAll"

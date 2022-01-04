@@ -54,35 +54,34 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.folders:
-                    //do something
                     switchToFragment1(new FolderFragment());
                     return true;
                 case R.id.videos:
-                    //do something
                     switchToFragment1(new VideosFragment(""));
                     return true;
-                case R.id.setting:
-                    //do something
-                    Toast.makeText(getApplicationContext(), "Setting", Toast.LENGTH_SHORT).show();
-                    return true;
+//                case R.id.setting:
+//                    Toast.makeText(getApplicationContext(), "Setting", Toast.LENGTH_SHORT).show();
+//                    return true;
                 case R.id.feedback:
-                    //do something
                     switchToFragment1(new FeedBackFragment());
                     return true;
             }
             bottomNavigationView.setSelectedItemId(item.getItemId());
             return false;
         });
+
+        // Animate Bottom NavigationBar
         bottomNavigationView.animate().translationY(200).setDuration(0);
         new Handler().postDelayed(() -> bottomNavigationView.animate().translationY(0).setDuration(500), 500);
 
 
-
+        // StatusBar Color Fix
+        getWindow().setStatusBarColor(Color.TRANSPARENT);
         if ((getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_NO) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
                 getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-            }
             getWindow().setStatusBarColor(Color.TRANSPARENT);
+
         }
 
 
@@ -113,8 +112,8 @@ public class MainActivity extends AppCompatActivity {
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
 
+        // Handle UI During UI Mode Switching
         int currentNightMode = newConfig.uiMode & Configuration.UI_MODE_NIGHT_MASK;
-
         if (oldConfig != currentNightMode) {
             this.recreate();
             oldConfig = currentNightMode;

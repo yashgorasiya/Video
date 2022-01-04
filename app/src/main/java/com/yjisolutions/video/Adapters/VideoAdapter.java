@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
@@ -172,7 +173,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoViewHolder> {
     @SuppressLint({"NotifyDataSetChanged", "UseCompatLoadingForDrawables"})
     public void setSelectionList() {
 
-        ImageView delete, selectAll, share, back;
+        ImageButton delete, selectAll, share, back;
 
         delete = view.findViewById(R.id.videoFragmentDelete);
         selectAll = view.findViewById(R.id.videoFragmentSelectAll);

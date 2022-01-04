@@ -119,7 +119,7 @@
             android:layout_gravity="bottom"
             android:layout_height="wrap_content">
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/previewHomeMore"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -127,6 +127,7 @@
                 android:foregroundGravity="top"
                 android:layout_marginBottom="10dp"
                 android:layout_marginEnd="4dp"
+                android:background="?attr/selectableItemBackground"
                 android:src="@drawable/ic_baseline_more_vert_24"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

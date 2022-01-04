@@ -14,7 +14,7 @@
         android:layout_marginBottom="24dp"
         android:id="@+id/recentPlayResume"
         app:icon="@drawable/ic_play_icon"
-        android:text="Resume"
+        android:text="@string/play"
         android:tooltipText="@string/resumeLastPlayed"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -89,7 +89,7 @@
                 </LinearLayout>
 
 
-                <ImageView
+                <ImageButton
                     android:id="@+id/homeScreenMore"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
@@ -97,6 +97,7 @@
                     android:foregroundGravity="top"
                     android:contentDescription="@string/more"
                     android:padding="12dp"
+                    android:background="?attr/selectableItemBackground"
                     android:src="@drawable/ic_baseline_more_vert_24"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -111,7 +112,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
                     android:foregroundTintMode="add"
-                    android:paddingStart="16dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/homeScreenMore"
                     app:layout_constraintStart_toStartOf="parent"

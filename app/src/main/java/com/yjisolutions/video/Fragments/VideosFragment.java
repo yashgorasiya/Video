@@ -2,11 +2,12 @@ package com.yjisolutions.video.Fragments;
 
 import android.annotation.SuppressLint;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,7 +38,7 @@ public class VideosFragment extends Fragment implements OnPlayerActivityDestroy 
     private final boolean viewStyle = Utils.VIEW_STYLE;
     private RecyclerView recyclerView;
     private VideoAdapter adapter;
-    private ImageView videoFragmentMore;
+    private ImageButton videoFragmentMore;
     private SearchView searchView;
     private TextView toolBarSubTitle;
     private View v;
@@ -54,8 +55,8 @@ public class VideosFragment extends Fragment implements OnPlayerActivityDestroy 
         v = inflater.inflate(R.layout.fragment_videos, container, false);
 
         MainActivity.setOnPlayerActivityDestroyIF(this);
-        ImageView backButton = v.findViewById(R.id.videoFragmentBack);
-        ImageView viewGrid = v.findViewById(R.id.videoFragmentGrid);
+        ImageButton backButton = v.findViewById(R.id.videoFragmentBack);
+        ImageButton viewGrid = v.findViewById(R.id.videoFragmentGrid);
         TextView toolBarTitle = v.findViewById(R.id.videoFragmentTitle);
 
         toolBarSubTitle = v.findViewById(R.id.videoFragmentSubTitle);
@@ -131,7 +132,7 @@ public class VideosFragment extends Fragment implements OnPlayerActivityDestroy 
         else toolBarSubTitle.setText(videos.size() + " Videos");
     }
 
-    @SuppressLint("NonConstantResourceId")
+    @SuppressLint({"NonConstantResourceId", "UseCompatLoadingForDrawables"})
     private void initListeners(){
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -145,14 +146,23 @@ public class VideosFragment extends Fragment implements OnPlayerActivityDestroy 
                 return false;
             }
         });
+        searchView.setOnSearchClickListener(v -> {
+            searchView.setBackground(requireContext().getResources().getDrawable(R.drawable.delete_dialog_bg));
+            searchView.setPadding(16, 16, 8, 16);
+        });
+        searchView.setOnCloseListener(() -> {
+            searchView.setBackgroundColor(Color.TRANSPARENT);
+            searchView.setPadding(0, 0, 0, 0);
+            return false;
+        });
 
         videoFragmentMore.setOnClickListener(v -> {
-            PopupMenu popupMenu = new PopupMenu(getContext(),videoFragmentMore);
+            PopupMenu popupMenu = new PopupMenu(getContext(), videoFragmentMore);
             popupMenu.inflate(R.menu.menu);
             popupMenu.setOnMenuItemClickListener(item -> {
                 switch (item.getItemId()) {
                     case R.id.Name:
-                        Utils.SortBy(Utils.NAME,Utils.VIDEOS);
+                        Utils.SortBy(Utils.NAME, Utils.VIDEOS);
                         initRecViewVideos();
                         return true;
                     case R.id.DateAdded:

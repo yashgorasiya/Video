@@ -113,15 +113,19 @@ public class PlayerActivity extends AppCompatActivity {
         playListView = findViewById(R.id.playListLayout);
         playListView.animate().translationXBy(1000).setDuration(0);
 
-        ImageView fitToScreen = findViewById(R.id.fitToScreen);
+        ImageView fitToScreen, playerNight, subTitleToggle, speedControl, orientation;
+        ImageButton backArrow, trackSelection, playlist;
 
-        ImageView backArrow = findViewById(R.id.controllerBackArrow);
-        ImageView moreControls = findViewById(R.id.moreControls);
-        ImageView playerNight = findViewById(R.id.playerNight);
-        ImageView subTitleToggle = findViewById(R.id.subTitleToggle);
-        ImageView speedControl = findViewById(R.id.playback_speed);
-        ImageView orientation = findViewById(R.id.screenRotation);
-        ImageButton trackSelection = findViewById(R.id.exo_track_selection_view);
+        fitToScreen = findViewById(R.id.fitToScreen);
+        playerNight = findViewById(R.id.playerNight);
+        subTitleToggle = findViewById(R.id.subTitleToggle);
+        speedControl = findViewById(R.id.playback_speed);
+        orientation = findViewById(R.id.screenRotation);
+
+        trackSelection = findViewById(R.id.exo_track_selection_view);
+        backArrow = findViewById(R.id.controllerBackArrow);
+        playlist = findViewById(R.id.moreControls);
+
         ImageView seekbarPreview = findViewById(R.id.seekbarPreview);
         PreviewTimeBar previewSeekBar = findViewById(R.id.exo_progress);
         PreviewLoader imagePreviewLoader = ImagePreviewLoader(seekbarPreview);
@@ -143,7 +147,7 @@ public class PlayerActivity extends AppCompatActivity {
         speedControl.setOnClickListener(v -> PlayBackSpeedDialog(speedControl));
         playerNight.setOnClickListener(v -> setNightIntensity(playerNight));
         subTitleToggle.setOnClickListener(view -> SubTitleToggle(subTitleToggle));
-        moreControls.setOnClickListener(v -> ShowPlayList());
+        playlist.setOnClickListener(v -> ShowPlayList());
 
 
         orientation.setOnClickListener(v -> {
