@@ -256,7 +256,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoViewHolder> {
 
     }
 
-    @SuppressLint({"NotifyDataSetChanged", "UseCompatLoadingForDrawables"})
+    @SuppressLint({"NotifyDataSetChanged", "UseCompatLoadingForDrawables", "SetTextI18n"})
     private void CustomDeleteDialog(ArrayList<Video> toDelete) {
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
@@ -289,16 +289,27 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoViewHolder> {
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .into((ImageView) deleteDialogView.findViewById(R.id.thumbnailDelete));
 
+            if (toDelete.size() > 1) {
+                TextView deleteItems = deleteDialogView.findViewById(R.id.numOfItems);
+                deleteItems.setVisibility(View.VISIBLE);
+                deleteItems.setText("  + " + (toDelete.size() - 1) + " more  ");
+            }
+
             TextView deleteSize = deleteDialogView.findViewById(R.id.sizeDelete);
-            TextView deleteTille = deleteDialogView.findViewById(R.id.DeleteDialogTitle);
+            TextView deleteTitle = deleteDialogView.findViewById(R.id.DeleteDialogTitle);
+
             SeekBar seekBar = deleteDialogView.findViewById(R.id.delete_preview_seekbar);
+
 
             seekBar.setPadding(0, 0, 0, 0);
             seekBar.setMax(video.getDuration());
             seekBar.setProgress(Integer.parseInt(String.valueOf(Utils.sp.getLong(video.getName(), 0))));
 
-            deleteSize.setText(Conversion.sizeConversion(video.getSize()));
-            deleteTille.setText(video.getName());
+            long totalSize = 0;
+            for (Video video1 : toDelete) totalSize = totalSize + video1.getSize();
+
+            deleteSize.setText(Conversion.sizeConversion(totalSize));
+            deleteTitle.setText(video.getName());
 
 
             deleteDialog.setPositiveButton(R.string.delete, (dialog, which) -> {

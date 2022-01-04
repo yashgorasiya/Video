@@ -51,6 +51,26 @@
                 android:textStyle="bold" />
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_margin="8dp"
+            android:background="@drawable/duration_size_bg"
+            tools:ignore="RtlHardcoded">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/numOfItems"
+                android:visibility="gone"
+                android:text="@string/dummyVideoSize50mb"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:fontFamily="@font/not_sans" />
+
+        </LinearLayout>
+
         <SeekBar
             android:id="@+id/delete_preview_seekbar"
             android:layout_width="match_parent"
