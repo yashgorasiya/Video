@@ -21,6 +21,7 @@
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable/home_tabindicator.xml" value="0.261025641025641" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable/ic_baseline_arrow_back_24.xml" value="0.21157407407407408" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable/ic_baseline_arrow_back_ios_24.xml" value="0.21157407407407408" />
+        <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable/ic_baseline_cancel_24.xml" value="0.11480263157894736" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable/ic_baseline_crop_5_4_24.xml" value="0.20175438596491227" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable/ic_baseline_crop_7_5_24.xml" value="0.20175438596491227" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable/ic_baseline_delete_24.xml" value="0.2598958333333333" />
@@ -69,7 +70,7 @@
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/layout/bottom_sheet_dialog.xml" value="0.24375" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/layout/bottom_sheet_video_information.xml" value="0.264" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/layout/compect_preview.xml" value="0.4" />
-        <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/layout/delete_dialog.xml" value="0.264" />
+        <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/layout/delete_dialog.xml" value="0.176" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/layout/folder_item.xml" value="0.4" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/layout/fragment_bottom_sheet.xml" value="0.15202702702702703" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/layout/fragment_bottomsheet.xml" value="0.16148648648648647" />

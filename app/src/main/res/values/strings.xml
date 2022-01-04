@@ -24,7 +24,7 @@
     <string name="dummyVideoSize50mb">50MB</string>
     <string name="dummyDuration10_12_01">10:12:01</string>
     <string name="dummyVideoTitle">Video Capture in 1942 By Me</string>
-    <string name="deleteWaringMassage">Are you sure you want to delete ?</string>
+    <string name="deleteWaringMassage">Delete</string>
     <string name="cancel">Cancel</string>
     <string name="delete">Delete</string>
     <string name="folderIcon">FolderIcon</string>

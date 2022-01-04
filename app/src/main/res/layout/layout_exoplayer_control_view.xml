@@ -96,8 +96,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:background="?attr/selectableItemBackground"
-                android:src="@drawable/ic_baseline_keyboard_arrow_left_24"
-                android:backgroundTint="@color/black_overlay" />
+                android:src="@drawable/ic_baseline_keyboard_arrow_left_24" />
 
         <ImageButton
             android:id="@+id/controllerBackArrow"
@@ -109,7 +108,6 @@
             android:contentDescription="@string/backArrow"
             android:padding="10dp"
             android:background="?attr/selectableItemBackground"
-            android:backgroundTint="@color/black_overlay"
             android:src="@drawable/ic_baseline_arrow_back_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
