@@ -45,6 +45,9 @@ public class FolderFragment extends Fragment implements OnPermissionGranted {
     private ExtendedFloatingActionButton recentPlayed;
     private boolean recViewInitiated = false;
 
+    public FolderFragment() {
+    }
+
     @Override
     public void onStart() {
         Permissions.request(requireActivity(), this);

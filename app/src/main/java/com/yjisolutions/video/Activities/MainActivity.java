@@ -48,7 +48,8 @@ public class MainActivity extends AppCompatActivity {
         oldConfig = getResources().getConfiguration().uiMode;
         sharedPreferences = getSharedPreferences("UserData", Context.MODE_PRIVATE);
 
-        switchToFragment1(new FolderFragment());
+        if (videoFisOpen) switchToFragment1(new VideosFragment());
+        else switchToFragment1(new FolderFragment());
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnItemSelectedListener(item -> {

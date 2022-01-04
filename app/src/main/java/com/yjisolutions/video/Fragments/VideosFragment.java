@@ -43,6 +43,9 @@ public class VideosFragment extends Fragment implements OnPlayerActivityDestroy 
     private TextView toolBarSubTitle;
     private View v;
 
+    public VideosFragment() {
+    }
+
     public VideosFragment(String fName) {
         folderName = fName;
     }
