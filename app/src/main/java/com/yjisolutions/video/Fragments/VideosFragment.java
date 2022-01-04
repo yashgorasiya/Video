@@ -78,6 +78,7 @@ public class VideosFragment extends Fragment implements OnPlayerActivityDestroy 
             if (!folderName.equals("")) {
                 FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
                 fragmentManager.beginTransaction().replace(R.id.homeScreenFrameLayout, new FolderFragment()).commit();
+                MainActivity.videoFisOpen = false;
             } else requireActivity().onBackPressed();
         });
 
@@ -136,7 +137,23 @@ public class VideosFragment extends Fragment implements OnPlayerActivityDestroy 
     }
 
     @SuppressLint({"NonConstantResourceId", "UseCompatLoadingForDrawables"})
-    private void initListeners(){
+    private void initListeners() {
+
+//        recyclerView.setOnFlingListener(new RecyclerView.OnFlingListener() {
+//            @Override
+//            public boolean onFling(int velocityX, int velocityY) {
+//                ConstraintLayout t = requireView().findViewById(R.id.conLayoutToolbarVideos);
+//                if (velocityY>0) {
+//                    t.animate().translationY(-t.getBottom()).setInterpolator(new AccelerateInterpolator()).start();
+//                    t.setVisibility(View.GONE);
+//                } else {
+//                    t.animate().translationY(0).setInterpolator(new DecelerateInterpolator()).start();
+//                    t.setVisibility(View.VISIBLE);
+//                }
+//                return false;
+//            }
+//        });
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {

@@ -56,9 +56,11 @@ public class MainActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.folders:
                     switchToFragment1(new FolderFragment());
+                    videoFisOpen = false;
                     return true;
                 case R.id.videos:
                     switchToFragment1(new VideosFragment(""));
+                    videoFisOpen = true;
                     return true;
 //                case R.id.setting:
 //                    Toast.makeText(getApplicationContext(), "Setting", Toast.LENGTH_SHORT).show();

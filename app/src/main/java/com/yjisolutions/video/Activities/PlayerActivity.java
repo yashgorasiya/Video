@@ -404,6 +404,8 @@ public class PlayerActivity extends AppCompatActivity {
     private void playExo() {
         try {
             video = VideosFragment.videos.get(position);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            Toast.makeText(getApplicationContext(), "Video may be Deleted", Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             fromExternal = true;
             MediaMetadataRetriever mmr = new MediaMetadataRetriever();
