@@ -497,8 +497,8 @@ public class PlayerActivity extends AppCompatActivity {
     // TODO
     // Not Functioning Well
     private void ShowTimerToPlayNextVideo() {
-
-        if (position++<VideosFragment.videos.size()){
+        position++;
+        if (position < VideosFragment.videos.size()) {
             View v = findViewById(R.id.nextVideoSuggestion);
             v.setVisibility(View.VISIBLE);
             playerView.hideController();
