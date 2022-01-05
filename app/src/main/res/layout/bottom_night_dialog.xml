@@ -9,7 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/delete_dialog_bg"
-        android:backgroundTint="@color/PrimaryLight"
+        android:backgroundTint="@color/purple_700"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -29,11 +29,11 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Night Intensity"
+            android:text="@string/night_intensity"
             android:fontFamily="@font/not_sans"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:paddingStart="28dp"
             android:paddingTop="20dp"
             android:paddingBottom="8dp"
@@ -48,8 +48,8 @@
             android:layout_marginTop="4dp"
             android:layout_marginBottom="20dp"
             android:layout_gravity="center"
-            android:thumbTint="@color/purple_500"
-            android:progressTint="@color/purple_500"
+            android:thumbTint="@color/white"
+            android:progressTint="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -65,10 +65,11 @@
             android:layout_gravity="bottom"
             android:layout_marginBottom="20dp"
             android:background="@drawable/player_buttons_bg"
-            android:backgroundTint="@color/purple_500"
+            android:backgroundTint="@color/PrimaryLight"
             android:padding="12dp"
             android:layout_marginEnd="20dp"
             android:layout_marginStart="8dp"
-            app:tint="@color/white" />
+            app:tint="@color/white"
+            android:contentDescription="@string/okbutton" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
