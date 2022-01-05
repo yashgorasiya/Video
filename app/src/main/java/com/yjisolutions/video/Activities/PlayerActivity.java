@@ -56,6 +56,7 @@ import com.google.android.exoplayer2.source.DefaultMediaSourceFactory;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 import com.google.android.exoplayer2.ui.PlayerView;
+import com.google.android.exoplayer2.video.VideoSize;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
@@ -487,12 +488,12 @@ public class PlayerActivity extends AppCompatActivity {
                 }
             }
 
-            //            @Override
-//            public void onVideoSizeChanged(@NonNull VideoSize videoSize) {
-//                if (videoSize.height < videoSize.width) {
-//                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-//                }
-//            }
+            @Override
+            public void onVideoSizeChanged(@NonNull VideoSize videoSize) {
+                if (videoSize.height < videoSize.width) {
+                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                }
+            }
         });
     }
 
@@ -561,7 +562,7 @@ public class PlayerActivity extends AppCompatActivity {
     }
 
 
-    void saveLastPosition() {
+    private void saveLastPosition() {
         if (!fromExternal) {
             if (!Utils.setRecentlyPlayed(position,
                     VideosFragment.folderName,
@@ -611,7 +612,7 @@ public class PlayerActivity extends AppCompatActivity {
         }
     }
 
-    void swapHeightWidth() {
+    private void swapHeightWidth() {
         int temp = getWidth;
         getWidth = getHeight;
         getHeight = temp;

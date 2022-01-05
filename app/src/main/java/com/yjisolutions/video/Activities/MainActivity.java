@@ -62,9 +62,6 @@ public class MainActivity extends AppCompatActivity {
                     switchToFragment1(new VideosFragment(""));
                     videoFisOpen = true;
                     return true;
-//                case R.id.setting:
-//                    Toast.makeText(getApplicationContext(), "Setting", Toast.LENGTH_SHORT).show();
-//                    return true;
                 case R.id.feedback:
                     switchToFragment1(new FeedBackFragment());
                     return true;
@@ -90,18 +87,18 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1) {
-            onPlayerActivityDestroy.refreshVideoFragment();
-        }
+
+        if (requestCode == 1) onPlayerActivityDestroy.refreshVideoFragment();
+
         // API 30+ Requesting for delete file
-        if (requestCode == 7) {
-            if (resultCode != MainActivity.RESULT_OK) {
+        if (requestCode == 7)
+            if (resultCode != MainActivity.RESULT_OK)
                 Toast.makeText(getApplicationContext(), "Permission Denied", Toast.LENGTH_SHORT).show();
-            }
-        }
+
 
     }
 

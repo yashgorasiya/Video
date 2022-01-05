@@ -329,9 +329,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoViewHolder> {
 
             });
 
-            deleteDialog.setNegativeButton(R.string.cancel, (dialog, which) -> {
-                dialog.dismiss();
-            });
+            deleteDialog.setNegativeButton(R.string.cancel, (dialog, which) -> dialog.dismiss());
 
             deleteDialog.show();
             deleteDialogView

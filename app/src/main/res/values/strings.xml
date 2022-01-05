@@ -49,11 +49,8 @@
     <string name="processbaroverlaybuttontoplay">processbarOverlayButtonToPlay</string>
     <string name="selectAll">SelectAll</string>
     <string name="share">Share</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="folders">Folders</string>
     <string name="videos">Videos</string>
-    <string name="feedback">FeedBack</string>
     <string name="play">Play</string>
     <string name="_1_00">1.00</string>
     <string name="negativebutton">NegativeButton</string>
@@ -61,5 +58,9 @@
     <string name="okbutton">okButton</string>
     <string name="playback_speed">Playback Speed</string>
     <string name="night_intensity">Night Intensity</string>
+    <string name="write_your_message_here">Write Your Message Here</string>
+    <string name="send">SEND</string>
+    <string name="feedback">FeedBack</string>
+    <string name="your_requirements_is_our_goal_write_down_your_requirements">Your Requirements is our Goal. Write down your requirements</string>
 
 </resources>
