@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.yjisolutions.video.Activities.MainActivity;
 import com.yjisolutions.video.Activities.PlayerActivity;
 import com.yjisolutions.video.Adapters.FolderAdapter;
 import com.yjisolutions.video.Interfaces.OnPermissionGranted;
@@ -181,10 +182,14 @@ public class FolderFragment extends Fragment implements OnPermissionGranted {
                 FragmentManager fm = requireActivity().getSupportFragmentManager();
                 VideosFragment videosFragment = new VideosFragment(Utils.RECENTLY_PLAYED_VIDEO_FOLDER);
                 fm.beginTransaction().replace(R.id.homeScreenFrameLayout, videosFragment).commit();
+
+                MainActivity.videoFisOpen = true;
+
                 requireActivity().startActivityForResult(
                         new Intent(requireActivity().getBaseContext(), PlayerActivity.class)
                                 .putExtra("position", Utils.RECENTLY_PLAYED_VIDEO_POSITION)
                         , 1);
+
             } catch (Exception E) {
                 Toast.makeText(getContext(), "File may be Deleted " + E, Toast.LENGTH_SHORT).show();
             }
