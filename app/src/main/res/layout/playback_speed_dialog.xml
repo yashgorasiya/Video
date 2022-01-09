@@ -37,6 +37,7 @@
             android:layout_marginBottom="20dp"
             android:layout_marginStart="28dp"
             android:backgroundTint="@color/PrimaryLight"
+            android:tint="@color/purple_500"
             android:outlineAmbientShadowColor="@color/purple_500"
             android:outlineSpotShadowColor="@color/purple_500"
             android:src="@drawable/ic_baseline_remove_24"
