@@ -10,16 +10,18 @@ public class Utils {
     public static SharedPreferences sp = MainActivity.sharedPreferences;
     public static SharedPreferences.Editor spe = sp.edit();
 
-    public static boolean VIEW_STYLE = sp.getBoolean("homeScreenLayoutType",true);
-    public static int SORT_BY = sp.getInt("sortBy",0);
+    public static int VIEW_STYLE = sp.getInt("previewStyle", 0);
+    public static int SORT_BY = sp.getInt("sortBy", 0);
     public static int SORT_ORDER = sp.getInt("sortOrder",0);
     public static int SORT_BY_VIDEOS = sp.getInt("sortByVideos",0);
     public static int SORT_ORDER_VIDEOS = sp.getInt("sortOrderVideos",0);
 
-    public static boolean changeVideoTileStyle(){
-        spe.putBoolean("homeScreenLayoutType",!VIEW_STYLE);
+    public static boolean changeVideoTileStyle() {
+        if (VIEW_STYLE == 0) spe.putInt("previewStyle", 1);
+        else if (VIEW_STYLE == 1) spe.putInt("previewStyle", 2);
+        else if (VIEW_STYLE == 2) spe.putInt("previewStyle", 0);
         boolean commit = spe.commit();
-        VIEW_STYLE = sp.getBoolean("homeScreenLayoutType",true);
+        VIEW_STYLE = sp.getInt("previewStyle", 0);
         return commit;
     }
 

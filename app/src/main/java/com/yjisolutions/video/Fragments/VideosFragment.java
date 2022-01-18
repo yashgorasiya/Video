@@ -35,7 +35,7 @@ public class VideosFragment extends Fragment implements OnPlayerActivityDestroy 
     public static String folderName = "";
 
     public static ArrayList<Video> videos = new ArrayList<>();
-    private final boolean viewStyle = Utils.VIEW_STYLE;
+    private final int viewStyle = Utils.VIEW_STYLE;
     private RecyclerView recyclerView;
     private VideoAdapter adapter;
     private ImageButton videoFragmentMore;
@@ -69,9 +69,11 @@ public class VideosFragment extends Fragment implements OnPlayerActivityDestroy 
 
         recyclerView.setHasFixedSize(true);
 
-        if (viewStyle)
+        if (viewStyle == 0)
             viewGrid.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_grid_view_24));
-        else
+        else if (viewStyle == 1)
+            viewGrid.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_video_label_24));
+        else if (viewStyle == 2)
             viewGrid.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_view_list_24));
 
         backButton.setOnClickListener(v1 -> {
@@ -103,7 +105,7 @@ public class VideosFragment extends Fragment implements OnPlayerActivityDestroy 
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
 
         int grid;
-        if (viewStyle) grid = 1;
+        if (viewStyle != 1) grid = 1;
         else grid = 2;
 
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
@@ -121,8 +123,11 @@ public class VideosFragment extends Fragment implements OnPlayerActivityDestroy 
         else videos = VideoRead.getVideoFromFolder(getContext(), folderName);
 
         int grid;
-        if (viewStyle) grid = 1;
-        else grid = 2;
+        if (viewStyle != 1) grid = 1;
+        else {
+            grid = 2;
+            recyclerView.setPadding(16, 12, 16, 0);
+        }
 
         Configuration configuration = requireActivity().getResources().getConfiguration();
         if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) grid = grid * 2;

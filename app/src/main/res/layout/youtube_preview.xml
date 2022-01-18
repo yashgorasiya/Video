@@ -1,0 +1,159 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:backgroundTint="@color/statusBar"
+    android:id="@+id/previewTileLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <ImageView
+        android:id="@+id/thumbnail"
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        android:background="@drawable/preview_thumbnail_bg"
+        android:contentDescription="@string/videoThumbnail"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_logo_icon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:backgroundTint="@color/black_overlay"
+        android:backgroundTintMode="add"
+        android:background="@drawable/duration_size_bg"
+        app:layout_constraintBottom_toBottomOf="@+id/thumbnail"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <TextView
+            android:id="@+id/durationV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/not_sans"
+            android:gravity="center"
+            android:paddingStart="4dp"
+            android:paddingTop="1dp"
+            android:paddingEnd="5dp"
+            android:text="@string/dummyDuration10_12_01"
+            android:textColor="@color/white"
+            android:textSize="11sp" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/ic_logo_icon"
+        app:layout_constraintVertical_bias="0"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/thumbnail" />
+
+    <TextView
+        android:id="@+id/titleV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginStart="58dp"
+        android:layout_marginEnd="36dp"
+        android:layout_marginTop="12dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/not_sans"
+        android:gravity="left"
+        android:maxLines="2"
+        android:paddingStart="4dp"
+        android:text="@string/dummyVideoTitle"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/thumbnail"
+        tools:ignore="RtlHardcoded,RtlSymmetry" />
+
+    <SeekBar
+        android:id="@+id/home_preview_seekbar"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:layout_gravity="top"
+        android:padding="0dp"
+        android:progressTint="@android:color/holo_red_light"
+        android:progressDrawable="@drawable/home_preview_seekbar_process"
+        android:thumb="@color/black"
+        app:layout_constraintBottom_toBottomOf="@+id/thumbnail"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/sizePreview"
+        style="@style/TextAppearance.Material3.LabelSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginBottom="16dp"
+        android:fontFamily="@font/not_sans"
+        android:paddingStart="5dp"
+        android:paddingTop="1dp"
+        android:paddingEnd="4dp"
+        android:text="@string/dummyVideoSize50mb"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/titleV"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintVertical_bias="0"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/titleV"
+        tools:ignore="SmallSp" />
+
+    <ImageButton
+        android:id="@+id/previewHomeMore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="3dp"
+        android:paddingStart="3dp"
+        android:paddingBottom="8dp"
+        android:background="?attr/selectableItemBackground"
+        android:contentDescription="@string/more"
+        android:foregroundGravity="top"
+        android:alpha="0.6"
+        android:src="@drawable/ic_baseline_more_vert_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/thumbnail"
+        tools:ignore="MissingConstraints,RtlHardcoded" />
+
+    <FrameLayout
+        android:id="@+id/selectedIndicator"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/black_overlay"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="32dp"
+            android:background="@drawable/home_tab_indicator"
+            android:padding="8dp"
+            android:src="@drawable/ic_baseline_done_24"
+            app:tint="@color/purple_700" />
+
+    </FrameLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

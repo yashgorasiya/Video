@@ -38,13 +38,13 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoViewHolder> {
 
     private List<Video> videos;
     public Activity activity;
-    public boolean viewStyle;
+    public int viewStyle;
     private boolean isSelected = false;
     private boolean firstLongPress = false;
     private ArrayList<Video> selectedItems;
     private final View view;
 
-    public VideoAdapter(List<Video> videos, Activity activity, boolean viewStyle, View view) {
+    public VideoAdapter(List<Video> videos, Activity activity, int viewStyle, View view) {
         this.videos = videos;
         this.activity = activity;
         this.viewStyle = viewStyle;
@@ -55,8 +55,9 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoViewHolder> {
     @Override
     public VideoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         int layout;
-        if (viewStyle) layout = R.layout.preview;
-        else layout = R.layout.compect_preview;
+        if (viewStyle == 0) layout = R.layout.preview;
+        else if (viewStyle == 1) layout = R.layout.compect_preview;
+        else layout = R.layout.youtube_preview;
         return new VideoViewHolder(LayoutInflater.from(parent.getContext()).inflate(layout, parent, false));
     }
 
@@ -73,7 +74,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoViewHolder> {
 
         // Playing videos in PlayerActivity Activity
         View view;
-        if (viewStyle) view = holder.previewTile;
+        if (viewStyle != 1) view = holder.previewTile;
         else view = holder.thumb;
 
 

@@ -33,6 +33,7 @@
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable/ic_baseline_select_all_24.xml" value="0.23657407407407408" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable/ic_baseline_share_24.xml" value="0.2598958333333333" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable/ic_baseline_speed.xml" value="0.2598958333333333" />
+        <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable/ic_baseline_video_label_24.xml" value="0.16644951140065148" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable/ic_baseline_view_list_24.xml" value="0.17195945945945945" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable/ic_basic_animations.xml" value="0.17195945945945945" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/drawable/ic_folder.xml" value="0.23564814814814813" />
@@ -91,6 +92,7 @@
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/layout/track_selection_dialog.xml" value="0.24479166666666666" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/layout/track_selector_dialog.xml" value="0.24427083333333333" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/layout/ustom_controls.xml" value="0.1287037037037037" />
+        <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/layout/youtube_preview.xml" value="0.2" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/menu/bottom_navigation_menu.xml" value="0.15789473684210525" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/menu/menu.xml" value="0.264" />
         <entry key="..\:/Users/goras/AndroidStudioProjects/Video/app/src/main/res/menu/playback_speed.xml" value="0.2212962962962963" />
