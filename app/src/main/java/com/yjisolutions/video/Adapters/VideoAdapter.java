@@ -140,7 +140,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoViewHolder> {
         Glide.with(activity.getBaseContext())
                 .load(video.getUri())
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .override(250, 200)
+                .override(500, 400)
                 .into(holder.thumb);
 
     }

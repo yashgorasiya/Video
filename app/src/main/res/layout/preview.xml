@@ -87,7 +87,7 @@
                 android:layout_height="match_parent"
                 android:background="@color/black_overlay"
                 android:id="@+id/selectedIndicator"
-                android:visibility="gone"
+                android:visibility="invisible"
                 >
 
                 <ImageView
@@ -99,7 +99,7 @@
                     android:background="@drawable/home_tab_indicator"
                     android:backgroundTint="@color/white"
                     app:tint="@color/purple_700"
-                    android:contentDescription="@string/okbutton" />
+                    android:contentDescription="@string/selecteditem" />
 
             </FrameLayout>
 

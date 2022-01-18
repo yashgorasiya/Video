@@ -62,5 +62,7 @@
     <string name="send">SEND</string>
     <string name="feedback">FeedBack</string>
     <string name="your_requirements_is_our_goal_write_down_your_requirements">Your Requirements is our Goal. Write down your requirements</string>
+    <string name="ytchannellogo">YTChannelLogo</string>
+    <string name="selecteditem">selectedItem</string>
 
 </resources>
