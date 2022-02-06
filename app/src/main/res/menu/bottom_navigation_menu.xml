@@ -1,18 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/page_1"
+        android:id="@+id/folders"
         android:enabled="true"
         android:icon="@drawable/ic_folder_icon"
-        android:title="Folder" />
+        android:title="@string/folders" />
     <item
-        android:id="@+id/page_2"
+        android:id="@+id/videos"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_video_library_24"
-        android:title="Videos" />
+        android:title="@string/videos" />
+    <!--    <item-->
+    <!--        android:id="@+id/setting"-->
+    <!--        android:enabled="true"-->
+    <!--        android:icon="@drawable/ic_baseline_settings_24"-->
+    <!--        android:title="Setting" />-->
     <item
-        android:id="@+id/page_3"
+        android:id="@+id/feedback"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_feedback_24"
-        android:title="FeedBack" />
+        android:title="@string/feedback" />
 </menu>

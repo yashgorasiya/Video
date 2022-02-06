@@ -56,6 +56,7 @@ import com.google.android.exoplayer2.source.DefaultMediaSourceFactory;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 import com.google.android.exoplayer2.ui.PlayerView;
+import com.google.android.exoplayer2.video.VideoSize;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
@@ -113,15 +114,19 @@ public class PlayerActivity extends AppCompatActivity {
         playListView = findViewById(R.id.playListLayout);
         playListView.animate().translationXBy(1000).setDuration(0);
 
-        ImageView fitToScreen = findViewById(R.id.fitToScreen);
+        ImageView fitToScreen, playerNight, subTitleToggle, speedControl, orientation;
+        ImageButton backArrow, trackSelection, playlist;
 
-        ImageView backArrow = findViewById(R.id.controllerBackArrow);
-        ImageView moreControls = findViewById(R.id.moreControls);
-        ImageView playerNight = findViewById(R.id.playerNight);
-        ImageView subTitleToggle = findViewById(R.id.subTitleToggle);
-        ImageView speedControl = findViewById(R.id.playback_speed);
-        ImageView orientation = findViewById(R.id.screenRotation);
-        ImageButton trackSelection = findViewById(R.id.exo_track_selection_view);
+        fitToScreen = findViewById(R.id.fitToScreen);
+        playerNight = findViewById(R.id.playerNight);
+        subTitleToggle = findViewById(R.id.subTitleToggle);
+        speedControl = findViewById(R.id.playback_speed);
+        orientation = findViewById(R.id.screenRotation);
+
+        trackSelection = findViewById(R.id.exo_track_selection_view);
+        backArrow = findViewById(R.id.controllerBackArrow);
+        playlist = findViewById(R.id.moreControls);
+
         ImageView seekbarPreview = findViewById(R.id.seekbarPreview);
         PreviewTimeBar previewSeekBar = findViewById(R.id.exo_progress);
         PreviewLoader imagePreviewLoader = ImagePreviewLoader(seekbarPreview);
@@ -143,7 +148,7 @@ public class PlayerActivity extends AppCompatActivity {
         speedControl.setOnClickListener(v -> PlayBackSpeedDialog(speedControl));
         playerNight.setOnClickListener(v -> setNightIntensity(playerNight));
         subTitleToggle.setOnClickListener(view -> SubTitleToggle(subTitleToggle));
-        moreControls.setOnClickListener(v -> ShowPlayList());
+        playlist.setOnClickListener(v -> ShowPlayList());
 
 
         orientation.setOnClickListener(v -> {
@@ -205,7 +210,7 @@ public class PlayerActivity extends AppCompatActivity {
     private void setNightIntensity(ImageView playNightView) {
         final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this, R.style.BottomSheetSpeed);
         bottomSheetDialog.setContentView(R.layout.bottom_night_dialog);
-        SetupFullDialog.setupFullHeight(bottomSheetDialog, 270);
+        SetupFullDialog.setupFullHeight(bottomSheetDialog, 340);
         ImageView imageView = bottomSheetDialog.findViewById(R.id.doneImgNDialog);
         Objects.requireNonNull(imageView).setOnClickListener(v -> bottomSheetDialog.cancel());
 
@@ -251,7 +256,7 @@ public class PlayerActivity extends AppCompatActivity {
     private void PlayBackSpeedDialog(ImageView speedControlBtn) {
         final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this, R.style.BottomSheetSpeed);
         bottomSheetDialog.setContentView(R.layout.playback_speed_dialog);
-        SetupFullDialog.setupFullHeight(bottomSheetDialog, 370);
+        SetupFullDialog.setupFullHeight(bottomSheetDialog, 470);
 
         FloatingActionButton add = bottomSheetDialog.findViewById(R.id.speedIncreaseButton);
         FloatingActionButton remove = bottomSheetDialog.findViewById(R.id.speedDecreaseButton);
@@ -400,6 +405,8 @@ public class PlayerActivity extends AppCompatActivity {
     private void playExo() {
         try {
             video = VideosFragment.videos.get(position);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            Toast.makeText(getApplicationContext(), "Video may be Deleted", Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             fromExternal = true;
             MediaMetadataRetriever mmr = new MediaMetadataRetriever();
@@ -451,8 +458,8 @@ public class PlayerActivity extends AppCompatActivity {
         });
 
         playerView.setOnTouchListener((@SuppressLint("ClickableViewAccessibility") View v, @SuppressLint("ClickableViewAccessibility") MotionEvent event) -> {
-
             gestureDetectorCompat.onTouchEvent(event);
+
             switch (event.getAction()) {
                 case MotionEvent.ACTION_UP:
                     endScroll();
@@ -481,20 +488,20 @@ public class PlayerActivity extends AppCompatActivity {
                 }
             }
 
-            //            @Override
-//            public void onVideoSizeChanged(@NonNull VideoSize videoSize) {
-//                if (videoSize.height < videoSize.width) {
-//                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-//                }
-//            }
+            @Override
+            public void onVideoSizeChanged(@NonNull VideoSize videoSize) {
+                if (videoSize.height < videoSize.width) {
+                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                }
+            }
         });
     }
 
     // TODO
     // Not Functioning Well
     private void ShowTimerToPlayNextVideo() {
-
-        if (position++<VideosFragment.videos.size()){
+        position++;
+        if (position < VideosFragment.videos.size()) {
             View v = findViewById(R.id.nextVideoSuggestion);
             v.setVisibility(View.VISIBLE);
             playerView.hideController();
@@ -555,7 +562,7 @@ public class PlayerActivity extends AppCompatActivity {
     }
 
 
-    void saveLastPosition() {
+    private void saveLastPosition() {
         if (!fromExternal) {
             if (!Utils.setRecentlyPlayed(position,
                     VideosFragment.folderName,
@@ -605,7 +612,7 @@ public class PlayerActivity extends AppCompatActivity {
         }
     }
 
-    void swapHeightWidth() {
+    private void swapHeightWidth() {
         int temp = getWidth;
         getWidth = getHeight;
         getHeight = temp;
@@ -717,10 +724,12 @@ public class PlayerActivity extends AppCompatActivity {
         SeekGesturePreviewLayout.setVisibility(View.INVISIBLE);
     }
 
+
     private class MyGestureDetector extends GestureDetector.SimpleOnGestureListener {
         private final boolean canUseWipeControls = true;
         private float maxVerticalMovement;
         private float maxHorizontalMovement;
+
 
         @Override
         public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
@@ -736,7 +745,7 @@ public class PlayerActivity extends AppCompatActivity {
             maxVerticalMovement = Math.max(maxVerticalMovement, Math.abs(distanceYSinceTouchBegin));
             boolean enoughVerticalMovement = maxVerticalMovement > 100;
 
-            if (enoughHorizontalMovement && !enoughVerticalMovement && SafeAreaBackBtn) {
+            if (enoughHorizontalMovement && !enoughVerticalMovement && SafeAreaBackBtn && canUseWipeControls) {
                 String cTime = Conversion.timerConversion(cPotion);
 
                 // right to left
@@ -786,6 +795,16 @@ public class PlayerActivity extends AppCompatActivity {
         }
 
         @Override
+        public void onLongPress(MotionEvent e) {
+
+        }
+
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            return false;
+        }
+
+        @Override
         public boolean onSingleTapUp(MotionEvent e) {
             performClick();
             if (playListView.getVisibility() == View.VISIBLE) {
@@ -803,8 +822,13 @@ public class PlayerActivity extends AppCompatActivity {
             return super.onDown(e);
         }
 
-
         @Override
+        public void onShowPress(MotionEvent e) {
+
+        }
+
+
+        //        @Override
         public boolean onDoubleTap(MotionEvent e) {
             // divided double tap gestures to three part of screen
 

@@ -5,25 +5,24 @@ import android.app.Activity;
 import android.content.Intent;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.yjisolutions.video.Activities.PlayerActivity;
-import com.yjisolutions.video.Fragments.VideosFragment;
 import com.yjisolutions.video.Modal.Video;
 import com.yjisolutions.video.R;
 import com.yjisolutions.video.code.Conversion;
@@ -37,26 +36,28 @@ import java.util.Objects;
 
 public class VideoAdapter extends RecyclerView.Adapter<VideoViewHolder> {
 
-    List<Video> videos;
-    Activity activity;
-    boolean viewStyle;
+    private List<Video> videos;
+    public Activity activity;
+    public int viewStyle;
     private boolean isSelected = false;
     private boolean firstLongPress = false;
-    ArrayList<Video> selectedItems;
-    private final View view = VideosFragment.parentView;
+    private ArrayList<Video> selectedItems;
+    private final View view;
 
-    public VideoAdapter(List<Video> videos, Activity activity, boolean viewStyle) {
+    public VideoAdapter(List<Video> videos, Activity activity, int viewStyle, View view) {
         this.videos = videos;
         this.activity = activity;
         this.viewStyle = viewStyle;
+        this.view = view;
     }
 
     @NonNull
     @Override
     public VideoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         int layout;
-        if (viewStyle) layout = R.layout.preview;
-        else layout = R.layout.compect_preview;
+        if (viewStyle == 0) layout = R.layout.preview;
+        else if (viewStyle == 1) layout = R.layout.compect_preview;
+        else layout = R.layout.youtube_preview;
         return new VideoViewHolder(LayoutInflater.from(parent.getContext()).inflate(layout, parent, false));
     }
 
@@ -73,7 +74,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoViewHolder> {
 
         // Playing videos in PlayerActivity Activity
         View view;
-        if (viewStyle) view = holder.previewTile;
+        if (viewStyle != 1) view = holder.previewTile;
         else view = holder.thumb;
 
 
@@ -139,7 +140,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoViewHolder> {
         Glide.with(activity.getBaseContext())
                 .load(video.getUri())
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .override(250, 200)
+                .override(500, 400)
                 .into(holder.thumb);
 
     }
@@ -162,7 +163,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoViewHolder> {
         if (isSelected) {
             defaultToolbar.setVisibility(View.GONE);
             selectionToolbar.setVisibility(View.VISIBLE);
-            setSelectionLis();
+            setSelectionList();
         } else {
             defaultToolbar.setVisibility(View.VISIBLE);
             selectionToolbar.setVisibility(View.GONE);
@@ -170,9 +171,9 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoViewHolder> {
     }
 
     @SuppressLint({"NotifyDataSetChanged", "UseCompatLoadingForDrawables"})
-    public void setSelectionLis() {
+    public void setSelectionList() {
 
-        ImageView delete, selectAll, share, back;
+        ImageButton delete, selectAll, share, back;
 
         delete = view.findViewById(R.id.videoFragmentDelete);
         selectAll = view.findViewById(R.id.videoFragmentSelectAll);
@@ -223,7 +224,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoViewHolder> {
     @SuppressLint("ShowToast")
     private void showBottomSheetMore(Uri uri, int position) {
 
-        final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(activity, R.style.BottomSheetCustom);
+        final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(activity);
         bottomSheetDialog.setContentView(R.layout.bottom_sheet_dialog);
 
         LinearLayout share = bottomSheetDialog.findViewById(R.id.shareLinearLayout);
@@ -256,7 +257,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoViewHolder> {
 
     }
 
-    @SuppressLint("NotifyDataSetChanged")
+    @SuppressLint({"NotifyDataSetChanged", "UseCompatLoadingForDrawables", "SetTextI18n"})
     private void CustomDeleteDialog(ArrayList<Video> toDelete) {
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
@@ -267,14 +268,20 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoViewHolder> {
             isSelected = false;
             changeToolbar();
             notifyDataSetChanged();
+
         } else {
 
             LayoutInflater factory = LayoutInflater.from(activity);
             final View deleteDialogView = factory.inflate(R.layout.delete_dialog, null);
-            final AlertDialog deleteDialog = new AlertDialog.Builder(activity, R.style.Theme_Dialog).create();
+
+            final MaterialAlertDialogBuilder deleteDialog = new MaterialAlertDialogBuilder(activity);
+//            final AlertDialog deleteDialog = new AlertDialog.Builder(activity, R.style.Theme_Dialog).create();
             deleteDialog.setView(deleteDialogView);
+
             deleteDialogView.setScaleX(-0.1f);
             deleteDialogView.setScaleY(-0.1f);
+
+            deleteDialog.setTitle(R.string.delete);
 
             Video video = toDelete.get(0);
 
@@ -283,53 +290,47 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoViewHolder> {
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .into((ImageView) deleteDialogView.findViewById(R.id.thumbnailDelete));
 
+            if (toDelete.size() > 1) {
+                TextView deleteItems = deleteDialogView.findViewById(R.id.numOfItems);
+                deleteItems.setVisibility(View.VISIBLE);
+                deleteItems.setText("  + " + (toDelete.size() - 1) + " more  ");
+            }
+
             TextView deleteSize = deleteDialogView.findViewById(R.id.sizeDelete);
-            TextView deleteTille = deleteDialogView.findViewById(R.id.DeleteDialogTitle);
+            TextView deleteTitle = deleteDialogView.findViewById(R.id.DeleteDialogTitle);
+
             SeekBar seekBar = deleteDialogView.findViewById(R.id.delete_preview_seekbar);
+
 
             seekBar.setPadding(0, 0, 0, 0);
             seekBar.setMax(video.getDuration());
             seekBar.setProgress(Integer.parseInt(String.valueOf(Utils.sp.getLong(video.getName(), 0))));
 
-            deleteSize.setText(Conversion.sizeConversion(video.getSize()));
-            deleteTille.setText(video.getName());
+            long totalSize = 0;
+            for (Video video1 : toDelete) totalSize = totalSize + video1.getSize();
 
-            deleteDialogView.findViewById(R.id.DialogDeleteBtn).setOnClickListener(v13 -> {
+            deleteSize.setText(Conversion.sizeConversion(totalSize));
+            deleteTitle.setText(video.getName());
+
+
+            deleteDialog.setPositiveButton(R.string.delete, (dialog, which) -> {
                 //your delete logic
                 DeleteFile delete1 = new DeleteFile(activity);
                 delete1.moveToBin(toDelete);
+
                 videos.removeAll(toDelete);
+
                 selectedItems = new ArrayList<>();
                 isSelected = false;
+
                 changeToolbar();
                 notifyDataSetChanged();
-                deleteDialogView
-                        .animate()
-                        .scaleXBy(-1f)
-                        .scaleYBy(-1f)
-                        .setDuration(200);
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        deleteDialog.dismiss();
-                    }
-                }, 200);
+
+                dialog.dismiss();
+
             });
 
-            deleteDialogView.findViewById(R.id.DialogDeleteCancelTxt).setOnClickListener(v12 -> {
-
-                deleteDialogView
-                        .animate()
-                        .scaleXBy(-1f)
-                        .scaleYBy(-1f)
-                        .setDuration(200);
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        deleteDialog.dismiss();
-                    }
-                }, 200);
-            });
+            deleteDialog.setNegativeButton(R.string.cancel, (dialog, which) -> dialog.dismiss());
 
             deleteDialog.show();
             deleteDialogView
@@ -345,7 +346,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoViewHolder> {
     @SuppressLint("SetTextI18n")
     private void showBottomSheetMore(int position) {
 
-        final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(activity, R.style.BottomSheetCustom);
+        final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(activity);
         bottomSheetDialog.setContentView(R.layout.bottom_sheet_video_information);
 
         Video video = videos.get(position);

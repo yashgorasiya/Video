@@ -73,11 +73,10 @@
             <Button
                 android:id="@+id/NextPlayCancelButton"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="42dp"
                 android:text="@string/cancel"
-                style="@style/Widget.Material3.Button"
-                android:backgroundTint="@color/PrimaryLight"
                 android:textColor="@color/purple_500"
+                android:backgroundTint="@color/PrimaryLight"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

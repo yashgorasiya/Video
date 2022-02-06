@@ -2,31 +2,18 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="300dp"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:background="@drawable/delete_dialog_bg"
     android:orientation="vertical">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="18dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="16dp"
-        android:fontFamily="@font/not_sans"
-        android:text="@string/deleteWaringMassage"
-        android:textColor="@color/homePreviewMore"
-        android:textSize="15sp"
-        android:textStyle="bold" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="24dp"
         android:layout_marginBottom="5dp"
         app:cardCornerRadius="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -64,6 +51,26 @@
                 android:textStyle="bold" />
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_margin="8dp"
+            android:background="@drawable/duration_size_bg"
+            tools:ignore="RtlHardcoded">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/numOfItems"
+                android:visibility="gone"
+                android:text="@string/dummyVideoSize50mb"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:fontFamily="@font/not_sans" />
+
+        </LinearLayout>
+
         <SeekBar
             android:id="@+id/delete_preview_seekbar"
             android:layout_width="match_parent"
@@ -79,42 +86,12 @@
         android:id="@+id/DeleteDialogTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="18dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginStart="26dp"
+        android:layout_marginEnd="24dp"
         android:maxLines="2"
         android:ellipsize="end"
         android:fontFamily="@font/not_sans"
         android:textColor="@color/homePreviewMore"
         android:textSize="12sp" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:layout_margin="16dp"
-        android:orientation="vertical">
-
-        <Button
-            android:id="@+id/DialogDeleteBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@android:color/holo_red_dark"
-            android:text="@string/delete"
-            android:textStyle="bold"
-            android:fontFamily="@font/not_sans"
-            android:textColor="@android:color/white" />
-
-        <Button
-            android:id="@+id/DialogDeleteCancelTxt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/not_sans"
-            android:textStyle="bold"
-            style="@style/Widget.Material3.Button.OutlinedButton"
-            android:text="@string/cancel"
-            android:textColor="@android:color/holo_red_light" />
-
-
-    </LinearLayout>
 
 </LinearLayout>

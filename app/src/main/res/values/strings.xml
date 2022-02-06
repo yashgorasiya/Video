@@ -13,7 +13,6 @@
     <string name="shareIon">ShareIon</string>
     <string name="delete_file">Delete File</string>
     <string name="video_information">Video information</string>
-    <string name="share">Share</string>
     <string name="deleteIcon">DeleteIcon</string>
     <string name="infoIcon">InfoIcon</string>
     <string name="title">Title</string>
@@ -25,7 +24,7 @@
     <string name="dummyVideoSize50mb">50MB</string>
     <string name="dummyDuration10_12_01">10:12:01</string>
     <string name="dummyVideoTitle">Video Capture in 1942 By Me</string>
-    <string name="deleteWaringMassage">Are you sure you want to delete ?</string>
+    <string name="deleteWaringMassage">Delete</string>
     <string name="cancel">Cancel</string>
     <string name="delete">Delete</string>
     <string name="folderIcon">FolderIcon</string>
@@ -48,5 +47,22 @@
     <string name="nightModeButton">NightModeButton</string>
     <string name="playListCloseButton">PlayListCloseButton</string>
     <string name="processbaroverlaybuttontoplay">processbarOverlayButtonToPlay</string>
+    <string name="selectAll">SelectAll</string>
+    <string name="share">Share</string>
+    <string name="folders">Folders</string>
+    <string name="videos">Videos</string>
+    <string name="play">Play</string>
+    <string name="_1_00">1.00</string>
+    <string name="negativebutton">NegativeButton</string>
+    <string name="positivebutton">PositiveButton</string>
+    <string name="okbutton">okButton</string>
+    <string name="playback_speed">Playback Speed</string>
+    <string name="night_intensity">Night Intensity</string>
+    <string name="write_your_message_here">Write Your Message Here</string>
+    <string name="send">SEND</string>
+    <string name="feedback">FeedBack</string>
+    <string name="your_requirements_is_our_goal_write_down_your_requirements">Your Requirements is our Goal. Write down your requirements</string>
+    <string name="ytchannellogo">YTChannelLogo</string>
+    <string name="selecteditem">selectedItem</string>
 
 </resources>

@@ -2,6 +2,7 @@ package com.yjisolutions.video.Adapters;
 
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -14,7 +15,8 @@ import com.yjisolutions.video.R;
 
 public class VideoViewHolder extends RecyclerView.ViewHolder {
 
-    ImageView thumb, more;
+    ImageView thumb;
+    ImageButton more;
     TextView title, duration, size;
     ConstraintLayout previewTile;
     SeekBar seekBar;

@@ -5,7 +5,6 @@
     android:id="@+id/previewTileLayout"
     android:background="?attr/selectableItemBackground"
     android:layout_width="match_parent"
-    android:padding="3dp"
     android:layout_height="90dp">
 
         <com.google.android.material.card.MaterialCardView
@@ -13,7 +12,9 @@
             android:layout_width="120dp"
             android:layout_height="70dp"
             app:cardCornerRadius="6dp"
-            android:layout_marginStart="6dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -86,7 +87,7 @@
                 android:layout_height="match_parent"
                 android:background="@color/black_overlay"
                 android:id="@+id/selectedIndicator"
-                android:visibility="gone"
+                android:visibility="invisible"
                 >
 
                 <ImageView
@@ -97,7 +98,8 @@
                     android:src="@drawable/ic_baseline_done_24"
                     android:background="@drawable/home_tab_indicator"
                     android:backgroundTint="@color/white"
-                    app:tint="@color/purple_700" />
+                    app:tint="@color/purple_700"
+                    android:contentDescription="@string/selecteditem" />
 
             </FrameLayout>
 
@@ -107,13 +109,13 @@
             android:id="@+id/titleV"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginStart="130dp"
+            android:layout_marginStart="134dp"
             android:fontFamily="@font/not_sans"
             android:padding="8dp"
             android:ellipsize="end"
             android:maxLines="3"
             android:gravity="center_vertical"
-            android:layout_marginEnd="30dp"
+            android:layout_marginEnd="32dp"
             android:textSize="12sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -121,17 +123,18 @@
             app:layout_constraintStart_toEndOf="@+id/previewMaterialCard"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:contentDescription="@string/more"
-            android:id="@+id/previewHomeMore"
-            android:layout_width="30dp"
-            android:layout_height="match_parent"
-            android:alpha="0.6"
-            android:padding="3dp"
-            android:foregroundGravity="top"
-            android:src="@drawable/ic_baseline_more_vert_24"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+    <ImageButton
+        android:contentDescription="@string/more"
+        android:id="@+id/previewHomeMore"
+        android:layout_width="40dp"
+        android:layout_height="match_parent"
+        android:alpha="0.8"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:background="?attr/selectableItemBackground"
+        android:src="@drawable/ic_baseline_more_vert_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
